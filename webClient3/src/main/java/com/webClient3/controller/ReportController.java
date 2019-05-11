@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.webClient3.model.Account;
+import com.webClient3.model.Course;
 import com.webClient3.model.Semester;
 import com.webClient3.service.ReportService;
 
@@ -30,7 +31,7 @@ public class ReportController {
 	}
 
 	@RequestMapping(value = "/renderGeneralReportView1", method = RequestMethod.GET)
-	public String showLoginPage(ModelMap model, HttpSession session) {
+	public String renderGeneralReportView1(ModelMap model, HttpSession session) {
 		if (session.getAttribute("id") == null) {
 			logger.info("Redirect to login page ==============");
 			model.addAttribute("account", new Account());
@@ -49,5 +50,29 @@ public class ReportController {
 		}
 		
 		return "generalReportForStudent";
+	}
+	
+	@RequestMapping(value = "/renderGeneralReportForClass", method = RequestMethod.GET)
+	public String renderGeneralReportForClass(ModelMap model, HttpSession session) {
+		if (session.getAttribute("id") == null) {
+			logger.info("Redirect to login page ==============");
+			model.addAttribute("account", new Account());
+			return "login";
+		}
+		
+		List<Course> listCourse = this.reportService.findAllCourse();
+		
+		if (listCourse != null && !listCourse.isEmpty()) {
+			for (Course course: listCourse) {
+				logger.info("semester name = " + course.getCourseName());
+			}
+			
+			model.put("allCourses", listCourse);
+			logger.info("List semester is putted ===========================");
+		} else {
+			logger.info("List semester is null ===========================");
+		}
+		
+		return "generalReportForClass";
 	}
 }

@@ -7,6 +7,7 @@ $(document).ready(function(){
 		  $.ajax({ 
 			   type: "PUT",
 			   dataType: "json",
+			   //url: host + ":" + port + "/users", 
 			   url: "http://localhost:8080/users",
 			   contentType: 'application/json',
 			   data: JSON.stringify({

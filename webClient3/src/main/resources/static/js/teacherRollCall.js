@@ -9,6 +9,7 @@ $(document).ready(function(){
 	  $.ajax({ 
 		   type: "GET",
 		   dataType: "json",
+		   //url: host + ":" + port + "/listRooms?classID=" + classID,
 		   url: "http://localhost:8080/listRooms?classID=" + classID,
 		   contentType: 'application/json',
 		   success: function(data){
@@ -48,6 +49,8 @@ $(document).ready(function(){
 	  $.ajax({ 
 		   type: "POST",
 		   dataType: "json",
+		   //url: host + ":" + port + "/teacherRollCall",
+		   
 		   url: "http://localhost:8080/teacherRollCall",
 		   contentType: 'application/json',
 		   data: JSON.stringify({

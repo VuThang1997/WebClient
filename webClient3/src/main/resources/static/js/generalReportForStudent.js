@@ -8,6 +8,7 @@ $(document).ready(function(){
 	  $.ajax({ 
 		   type: "POST",
 		   dataType: "json",
+		   //url: host + ":" + port + "/studentGeneralReport?adminID=" + id,
 		   url: "http://localhost:8080/studentGeneralReport?adminID=" + id,
 		   contentType: 'application/json',
 		   data: JSON.stringify({
@@ -34,6 +35,7 @@ $(document).ready(function(){
 	  $.ajax({ 
 		   type: "POST",
 		   dataType: "json",
+		   //url: host + ":" + port  + "/studentGeneralReport?adminID=" + id,
 		   url: "http://localhost:8080/studentGeneralReport?adminID=" + id,
 		   contentType: 'application/json',
 		   data: JSON.stringify({

@@ -1,56 +1,79 @@
 $(document).ready(function(){
-	var inputFile;
-	var fileName;
 	
-	/*
-	console.log(JSON.stringify({
-				   file: inputFile;
-			   }));
-	$("#input_file").on("input", function() {
-		inputFile = this.val();
-		 $.ajax({ 
-			   type: "POST",
-			   dataType: "json",
-			   url: "http://localhost:8085/manipulateFile",
-			   contentType: 'application/json',
-			   data: JSON.stringify({
-				   file: inputFile;
-			   }),
-			   success: function(data){
-				   fileName = data;
-				   console.log("file name = " + fileName);
-			   },
-			   error: function() {
-				  console.log("error ===============");
-			   }
-			});
+	 $.validator.addMethod("EMAIL", function(value, element) {
+                return this.optional(element) || /^[a-zA-Z0-9._-]+@[a-zA-Z0-9-]+\.[a-zA-Z.]{2,5}$/i.test(value);
+            }, "Email không đúng format! ");
+	
+	$('#form_create_account').validate({
+		errorClass: 'errors',
+        rules : {
+            new_password : {
+				required: true,
+				minlength : 5,
+				
+        },
+            retype_password : {
+				required: true,
+                minlength : 5,
+                equalTo : "#new_password"
+            },
+			email: {
+              required: true,
+			  EMAIL: "required EMAIL",
+              email: true
+            },
+            username: {
+              required: true
+            }
+        },
+  messages: {
+    email: {
+      required: "Mời nhập email!"
+    },
+	username: {
+      required: "Mời nhập tên tài khoản!"
+    },
+	new_password: {
+		required: "Mời nhập mật khẩu!",
+		minlength: "Tối thiểu 5 kí tự"
+	},
+	retype_password: {
+		required: "Mời nhập lại mật khẩu!",
+		minlength: "Tối thiểu 5 kí tự",
+		equalTo: "Mật khẩu nhập lại không khớp!"
+	}
+  },
+   highlight: function (element) {
+                $(element).parent().addClass('error')
+            },
+            unhighlight: function (element) {
+                $(element).parent().removeClass('error')
+            }
 	});
-	 
-	 $("#submit_profile").click(function(e){
-		  e.preventDefault();
-		  
-		  $.ajax({ 
-			   type: "PUT",
-			   dataType: "json",
-			   url: "http://localhost:8080/users",
-			   contentType: 'application/json',
-			   data: JSON.stringify({
-				   id: id,
-				   birthday: $("#new_birthday").val(),
-				   phone: $("#phone").val(),
-				   address: $("#address").val(),
-				   fullName: $("#full_name").val(),
-			   }),
-			   success: function(data){
-				   $("#report").text("Success!");
-				   $("#alert").show();
-				   $("#current_birthday").val($("#new_birthday").val());
-			   },
-			   error: function() {
-				   $("#report").text("Failed!");
-				   $("#alert").show();
-				   alert($("#email").val()+ $("option:selected").val()+$("#begin_at").val()+$("#finish_at").val());
-			   }
-			});
-	  });*/
+	
+	window.onload = function() {
+		let accountType = sessionStorage.getItem('accountType');
+		if (accountType !== null) {
+			console.log("session storage : " + accountType);
+			$("#account_type_select").val(accountType);
+			console.log("account_type_select : " + $("#account_type_select").val());
+			$("#account_type").val(accountType);
+			console.log("account_type: " + $("#account_type").val());
+        }
+	}
+	
+	$("#account_type_select").on('change', function(e) {
+		  let accountType = $("option:selected", this).val();
+		  $("#account_type").val(accountType);
+		  console.log("account type change to " + accountType);
+	 });
+	
+	window.onbeforeunload = function() {
+		sessionStorage.setItem("accountType", $("#account_type").val());
+	 }
+	
+	$("#manual_type_select").on('change', function(e) {
+		let type = $("option:selected", this).val();
+		$("#role").val(type);
+	});
 });

@@ -28,7 +28,9 @@
 <link href="css/modern-business.css" rel="stylesheet">
 
 <script src="js/createAccount.js" type="text/javascript"></script>
+<script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.13.1/jquery.validate.min.js"></script>
 
+<link href="css/createAccount.css" rel="stylesheet">
 </head>
 
 <body>
@@ -46,46 +48,129 @@
 			</div>
 			<!--end of col-md-3 -->
 
-					<div class="col-md-9">
-		    <div class="card">
-		        <div class="card-body">
-		            <div class="row">
-		            	<c:if test = "${not empty error}">
-		            	 <div id="error_div" class="row col-4 alert alert-warning ">
-		            	 	${error}
-                          </div>
-                        </c:if>
-		                <div class="col-md-12">
-		                    <h4>THÊM TÀI KHOẢN THEO FILE</h4>
-		                    <hr>
-		                </div>
-		            </div>
-		            <div class="row">
-		                <div class="col-md-12">
-							<form:form method="POST" action="/uploadFile" enctype="multipart/form-data" modelAttribute="myFile">
-								 Select a file: <form:input id="input_file" path="multipartFile"  type="file" name="myFile" /><br><br>
-  								 <input type="submit">
-							</form:form>
-		                </div>
-		                
-		                <c:if test="${not empty fileName}">
-						    <div class="col-md-12 text-center">
-			                	<form:form method="POST" action="/readFile" modelAttribute="report">
-			                		<form:input path="description" type="hidden" value='<%=request.getAttribute("fileName") %>'  />
-			                		<button id="create_btn" type="submit" class="btn btn-primary">Tạo tài khoản</button>
-			                	</form:form>
-		                	</div>
-						</c:if>
-		            </div>
-		            <div class="row">
-		            	<c:if test="${not empty message}">
-							<div class="errorAccount"><h3>${message}</h3></div>
-						</c:if>
-		            </div>
-		        </div>
-				
+			<div class="row col-md-9">
+				<div class="card col-md-6">
+				<div class="card-body">
+				        <div>
+							<div class="col-md-12 text-center">
+								<h4>TẠO TÀI KHOẢN</h4>
+								<hr>
+							</div>
+						</div>
+					<div class="card-body col-md-12">
+						<form:form id="form_create_account" method="POST" action="/createNewAccountManually" modelAttribute="newAccount">
+							<div class="form-group row">
+								<label for="username" class="col-4 col-form-label">Tên tài khoản *</label>
+								<div class="col-8">
+									<form:input path="username" id="username" name="username" placeholder="Username"
+										class="form-control here" type="text"
+									/>
+								</div>
+							</div>
+
+							<div class="form-group row">
+								<label for="new_password" class="col-4 col-form-label">Mật khẩu *</label>
+								<div class="col-8">
+									<form:input path="password" id="new_password" name="new_password"
+										placeholder="New Password" class="form-control here"
+										type="password"/>
+								</div>
+							</div>
+							
+							<div class="form-group row">
+								<label for="retype_password" class="col-4 col-form-label">Nhập lại *</label>
+								<div class="col-8">
+									<input id="retype_password" name="retype_password"
+										placeholder="Retype passwrod" class="form-control here"
+										type="password"/>
+								</div>
+							</div>
+							
+							<div class="form-group row">
+								<label for="new_email" class="col-4 col-form-label">Email *</label>
+								<div class="col-8">
+									<form:input path="email" id="new_email" name="new_email"
+										placeholder="New Email" class="form-control here"
+										type="text" />
+								</div>
+							</div>
+							
+							<div class="form-group row">
+								<label for="manual_type_select" class="col-4 col-form-label">Loại tài khoản *: </label> 
+								<div class="col-md-8">
+									<select id="manual_type_select" class="browser-default custom-select">
+										<option value="0" selected>Loại tài khoản</option>
+										<option value="3">Sinh viên</option>
+										<option value="2">Giảng viên</option>
+										<option value="1">Admin</option>
+									</select>
+								</div>
+							</div>
+							
+							<form:input path="role" id="role" name="role_input" class="form-control here"
+										type="hidden" />
+
+							<div class="form-group row">
+								<div class="offset-4 col-8">
+									<button id="submit_account" name="submit_account" type="submit"
+										class="btn btn-primary">Tạo tài khoản</button>
+								</div>
+							</div>
+							
+							<c:if test = "${not empty error2}">
+							 <div id="error_div" class="col-md-12 text-center alert alert-warning ">
+								${error2}
+							  </div>
+							</c:if>
+						</form:form>
+					</div>
+				</div>
+				</div>
+				<div class="card col-md-6">
+					<div class="card-body">
+						<div>
+							<div class="col-md-12 text-center">
+								<h4>TẠO TÀI KHOẢN THEO FILE</h4>
+								<hr>
+							</div>
+						</div>
+						
+						<div class="row col-md-12">
+							<label for="account_type_select" class="col-md-5 col-form-label">Loại tài khoản *: </label> 
+							<div class="col-md-7">
+								<select id="account_type_select" class="browser-default custom-select">
+									<option value="3">Sinh viên</option>
+									<option value="2">Giảng viên</option>
+									<option value="1">Admin</option>
+								</select>
+							</div>
+						</div>
+						<div class="col-md-12">
+								<form:form method="POST" action="/uploadFile" enctype="multipart/form-data" modelAttribute="myFile">
+									 Select a file *: <form:input id="input_file" path="multipartFile"  type="file" name="myFile" /><br><br>
+									 <input type="submit">
+								</form:form>
+							</div>
+							<br/>
+							<c:if test="${not empty fileName}">
+								<div class="col-md-12 text-center">
+									<form:form method="POST" action="/readFile" modelAttribute="report">
+										<form:input path="description" type="hidden" value='<%=request.getAttribute("fileName") %>'  />
+											<form:input id="account_type" path="errorCode" type="hidden" />
+										
+										<button id="create_btn" type="submit" class="btn btn-primary">Tạo tài khoản</button>
+									</form:form>
+								</div>
+							</c:if>
+							<c:if test = "${not empty error}">
+							 <div id="error_div" class="col-md-12 text-center alert alert-warning ">
+								${error}
+							  </div>
+							</c:if>
+						<br />
+					</div>
+				</div>
 		    </div>
-		</div>
 		</div>
 	</div>
 

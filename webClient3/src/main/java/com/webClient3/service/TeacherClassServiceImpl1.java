@@ -21,8 +21,8 @@ import com.webClient3.utils.GeneralValue;
 
 @Service
 @Qualifier("TeacherClassServiceImpl1")
-public class TeacherClassServiceImpl1 implements TeacherClassService{
-	
+public class TeacherClassServiceImpl1 implements TeacherClassService {
+
 	private Logger logger = LoggerFactory.getLogger(TeacherClassServiceImpl1.class);
 	private RestTemplate restTemplate;
 
@@ -30,7 +30,7 @@ public class TeacherClassServiceImpl1 implements TeacherClassService{
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	
+
 	@Autowired
 	public TeacherClassServiceImpl1(RestTemplate restTemplate) {
 		super();
@@ -40,17 +40,19 @@ public class TeacherClassServiceImpl1 implements TeacherClassService{
 	@Override
 	public List<TeacherClass> findRecordByTeacherID(int teacherID) {
 		logger.info("Begin retrieving teacher-class records ==========================");
-		String baseUrl = "http://" + GeneralValue.HOST + "/teacherClass?teacherID=" + teacherID;
+		String baseUrl = GeneralValue.SERVER_CORE_HOST + ":" + GeneralValue.SERVER_CORE_PORT
+				+ "/teacherClass?teacherID=" + teacherID;
 
 		HttpHeaders header = new HttpHeaders();
 		header.setContentType(MediaType.APPLICATION_JSON);
 		header.add("Accept", MediaType.APPLICATION_JSON_VALUE);
 
 		try {
-			ResponseEntity<List<TeacherClass>> response = restTemplate.exchange(baseUrl, HttpMethod.GET, null, 
-					new ParameterizedTypeReference<List<TeacherClass>>(){});
+			ResponseEntity<List<TeacherClass>> response = restTemplate.exchange(baseUrl, HttpMethod.GET, null,
+					new ParameterizedTypeReference<List<TeacherClass>>() {
+					});
 			logger.info("Sending RestTemplate ===================");
-			
+
 			List<TeacherClass> listRecords = response.getBody();
 			logger.info("list records = " + listRecords.size());
 			return listRecords;

@@ -38,8 +38,8 @@
 	<script>
 		var id = ${sessionScope.id};
 		var userRole = ${sessionScope.role};
-		//var host = ${sessionScope.host};
-		//alert("host = " + host);
+	 	//var host = ${sessionScope.host};
+	 	//var port = ${sessionScope.port};
 	</script>
 	<jsp:include page="header.jsp" />
 

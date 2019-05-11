@@ -6,7 +6,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -16,8 +15,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestTemplate;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.webClient3.model.Account;
 import com.webClient3.model.ReportError;
+import com.webClient3.utils.GeneralValue;
 
 @Service
 @Qualifier("ReportServiceImpl1")
@@ -40,19 +42,21 @@ public class AccountServiceImpl1 implements AccountService {
 	@Override
 	public ReportError createMultipleAccount(List<Account> listAccounts) {
 		logger.info("Begin creating accounts ==========================");
-		String baseUrl = "http://localhost:8080/createMultipleAccount";
+		String baseUrl = GeneralValue.SERVER_CORE_HOST + ":" + GeneralValue.SERVER_CORE_PORT + "/createMultipleAccount";
 		ReportError report = null;
 
 		HttpHeaders header = new HttpHeaders();
 		header.setContentType(MediaType.APPLICATION_JSON);
 		header.add("Accept", MediaType.APPLICATION_JSON_VALUE);
 
-		HttpEntity<Object> requestEntity = new HttpEntity<Object>(listAccounts, header);
+		ObjectMapper mapper = new ObjectMapper();
+		try {
+			String jsonString = mapper.writeValueAsString(listAccounts);
+		
+			HttpEntity<Object> requestEntity = new HttpEntity<Object>(jsonString, header);
 
 		// Map<String, List<Account>> params = new HashMap<String, List<Account>>();
 		// params.put("listAccounts", listAccounts);
-
-		try {
 			// ReportError response = restTemplate.postForObject(baseUrl, listAccounts,
 			// ReportError.class);
 			ResponseEntity<ReportError> response = restTemplate.exchange(baseUrl, HttpMethod.POST, requestEntity, ReportError.class);
@@ -61,7 +65,7 @@ public class AccountServiceImpl1 implements AccountService {
 			report = response.getBody();
 			return report;
 
-		} catch (HttpStatusCodeException e) {
+		} catch (HttpStatusCodeException | JsonProcessingException e) {
 			logger.info("Error happend ==========================");
 			report = new ReportError(400, "error happened");
 			return report;

@@ -30,11 +30,16 @@
 <script src="https://unpkg.com/gijgo@1.9.13/js/gijgo.min.js" type="text/javascript"></script>
 <link href="https://unpkg.com/gijgo@1.9.13/css/gijgo.min.css" rel="stylesheet" type="text/css" />
 
-<script src="js/generalReportForStudent.js" type="text/javascript"></script>
+<script src="js/config.js" type="text/javascript"></script>
+<script src="js/generalReportForClass.js" type="text/javascript"></script>
 
 </head>
 
 <body>
+	<c:if test="${empty sessionScope.id}">
+		<c:redirect url="/"/>
+	</c:if>
+	
 	<script>
 	 	var id = ${sessionScope.id};
 	 	//var host = ${sessionScope.host};
@@ -58,7 +63,7 @@
 		            	 <div id="error_div" class="row col-4 alert alert-warning ">
                           </div>
 		                <div class="col-md-12">
-		                    <h4>BÁO CÁO TỔNG HỢP CHO SINH VIÊN</h4>
+		                    <h4>BÁO CÁO TỔNG HỢP CHO LỚP</h4>
 		                    <hr>
 		                </div>
 		            </div>
@@ -66,20 +71,24 @@
 		                <div class="col-md-12">
 		                    <form>
                               <div class="form-group row">
-                                <label for="email" class="col-2 col-form-label">Email sinh viên</label> 
-                                <div class="col-4">
-                                  <input id="email" name="email" placeholder="Hãy nhập email ...." class="form-control here" required="required" type="text">
-                                </div>
-							  
-								<label for="semester_select" class="col-2 col-form-label">Chọn học kì: </label> 
+                                <label for="course_select" class="col-2 col-form-label">Chọn học phần: </label> 
 								<div class="col-4">
-								   <select id="semester_select" class="browser-default custom-select">
-									   <c:forEach items="${allSemester}" var="semester">
-										    <option value="${semester.semesterID}">${semester.semesterName}</option>
+								   <select id="course_select" class="browser-default custom-select">
+								   		<option value="0" selected>Chọn học phần</option>
+									   <c:forEach items="${allCourses}" var="course">
+										    <option value="${course.courseID}">${course.courseName}</option>
 										</c:forEach>
 									</select>
 								</div>
+								
+								<label for="class_select" class="col-2 col-form-label">Chọn lớp học: </label> 
+								<div class="col-4">
+								   <select id="class_select" class="browser-default custom-select">
+									   
+									</select>
+								</div>
                               </div>
+                              
 							  <div class="form-group row">
                                 <label for="begin_at" class="col-2 col-form-label">Ngày bắt đầu: </label> 
                                 <div class="col-4">
@@ -91,6 +100,7 @@
 										});
 									</script>                     
 								</div>
+								
 								<label for="finish_at" class="col-2 col-form-label">Ngày kết thúc: </label> 
                                 <div class="col-4">
 								 <input id="finish_at" width="276"/>
@@ -103,15 +113,6 @@
 									</script>                     
 								</div>
                               </div>
-                              <!-- <div class="row">
-                              	<label for="file_type_select" class="col-4 col-form-label">Chọn định dạng xuất file: </label> 
-								<div class="col-4">
-								   <select id="file_type_select" class="browser-default custom-select">
-										<option value="pdf" selected>PDF</option>
-										<option value="xlsx">Excel</option>
-									</select>
-								</div>
-                              </div> -->
 							</form>
 							
                               <div class="col-md-12 row">
@@ -123,7 +124,7 @@
                               </div>
 							  </div>
 							  <div id="div_link" class="col-md-12" style="text-align:center">
-								 <a id="link_report" href="#"><i>Click this link to download report</i></a>
+								 <a id="link_report" href="#"><i>Click để tải báo cáo</i></a>
 							  </div>
                             
 		                </div>

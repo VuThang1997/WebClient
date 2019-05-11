@@ -69,6 +69,14 @@ public class AccountController {
 		this.restTemplate = restTemplate;
 		this.accountService = accountService;
 	}
+	
+	@RequestMapping(value = "/logout", method = RequestMethod.GET)
+	public String logout(Model model, HttpSession session) {
+		session.invalidate();
+		model.asMap().clear();
+		model.addAttribute("account", new Account());
+		return "login";
+	}
 
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String showLoginPage(ModelMap model) {
@@ -85,7 +93,8 @@ public class AccountController {
 			return "error";
 		}
 
-		String baseUrl = "http://localhost:8080/login";
+		String baseUrl = GeneralValue.SERVER_CORE_HOST + ":"
+				+ GeneralValue.SERVER_CORE_PORT + "/login";
 
 		HttpHeaders header = new HttpHeaders();
 		header.setContentType(MediaType.APPLICATION_JSON);
@@ -118,7 +127,8 @@ public class AccountController {
 			session.setAttribute("email", adminAccount.getEmail());
 			session.setAttribute("password", adminAccount.getPassword());
 			session.setAttribute("username", adminAccount.getUsername());
-			session.setAttribute("host", GeneralValue.HOST);
+			session.setAttribute("host", GeneralValue.SERVER_CORE_HOST);
+			session.setAttribute("port", GeneralValue.SERVER_CORE_PORT);
 
 			model.addAttribute("username", adminAccount.getUsername());
 			model.addAttribute("email", adminAccount.getEmail());
@@ -164,7 +174,8 @@ public class AccountController {
 			return "error";
 		}
 
-		String baseUrl = "http://localhost:8080/accounts?updateUser=false";
+		String baseUrl = GeneralValue.SERVER_CORE_HOST + ":"
+				+ GeneralValue.SERVER_CORE_PORT  + "/accounts?updateUser=false";
 
 		HttpHeaders header = new HttpHeaders();
 		header.setContentType(MediaType.APPLICATION_JSON);
@@ -214,19 +225,20 @@ public class AccountController {
 	@RequestMapping(value = "/renderCreateAccount", method = RequestMethod.GET)
 	public String renderCreateAccount(ModelMap model) {
 		model.addAttribute("myFile", new MyFile());
+		model.addAttribute("newAccount", new Account());
 		return "createAccount";
 	}
 
 	@RequestMapping(value = "/uploadFile", method = RequestMethod.POST)
-	public String uploadFile(@Valid @ModelAttribute("myFile") MyFile myFile, Model model, HttpSession session) {
+	public String uploadFile(@Valid @ModelAttribute("myFile") MyFile myFile,
+			@Valid @ModelAttribute("report") ReportError report, Model model, HttpSession session) {
 		if (session.getAttribute("id") == null) {
 			logger.info("Redirect to login page ==============");
 			model.addAttribute("account", new Account());
 			return "login";
 		}
 
-		model.addAttribute("message", "Upload success");
-		model.addAttribute("description", myFile.getDescription());
+		model.addAttribute("fileType", report.getErrorCode());
 		model.addAttribute("report", new ReportError());
 		try {
 			MultipartFile multipartFile = myFile.getMultipartFile();
@@ -251,11 +263,25 @@ public class AccountController {
 			return "login";
 		}
 
+		boolean isValidRole = false;
+		for (AccountRole role : AccountRole.values()) {
+			if (report.getErrorCode() == role.getValue()) {
+				isValidRole = true;
+				break;
+			}
+		}
+
+		if (isValidRole == false) {
+			model.addAttribute("error", "Bạn phải chọn loại tài khoản!");
+			model.addAttribute("myFile", new MyFile());
+			return "createAccount";
+		}
+
 		String fileName = report.getDescription();
 		String linkFile = GeneralValue.FOLDER_IMPORT_FILE + File.separator + fileName;
 		Account account = null;
 		List<Account> listAccounts = new ArrayList<>();
-		int fieldNumber = -3;
+		int fieldNumber = -6;
 		logger.info("========================= link file  = " + linkFile);
 
 		try {
@@ -282,6 +308,7 @@ public class AccountController {
 
 					while (cellIterator.hasNext()) {
 						fieldNumber++;
+						logger.info("================== fiel number = " + fieldNumber);
 
 						// exclude the first row of table: fieldNumber from -3 to 0
 						if (fieldNumber < 1) {
@@ -306,10 +333,10 @@ public class AccountController {
 							logger.info("====================== Account usrname = " + account.getUsername());
 							fieldNumber = 0;
 							account.setImei(null);
-							account.setRole(AccountRole.STUDENT.getValue());
 							account.setIsActive(AccountStatus.ACTIVE.getValue());
 							account.setUpdateImeiCounter(0);
 							account.setUserInfo(null);
+
 							listAccounts.add(account);
 							break;
 						}
@@ -318,17 +345,24 @@ public class AccountController {
 				}
 
 			}
-			
+
 			report = this.accountService.createMultipleAccount(listAccounts);
 		} catch (EncryptedDocumentException | InvalidFormatException | IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			model.addAttribute("error", "Tạo tài khoản không thành công!");
 		}
-		
-		
+
 		if (report.getErrorCode() == 200) {
-			model.addAttribute("error", report.getDescription() + " tài khoản có dữ liệu không hợp lệ!");
+			// mọi account đều hợp lệ
+			if (report.getDescription().contains("0")) {
+				model.addAttribute("error", "Tạo tài khoản thành công!");
+
+			} else {
+				String[] infoReport = report.getDescription().split(",");
+				model.addAttribute("error",
+						infoReport[0] + " tài khoản có dữ liệu không hợp lệ ở các dòng: " + infoReport[1]);
+			}
 		} else {
 			model.addAttribute("error", "Tạo tài khoản không thành công!");
 		}
@@ -360,5 +394,66 @@ public class AccountController {
 			folderUpload.mkdirs();
 		}
 		return folderUpload;
+	}
+
+	@RequestMapping(value = "/createNewAccountManually", method = RequestMethod.POST)
+	public String createNewAccountManually(@Valid @ModelAttribute("newAccount") Account account, BindingResult result,
+			Model model, HttpSession session) {
+
+		if (session.getAttribute("id") == null) {
+			logger.info("Redirect to login page ==============");
+			model.addAttribute("account", new Account());
+			return "login";
+		}
+
+		logger.info("Begin create new account ==========================");
+		if (result.hasErrors()) {
+			return "error";
+		}
+
+		String baseUrl = GeneralValue.SERVER_CORE_HOST + ":"
+				+ GeneralValue.SERVER_CORE_PORT + "/registration";
+
+		HttpHeaders header = new HttpHeaders();
+		header.setContentType(MediaType.APPLICATION_JSON);
+		header.add("Accept", MediaType.APPLICATION_JSON_VALUE);
+
+		boolean isValidRole = false;
+		for (AccountRole value : AccountRole.values()) {
+			if (value.getValue() == account.getRole()) {
+				isValidRole = true;
+				break;
+			}
+		}
+
+		if (isValidRole == false) {
+			model.addAttribute("error2", "Tạo tài khoản thất bại!");
+
+		} else {
+
+			Map<String, Object> params = new HashMap<String, Object>();
+			params.put("email", account.getEmail());
+			params.put("password", account.getPassword());
+			params.put("username", account.getUsername());
+			params.put("role", account.getRole());
+			logger.info("==================== account.role = " + account.getRole());
+
+			HttpEntity<?> entity = new HttpEntity<>(params, header);
+
+			try {
+				ResponseEntity<String> response = restTemplate.exchange(baseUrl, HttpMethod.POST, entity, String.class);
+				logger.info("Sending RestTemplate ===================");
+				model.addAttribute("error2", "Tạo tài khoản thành công");
+
+			} catch (HttpStatusCodeException e) {
+				logger.info("Creating account info failed");
+				model.addAttribute("error2", "Tạo tài khoản thất bại!");
+			}
+		}
+
+		model.addAttribute("myFile", new MyFile());
+		model.addAttribute("newAccount", new Account());
+		model.addAttribute("report", new ReportError());
+		return "createAccount";
 	}
 }

@@ -49,7 +49,8 @@ public class GeneralValue {
     public static final String GEN_SYMBOLIC_FAIL = "GEN_SYMBOLIC_FAIL";
     public static final String GEN_SYMBOLIC_FAIL_DES = "GEN SYMBOLIC FAIL";
     
-    public static final String HOST = "localhost:8080";
+    public static final String SERVER_CORE_HOST = "http://localhost";
+    public static final String SERVER_CORE_PORT = "8080";
     
     public static final String FOLDER_IMPORT_FILE = "C:\\Users\\BePro\\Desktop\\excel_folder";
 }

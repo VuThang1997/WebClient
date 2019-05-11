@@ -43,7 +43,7 @@
 			
 				
 				<div class="collapse list-group-submenu" id="sub_categories_1">
-					<a href="renderTeacherRollCallView" class="list-group-item sub-item" data-parent="#sub_categories_1" style="padding-left: 78px;">Giảng viên điểm danh</a>
+					<a href="/renderTeacherRollCallView" class="list-group-item sub-item" data-parent="#sub_categories_1" style="padding-left: 78px;">Giảng viên điểm danh</a>
 					<a href="#" class="list-group-item sub-item" data-parent="#sub_categories_1" style="padding-left: 78px;">Điểm danh cho sinh viên</a>
 				</div>
 			</c:if>
@@ -54,9 +54,9 @@
 				</a>
 				
 				<div class="collapse list-group-submenu" id="sub_categories_2">
-					<a href="renderGeneralReportView1" class="list-group-item sub-item" data-parent="#sub_categories_2" style="padding-left: 78px;">Báo cáo tổng hợp cho sinh viên</a>
+					<a href="/renderGeneralReportView1" class="list-group-item sub-item" data-parent="#sub_categories_2" style="padding-left: 78px;">Báo cáo tổng hợp cho sinh viên</a>
 					<a href="#" class="list-group-item sub-item" data-parent="#sub_categories_2" style="padding-left: 78px;">SubSubPos2</a>
-					<a href="#" class="list-group-item sub-item" data-parent="#sub_categories_2" style="padding-left: 78px;">SubSubPos3</a>
+					<a href="/renderGeneralReportForClass" class="list-group-item sub-item" data-parent="#sub_categories_2" style="padding-left: 78px;">Báo cáo tổng hợp cho lớp học</a>
 					<a href="#" class="list-group-item sub-item" data-parent="#sub_categories_2" style="padding-left: 78px;">SubSubPos4</a>
 				</div>
 			</div> 

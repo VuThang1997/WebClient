@@ -35,7 +35,9 @@
 <body>
 	<script>
 	 	var id = ${sessionScope.id};
-	 	var userRole = ${sessionScope.role}
+	 	var userRole = ${sessionScope.role};
+	 	//var host = ${sessionScope.host};
+	 	//var port = ${sessionScope.port};
 	</script>
 	<jsp:include page="header.jsp" />
 
@@ -63,7 +65,7 @@
 							<div class="col-md-12">
 								<form:form method="POST" action="/updateAcountInfo" modelAttribute="accountExtent">
 									<div class="form-group row">
-										<label for="old_username" class="col-4 col-form-label">Username</label>
+										<label for="old_username" class="col-4 col-form-label">Tên tài khoản</label>
 										<div class="col-8">
 											<input id="old_username" name="old_username" placeholder="Username"
 												class="form-control here" type="text" value='<%=request.getAttribute("username") %>'
@@ -72,7 +74,7 @@
 										</div>
 									</div>
 									<div class="form-group row">
-										<label for="username" class="col-4 col-form-label">Username mới <i>(tùy chọn)</i></label>
+										<label for="username" class="col-4 col-form-label">Tên tài khoản mới <i>(tùy chọn)</i></label>
 										<div class="col-8">
 											<form:input path="username" id="username" name="username" placeholder="Username"
 												class="form-control here" type="text"

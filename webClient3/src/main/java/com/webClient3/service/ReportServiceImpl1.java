@@ -15,7 +15,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestTemplate;
 
+import com.webClient3.model.Course;
 import com.webClient3.model.Semester;
+import com.webClient3.utils.GeneralValue;
 
 @Service
 @Qualifier("ReportServiceImpl1")
@@ -38,7 +40,7 @@ public class ReportServiceImpl1 implements ReportService {
 	@Override
 	public List<Semester> findAllSemester() {
 		logger.info("Begin retrieving all semester ==========================");
-		String baseUrl = "http://localhost:8080//semesters/all";
+		String baseUrl = GeneralValue.SERVER_CORE_HOST + ":" + GeneralValue.SERVER_CORE_PORT + "/semesters/all";
 
 		HttpHeaders header = new HttpHeaders();
 		header.setContentType(MediaType.APPLICATION_JSON);
@@ -51,6 +53,29 @@ public class ReportServiceImpl1 implements ReportService {
 			
 			List<Semester> listSemester = response.getBody();
 			return listSemester;
+
+		} catch (HttpStatusCodeException e) {
+			logger.info("retrieve no record ==========================");
+			return null;
+		}
+	}
+
+	@Override
+	public List<Course> findAllCourse() {
+		logger.info("Begin retrieving all course ==========================");
+		String baseUrl = GeneralValue.SERVER_CORE_HOST + ":" + GeneralValue.SERVER_CORE_PORT + "/courses/all";
+
+		HttpHeaders header = new HttpHeaders();
+		header.setContentType(MediaType.APPLICATION_JSON);
+		header.add("Accept", MediaType.APPLICATION_JSON_VALUE);
+
+		try {
+			ResponseEntity<List<Course>> response = restTemplate.exchange(baseUrl, HttpMethod.GET, null, 
+					new ParameterizedTypeReference<List<Course>>(){});
+			logger.info("Sending RestTemplate ===================");
+			
+			List<Course> listCourse = response.getBody();
+			return listCourse;
 
 		} catch (HttpStatusCodeException e) {
 			logger.info("retrieve no record ==========================");
