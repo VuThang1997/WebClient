@@ -56,56 +56,12 @@
 					<div class="card-body">
 						<div>
 							<div class="col-md-12 text-center">
-								<h4>TẠO TÀI KHOẢN</h4>
+								<h4>THÊM SINH VIÊN</h4>
 								<hr>
 							</div>
 						</div>
 						<div class="card-body col-md-12">
-							<form:form id="form_create_account" method="POST"
-								action="/createNewAccountManually" modelAttribute="newAccount">
-								<div class="form-group row">
-									<label for="manual_type_select" class="col-4 col-form-label">
-										Tài khoản *: </label>
-									<div class="col-md-8">
-										<select id="manual_type_select"
-											class="browser-default custom-select">
-											<option value="0" selected>Loại tài khoản</option>
-											<option value="3">Sinh viên</option>
-											<option value="2">Giảng viên</option>
-											<option value="1">Admin</option>
-										</select>
-									</div>
-								</div>
-								
-								<div class="form-group row">
-									<label for="username" class="col-4 col-form-label">Tên
-										tài khoản *</label>
-									<div class="col-8">
-										<form:input path="username" id="username" name="username"
-											placeholder="Username" class="form-control here" type="text" />
-									</div>
-								</div>
-
-								<div class="form-group row">
-									<label for="new_password" class="col-4 col-form-label">Mật
-										khẩu *</label>
-									<div class="col-8">
-										<form:input path="password" id="new_password"
-											name="new_password" placeholder="New Password"
-											class="form-control here" type="password" />
-									</div>
-								</div>
-
-								<div class="form-group row">
-									<label for="retype_password" class="col-4 col-form-label">Nhập
-										lại *</label>
-									<div class="col-8">
-										<input id="retype_password" name="retype_password"
-											placeholder="Retype passwrod" class="form-control here"
-											type="password" />
-									</div>
-								</div>
-
+							<form>
 								<div class="form-group row">
 									<label for="new_email" class="col-4 col-form-label">Email
 										*</label>
@@ -171,7 +127,7 @@
 										class="col-md-12 text-center alert alert-warning ">
 										${error2}</div>
 								</c:if>
-							</form:form>
+							</form>
 						</div>
 					</div>
 				</div>

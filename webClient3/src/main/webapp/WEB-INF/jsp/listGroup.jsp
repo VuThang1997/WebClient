@@ -19,7 +19,7 @@
 					<a href="#" class="list-group-item sub-item" data-parent="#sub_categories_2" style="padding-left: 78px;">SubSubPos4</a>
 				</div>
 				
-				<a href="#" class="list-group-item list-group-item-success list-group-item-action">Quản lí thông tin người dùng</a>
+				<!-- <a href="adminCheckRollcall.jsp" class="list-group-item list-group-item-success list-group-item-action">Điểm danh cuối ngày</a> -->
 				
 				<a class="list-group-item list-group-item-danger list-group-item-action" data-remote="true" href="#sub_categories_1" id="categories_1" data-toggle="collapse" data-parent="#sub_categories_1">
 					<span>Quản lí lớp học</span>
@@ -28,7 +28,7 @@
 			
 				
 				<div class="collapse list-group-submenu" id="sub_categories_1">
-					<a href="#" class="list-group-item sub-item" data-parent="#sub_categories_1" style="padding-left: 78px;">SubSubPos1</a>
+					<a href="/renderCreateStudentClass" class="list-group-item sub-item" data-parent="#sub_categories_1" style="padding-left: 78px;">Thêm sinh viên</a>
 					<a href="#" class="list-group-item sub-item" data-parent="#sub_categories_1" style="padding-left: 78px;">SubSubPos2</a>
 					<a href="#" class="list-group-item sub-item" data-parent="#sub_categories_1" style="padding-left: 78px;">SubSubPos3</a>
 					<a href="#" class="list-group-item sub-item" data-parent="#sub_categories_1" style="padding-left: 78px;">SubSubPos4</a>

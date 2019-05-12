@@ -2,6 +2,7 @@ package com.webClient3.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -47,6 +48,7 @@ import com.webClient3.model.Account;
 import com.webClient3.model.AccountExtension;
 import com.webClient3.model.MyFile;
 import com.webClient3.model.ReportError;
+import com.webClient3.model.User;
 import com.webClient3.service.AccountService;
 import com.webClient3.utils.GeneralValue;
 
@@ -223,9 +225,16 @@ public class AccountController {
 	}
 
 	@RequestMapping(value = "/renderCreateAccount", method = RequestMethod.GET)
-	public String renderCreateAccount(ModelMap model) {
+	public String renderCreateAccount(Model model, HttpSession session) {
+		if (session.getAttribute("id") == null) {
+			logger.info("Redirect to login page ==============");
+			model.addAttribute("account", new Account());
+			return "login";
+		}
+		
 		model.addAttribute("myFile", new MyFile());
-		model.addAttribute("newAccount", new Account());
+		model.addAttribute("newAccount", new AccountExtension());
+		model.addAttribute("report", new ReportError());
 		return "createAccount";
 	}
 
@@ -240,6 +249,7 @@ public class AccountController {
 
 		model.addAttribute("fileType", report.getErrorCode());
 		model.addAttribute("report", new ReportError());
+		model.addAttribute("newAccount", new AccountExtension());
 		try {
 			MultipartFile multipartFile = myFile.getMultipartFile();
 
@@ -274,14 +284,18 @@ public class AccountController {
 		if (isValidRole == false) {
 			model.addAttribute("error", "Bạn phải chọn loại tài khoản!");
 			model.addAttribute("myFile", new MyFile());
+			model.addAttribute("newAccount", new AccountExtension());
+			model.addAttribute("report", new ReportError());
 			return "createAccount";
 		}
 
 		String fileName = report.getDescription();
 		String linkFile = GeneralValue.FOLDER_IMPORT_FILE + File.separator + fileName;
 		Account account = null;
-		List<Account> listAccounts = new ArrayList<>();
-		int fieldNumber = -6;
+		User tmpUser = null;
+		List<Account> listAccounts = null;
+		List<User> listUser = null;
+		int fieldNumber = 0;
 		logger.info("========================= link file  = " + linkFile);
 
 		try {
@@ -293,18 +307,29 @@ public class AccountController {
 			DataFormatter dataFormatter = new DataFormatter();
 
 			Iterator<Sheet> sheetIterator = workbook.sheetIterator();
+			Iterator<Cell> cellIterator = null;
+			Sheet sheet = null;
+			Cell cell = null;
+			Row row = null;
+			String cellValue = null;
+			
+			listAccounts = new ArrayList<>();
+			listUser = new ArrayList<>();
 
 			while (sheetIterator.hasNext()) {
-				Sheet sheet = sheetIterator.next();
+				sheet = sheetIterator.next();
 				logger.info("=> " + sheet.getSheetName());
 
 				logger.info("\n\nIterating over Rows and Columns using Iterator\n");
 				Iterator<Row> rowIterator = sheet.rowIterator();
 				while (rowIterator.hasNext()) {
-					Row row = rowIterator.next();
+					row = rowIterator.next();
+					if (row.getRowNum() == 0) {
+						continue;
+					}
 
 					// Now let's iterate over the columns of the current row
-					Iterator<Cell> cellIterator = row.cellIterator();
+					cellIterator = row.cellIterator();
 
 					while (cellIterator.hasNext()) {
 						fieldNumber++;
@@ -315,8 +340,8 @@ public class AccountController {
 							continue;
 						}
 
-						Cell cell = cellIterator.next();
-						String cellValue = dataFormatter.formatCellValue(cell);
+						cell = cellIterator.next();
+						cellValue = dataFormatter.formatCellValue(cell);
 
 						switch (fieldNumber) {
 						case 1:
@@ -331,13 +356,29 @@ public class AccountController {
 						case 3:
 							account.setUsername(cellValue);
 							logger.info("====================== Account usrname = " + account.getUsername());
-							fieldNumber = 0;
 							account.setImei(null);
 							account.setIsActive(AccountStatus.ACTIVE.getValue());
 							account.setUpdateImeiCounter(0);
 							account.setUserInfo(null);
 
 							listAccounts.add(account);
+							break;
+						case 4:
+							tmpUser = new User();
+							tmpUser.setFullName(cellValue);
+							break;
+						case 5:
+							tmpUser.setBirthDay(LocalDate.parse(cellValue));
+							break;
+						case 6:
+							tmpUser.setPhone(cellValue);
+							break;
+						case 7:
+							tmpUser.setAddress(cellValue);
+							fieldNumber = 0;
+							
+							tmpUser.setId(1);			//set id = 1 to pass the full test
+							listUser.add(tmpUser);
 							break;
 						}
 						logger.info("======================" + cellValue);
@@ -346,7 +387,8 @@ public class AccountController {
 
 			}
 
-			report = this.accountService.createMultipleAccount(listAccounts);
+			//report = this.accountService.createMultipleAccount(listAccounts);
+			report = this.accountService.createMultipleAccount(listAccounts, listUser);
 		} catch (EncryptedDocumentException | InvalidFormatException | IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -359,14 +401,16 @@ public class AccountController {
 				model.addAttribute("error", "Tạo tài khoản thành công!");
 
 			} else {
-				String[] infoReport = report.getDescription().split(",");
-				model.addAttribute("error",
-						infoReport[0] + " tài khoản có dữ liệu không hợp lệ ở các dòng: " + infoReport[1]);
+				String[] infoReport = report.getDescription().split("+");
+				model.addAttribute("error", infoReport[0] + " tài khoản có dữ liệu không hợp lệ ở các dòng: " + infoReport[1]);
 			}
 		} else {
 			model.addAttribute("error", "Tạo tài khoản không thành công!");
 		}
+		
 		model.addAttribute("myFile", new MyFile());
+		model.addAttribute("newAccount", new AccountExtension());
+		model.addAttribute("report", new ReportError());
 		return "createAccount";
 	}
 
@@ -397,7 +441,7 @@ public class AccountController {
 	}
 
 	@RequestMapping(value = "/createNewAccountManually", method = RequestMethod.POST)
-	public String createNewAccountManually(@Valid @ModelAttribute("newAccount") Account account, BindingResult result,
+	public String createNewAccountManually(@Valid @ModelAttribute("newAccount") AccountExtension account, BindingResult result,
 			Model model, HttpSession session) {
 
 		if (session.getAttribute("id") == null) {
@@ -411,48 +455,11 @@ public class AccountController {
 			return "error";
 		}
 
-		String baseUrl = GeneralValue.SERVER_CORE_HOST + ":"
-				+ GeneralValue.SERVER_CORE_PORT + "/registration";
-
-		HttpHeaders header = new HttpHeaders();
-		header.setContentType(MediaType.APPLICATION_JSON);
-		header.add("Accept", MediaType.APPLICATION_JSON_VALUE);
-
-		boolean isValidRole = false;
-		for (AccountRole value : AccountRole.values()) {
-			if (value.getValue() == account.getRole()) {
-				isValidRole = true;
-				break;
-			}
-		}
-
-		if (isValidRole == false) {
-			model.addAttribute("error2", "Tạo tài khoản thất bại!");
-
-		} else {
-
-			Map<String, Object> params = new HashMap<String, Object>();
-			params.put("email", account.getEmail());
-			params.put("password", account.getPassword());
-			params.put("username", account.getUsername());
-			params.put("role", account.getRole());
-			logger.info("==================== account.role = " + account.getRole());
-
-			HttpEntity<?> entity = new HttpEntity<>(params, header);
-
-			try {
-				ResponseEntity<String> response = restTemplate.exchange(baseUrl, HttpMethod.POST, entity, String.class);
-				logger.info("Sending RestTemplate ===================");
-				model.addAttribute("error2", "Tạo tài khoản thành công");
-
-			} catch (HttpStatusCodeException e) {
-				logger.info("Creating account info failed");
-				model.addAttribute("error2", "Tạo tài khoản thất bại!");
-			}
-		}
+		ReportError report = this.accountService.createAccountManual(account);
+		model.addAttribute("error2", report.getDescription());
 
 		model.addAttribute("myFile", new MyFile());
-		model.addAttribute("newAccount", new Account());
+		model.addAttribute("newAccount", new AccountExtension());
 		model.addAttribute("report", new ReportError());
 		return "createAccount";
 	}

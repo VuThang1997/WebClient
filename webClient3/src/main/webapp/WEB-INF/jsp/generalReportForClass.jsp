@@ -31,7 +31,7 @@
 <link href="https://unpkg.com/gijgo@1.9.13/css/gijgo.min.css" rel="stylesheet" type="text/css" />
 
 <script src="js/config.js" type="text/javascript"></script>
-<script src="js/generalReportForClass.js" type="text/javascript"></script>
+<script src="js/adminCheckRollcall.js" type="text/javascript"></script>
 
 </head>
 

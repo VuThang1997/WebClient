@@ -34,10 +34,8 @@
 
 <body>
 	<script>
-	 	var id = ${sessionScope.id};
-	 	var userRole = ${sessionScope.role};
-	 	//var host = ${sessionScope.host};
-	 	//var port = ${sessionScope.port};
+	 	id = ${sessionScope.id};
+	 	userRole = ${sessionScope.role};
 	</script>
 	<jsp:include page="header.jsp" />
 
@@ -162,7 +160,7 @@
 										</div>
 									</div>
 									<div class="form-group row">
-										<label for="new_birthday" class="col-4 col-form-label">Ngày sinh mới <i>(tùy chọn)</i>
+										<label for="new_birthday" class="col-4 col-form-label">Ngày sinh *
 										</label>
 										<div class="col-8">
 											<input id="new_birthday" width="276" />

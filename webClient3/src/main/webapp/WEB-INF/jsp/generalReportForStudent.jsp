@@ -31,15 +31,10 @@
 <link href="https://unpkg.com/gijgo@1.9.13/css/gijgo.min.css" rel="stylesheet" type="text/css" />
 
 <script src="js/generalReportForStudent.js" type="text/javascript"></script>
-
+<script src="js/config.js" type="text/javascript"></script>
 </head>
 
 <body>
-	<script>
-	 	var id = ${sessionScope.id};
-	 	//var host = ${sessionScope.host};
-	 	//var port = ${sessionScope.port};
-	</script>
 	
 	<jsp:include page="header.jsp" />
 
