@@ -75,7 +75,7 @@
 								<div class="col-4">
 								   <select id="course_select" class="browser-default custom-select">
 								   		<option value="0" selected>Chọn học phần</option>
-									   <c:forEach items="${allCourses}" var="course">
+									    <c:forEach items="${allCourses}" var="course">
 										    <option value="${course.courseID}">${course.courseName}</option>
 										</c:forEach>
 									</select>

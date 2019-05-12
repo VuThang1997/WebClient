@@ -85,9 +85,8 @@ $(document)
 							console.log(accountType);
 							if (accountType !== "undefined") {
 								console.log("session storage : " + accountType);
-								$("#account_type_select").val(accountType);
-								console.log("account_type_select : "
-										+ $("#account_type_select").val());
+								$("#class_select").val(accountType);
+								console.log("account_type_select : "+ $("#class_select").val());
 								$("#account_type").val(accountType);
 								console.log("account_type: "
 										+ $("#account_type").val());

@@ -50,6 +50,7 @@ import com.webClient3.model.MyFile;
 import com.webClient3.model.ReportError;
 import com.webClient3.model.User;
 import com.webClient3.service.AccountService;
+import com.webClient3.service.FileService;
 import com.webClient3.utils.GeneralValue;
 
 @Controller
@@ -57,6 +58,7 @@ public class AccountController {
 
 	private Logger logger = LoggerFactory.getLogger(ReportController.class);
 	private AccountService accountService;
+	private FileService fileService;
 	RestTemplate restTemplate;
 
 	public AccountController() {
@@ -66,10 +68,12 @@ public class AccountController {
 
 	@Autowired
 	public AccountController(RestTemplate restTemplate,
-			@Qualifier("ReportServiceImpl1") AccountService accountService) {
+			@Qualifier("ReportServiceImpl1") AccountService accountService,
+			@Qualifier("FileServiceImpl1") FileService fileService) {
 		super();
 		this.restTemplate = restTemplate;
 		this.accountService = accountService;
+		this.fileService = fileService;
 	}
 	
 	@RequestMapping(value = "/logout", method = RequestMethod.GET)
@@ -256,7 +260,7 @@ public class AccountController {
 			String fileName = multipartFile.getOriginalFilename();
 			logger.info("file name = " + fileName);
 			model.addAttribute("fileName", fileName);
-			File file = new File(this.getFolderUpload(), fileName);
+			File file = new File(this.fileService.getFolderUpload(), fileName);
 			multipartFile.transferTo(file);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -266,7 +270,8 @@ public class AccountController {
 	}
 
 	@RequestMapping(value = "/readFile", method = RequestMethod.POST)
-	public String manageFile(@Valid @ModelAttribute("report") ReportError report, Model model, HttpSession session) {
+	public String manageFile(@Valid @ModelAttribute("report") ReportError report, 
+			Model model, HttpSession session) {
 		if (session.getAttribute("id") == null) {
 			logger.info("Redirect to login page ==============");
 			model.addAttribute("account", new Account());
@@ -424,20 +429,12 @@ public class AccountController {
 			multipartFile = mapper.readValue(inputFile, MultipartFile.class);
 			fileName = multipartFile.getOriginalFilename();
 			logger.info("file name = " + fileName);
-			File file = new File(this.getFolderUpload(), fileName);
+			File file = new File(this.fileService.getFolderUpload(), fileName);
 			multipartFile.transferTo(file);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return fileName;
-	}
-
-	public File getFolderUpload() {
-		File folderUpload = new File(GeneralValue.FOLDER_IMPORT_FILE);
-		if (!folderUpload.exists()) {
-			folderUpload.mkdirs();
-		}
-		return folderUpload;
 	}
 
 	@RequestMapping(value = "/createNewAccountManually", method = RequestMethod.POST)
