@@ -1,5 +1,5 @@
-﻿package com.webClient3.controller;
 
+package com.webClient3.controller;
 import java.io.File;
 import java.io.IOException;
 import java.time.LocalDate;
@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
@@ -56,7 +57,7 @@ import com.webClient3.utils.GeneralValue;
 @Controller
 public class AccountController {
 
-	private Logger logger = LoggerFactory.getLogger(ReportController.class);
+	private Logger logger = LoggerFactory.getLogger(AccountController.class);
 	private AccountService accountService;
 	private FileService fileService;
 	RestTemplate restTemplate;
@@ -142,7 +143,7 @@ public class AccountController {
 
 			// UserInfo = fullName + Address + Phone + birthday
 			String rawUserInfo = adminAccount.getUserInfo();
-			if (rawUserInfo != null && !rawUserInfo.isBlank()) {
+			if (rawUserInfo != null && !rawUserInfo.isEmpty()) {
 				String[] userInfo = adminAccount.getUserInfo().split(GeneralValue.regexForSplitUserInfo);
 				logger.info("User info = " + rawUserInfo);
 

@@ -54,9 +54,7 @@
 				</a>
 				
 				<div class="collapse list-group-submenu" id="sub_categories_2">
-					<a href="/renderGeneralReportView1" class="list-group-item sub-item" data-parent="#sub_categories_2" style="padding-left: 78px;">Báo cáo tổng hợp cho sinh viên</a>
-					<a href="#" class="list-group-item sub-item" data-parent="#sub_categories_2" style="padding-left: 78px;">SubSubPos2</a>
-					<a href="/renderGeneralReportForClass" class="list-group-item sub-item" data-parent="#sub_categories_2" style="padding-left: 78px;">Báo cáo tổng hợp cho lớp học</a>
-					<a href="#" class="list-group-item sub-item" data-parent="#sub_categories_2" style="padding-left: 78px;">SubSubPos4</a>
+					<a href="/renderGeneralReportView1" class="list-group-item sub-item" data-parent="#sub_categories_2" style="padding-left: 78px;">Báo cáo điểm danh theo sinh viên</a>
+					<a href="/renderGeneralReportForClass" class="list-group-item sub-item" data-parent="#sub_categories_2" style="padding-left: 78px;">Báo cáo tổng hợp điểm danh theo lớp</a>
 				</div>
 			</div> 
