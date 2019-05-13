@@ -20,7 +20,7 @@
 <!-- Bootstrap core JavaScript -->
 <script src="vendor/jquery/jquery.min.js"></script>
 <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-
+<script src="js/config.js"></script>
 <link rel="stylesheet"
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
@@ -35,6 +35,7 @@
 <body>
 	<script>
 	 	id = ${sessionScope.id};
+	 	console.log(id);
 	 	userRole = ${sessionScope.role};
 	</script>
 	<jsp:include page="header.jsp" />
@@ -53,8 +54,8 @@
 						<div class="row">
 							<div class="col-md-12">
 								<h4>Về thông tin tài khoản</h4>
-								<c:if test="${not empty message}">
-									<div class="message">${message}</div>
+								<c:if test="${not empty error}">
+									<div class="errorAccount">${error}</div>
 								</c:if>
 								<hr>
 							</div>
@@ -168,8 +169,7 @@
 												$('#new_birthday').datepicker(
 												{
 													uiLibrary : 'bootstrap4',
-													format: 'yyyy-mm-dd',
-													value: "1995-01-01"
+													format: 'yyyy-mm-dd'
 												});
 											</script>
 										</div>

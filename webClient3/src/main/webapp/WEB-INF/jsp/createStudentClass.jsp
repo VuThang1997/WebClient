@@ -30,17 +30,18 @@
 <script src="js/createAccount.js" type="text/javascript"></script>
 <script type="text/javascript"
 	src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.13.1/jquery.validate.min.js"></script>
-
-<link href="css/createAccount.css" rel="stylesheet">
-
+	
 <script src="https://unpkg.com/gijgo@1.9.13/js/gijgo.min.js" type="text/javascript"></script>
 <link href="https://unpkg.com/gijgo@1.9.13/css/gijgo.min.css" rel="stylesheet" type="text/css" />
 
 <script src="js/config.js" type="text/javascript"></script>
+<script src="js/createStudentClass.js" type="text/javascript"></script>
 </head>
 
 <body>
-
+	<c:if test="${empty sessionScope.id}">
+		<c:redirect url="/"/>
+	</c:if>
 	<jsp:include page="header.jsp" />
 
 	<!-- Page Content -->
@@ -63,10 +64,10 @@
 						<div class="card-body col-md-12">
 							<form>
 								<div class="form-group row">
-									<label for="new_email" class="col-4 col-form-label">Email
+									<label for="email" class="col-4 col-form-label">Email
 										*</label>
 									<div class="col-8">
-										<form:input path="email" id="new_email" name="new_email"
+										<input id="new_email" name="new_email"
 											placeholder="New Email" class="form-control here" type="text" />
 									</div>
 								</div>
@@ -74,7 +75,7 @@
 								<div class="form-group row">
 									<label for="fullName" class="col-4 col-form-label">Họ tên *</label>
 									<div class="col-8">
-										<form:input path="fullName" id="fullName" name="fullName"
+										<input id="fullName" name="fullName"
 											placeholder="Full Name" class="form-control here" type="text" />
 									</div>
 								</div>
@@ -83,7 +84,7 @@
 									<label for="address" class="col-4 col-form-label">Địa
 										chỉ </label>
 									<div class="col-8">
-										<form:input path="address" id="address" name="address"
+										<input id="address" name="address"
 											placeholder="Address" class="form-control here" type="text" />
 									</div>
 								</div>
@@ -91,7 +92,7 @@
 								<div class="form-group row">
 									<label for="phone" class="col-4 col-form-label">Số ĐT:</label>
 									<div class="col-8">
-										<form:input path="phone" id="phone" name="phone"
+										<input id="phone" name="phone"
 											placeholder="Phone" class="form-control here" type="text" />
 									</div>
 								</div>
@@ -101,7 +102,7 @@
 										sinh
 									</label>
 									<div class="col-8">
-										<form:input path="birthday" id="birthday" width="276" />
+										<input id="birthday" width="276" />
 										<script>
 											$('#birthday').datepicker({
 												uiLibrary : 'bootstrap4',
@@ -112,7 +113,7 @@
 									</div>
 								</div>
 
-								<form:input path="role" id="role" name="role_input"
+								<input id="role" name="role_input"
 									class="form-control here" type="hidden" />
 
 								<div class="form-group row">
@@ -123,7 +124,7 @@
 								</div>
 
 								<c:if test="${not empty error2}">
-									<div id="error_div"
+									<div id="error_div2"
 										class="col-md-12 text-center alert alert-warning ">
 										${error2}</div>
 								</c:if>
@@ -135,26 +136,38 @@
 					<div class="card-body">
 						<div>
 							<div class="col-md-12 text-center">
-								<h4>TẠO TÀI KHOẢN THEO FILE</h4>
+								<h4>THÊM SINH VIÊN THEO FILE</h4>
 								<hr>
 							</div>
 						</div>
 
 						<div class="row col-md-12">
-							<label for="account_type_select" class="col-md-5 col-form-label">Loại
-								tài khoản *: </label>
+							<label for="course_select" class="col-md-5 col-form-label">
+								Chọn học phần *: 
+							</label>
 							<div class="col-md-7">
-								<select id="account_type_select"
-									class="browser-default custom-select">
-									<option value="0" selected>Loại tài khoản</option>
-									<option value="3">Sinh viên</option>
-									<option value="2">Giảng viên</option>
-									<option value="1">Admin</option>
+								 <select id="course_select" class="browser-default custom-select">
+								   		<option value="0" selected>Chọn học phần</option>
+									    <c:forEach items="${allCourses}" var="course">
+										    <option value="${course.courseID}">${course.courseName}</option>
+										</c:forEach>
+									</select>
+							</div>
+						</div>
+						
+						<div class="row col-md-12">
+							<label for="class_select" class="col-md-5 col-form-label">
+								Chọn lớp học *: 
+							</label>
+							<div class="col-md-7">
+								 <select id="class_select" class="browser-default custom-select">
+								 	<option value="0" selected>Chọn lớp học</option>
+									<!-- dùng js để tạo lựa chọn -->
 								</select>
 							</div>
 						</div>
 						<div class="col-md-12">
-							<form:form method="POST" action="/uploadFile"
+							<form:form method="POST" action="/uploadFileStudentClass"
 								enctype="multipart/form-data" modelAttribute="myFile">
 									 Select a file *: <form:input id="input_file"
 									path="multipartFile" type="file" name="myFile" />
@@ -166,14 +179,15 @@
 						<br />
 
 						<div class="col-md-12 text-center">
-							<form:form method="POST" action="/readFile"
-								modelAttribute="report">
+							<form:form id="form_submit" method="POST" action="/readFileStudentClass" modelAttribute="report">
 								<form:input path="description" type="hidden"
 									value='<%=request.getAttribute("fileName")%>' />
-								<form:input id="account_type" path="errorCode" type="hidden" />
+								<form:input id="classId" path="errorCode" type="hidden" />
+								
 								<c:if test="${not empty fileName}">
-									<button id="create_btn" type="submit" class="btn btn-primary">Tạo
-										tài khoản</button>
+									<button id="create_btn" type="submit" class="btn btn-primary">
+										Thêm sinh viên
+									</button>
 								</c:if>
 							</form:form>
 						</div>

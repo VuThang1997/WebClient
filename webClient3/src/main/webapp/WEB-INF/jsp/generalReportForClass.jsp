@@ -31,7 +31,7 @@
 <link href="https://unpkg.com/gijgo@1.9.13/css/gijgo.min.css" rel="stylesheet" type="text/css" />
 
 <script src="js/config.js" type="text/javascript"></script>
-<script src="js/adminCheckRollcall.js" type="text/javascript"></script>
+<script src="js/generalReportForClass.js" type="text/javascript"></script>
 
 </head>
 
@@ -75,7 +75,7 @@
 								<div class="col-4">
 								   <select id="course_select" class="browser-default custom-select">
 								   		<option value="0" selected>Chọn học phần</option>
-									   <c:forEach items="${allCourses}" var="course">
+									    <c:forEach items="${allCourses}" var="course">
 										    <option value="${course.courseID}">${course.courseName}</option>
 										</c:forEach>
 									</select>
