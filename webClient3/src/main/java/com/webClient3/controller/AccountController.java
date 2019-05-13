@@ -50,15 +50,13 @@ import com.webClient3.model.MyFile;
 import com.webClient3.model.ReportError;
 import com.webClient3.model.User;
 import com.webClient3.service.AccountService;
-import com.webClient3.service.FileService;
 import com.webClient3.utils.GeneralValue;
 
 @Controller
 public class AccountController {
 
-	private Logger logger = LoggerFactory.getLogger(ReportController.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(AccountController.class);
 	private AccountService accountService;
-	private FileService fileService;
 	RestTemplate restTemplate;
 
 	public AccountController() {
@@ -68,12 +66,10 @@ public class AccountController {
 
 	@Autowired
 	public AccountController(RestTemplate restTemplate,
-			@Qualifier("ReportServiceImpl1") AccountService accountService,
-			@Qualifier("FileServiceImpl1") FileService fileService) {
+			@Qualifier("AccountServiceImpl1") AccountService accountService) {
 		super();
 		this.restTemplate = restTemplate;
 		this.accountService = accountService;
-		this.fileService = fileService;
 	}
 	
 	@RequestMapping(value = "/logout", method = RequestMethod.GET)
@@ -91,95 +87,61 @@ public class AccountController {
 	}
 
 	@RequestMapping(value = "/checkLoginInfo", method = RequestMethod.POST)
-	public String checkLoginInfo(@Valid @ModelAttribute("account") Account account, HttpSession session,
+	public String checkLoginInfo(@Valid @ModelAttribute("account") Account account, 
+			HttpSession session,
 			BindingResult result, Model model) {
 
-		logger.info("Begin checkLoginInfo");
+		LOGGER.info("Begin checkLoginInfo controller");
 		if (result.hasErrors()) {
 			return "error";
 		}
 
-		String baseUrl = GeneralValue.SERVER_CORE_HOST + ":"
-				+ GeneralValue.SERVER_CORE_PORT + "/login";
-
-		HttpHeaders header = new HttpHeaders();
-		header.setContentType(MediaType.APPLICATION_JSON);
-		header.add("Accept", MediaType.APPLICATION_JSON_VALUE);
-
-		Map<String, String> params = new HashMap<String, String>();
-		params.put("email", account.getEmail());
-		params.put("password", account.getPassword());
-
-		try {
-			ObjectMapper mapper = new ObjectMapper();
-			ResponseEntity<String> response = restTemplate.postForEntity(baseUrl, params, String.class);
-
-			Account adminAccount = mapper.readValue(response.getBody(), Account.class);
-			if (adminAccount.getRole() != AccountRole.ADMIN.getValue()
-					&& adminAccount.getRole() != AccountRole.TEACHER.getValue()) {
-				logger.info("User's role is not an admin nor a teacher");
-				model.addAttribute("error", "Only admins have authority to login!");
-				return "login";
-			}
-
-			if (adminAccount.getIsActive() == AccountStatus.INACTIVE.getValue()) {
-				logger.info("This account is still inactive");
-				model.addAttribute("error", "This account is still inactive!");
-				return "login";
-			}
-
-			session.setAttribute("id", adminAccount.getId());
-			session.setAttribute("role", adminAccount.getRole());
-			session.setAttribute("email", adminAccount.getEmail());
-			session.setAttribute("password", adminAccount.getPassword());
-			session.setAttribute("username", adminAccount.getUsername());
-			session.setAttribute("host", GeneralValue.SERVER_CORE_HOST);
-			session.setAttribute("port", GeneralValue.SERVER_CORE_PORT);
-
-			model.addAttribute("username", adminAccount.getUsername());
-			model.addAttribute("email", adminAccount.getEmail());
-			model.addAttribute("password", adminAccount.getPassword());
-
-			// UserInfo = fullName + Address + Phone + birthday
-			String rawUserInfo = adminAccount.getUserInfo();
-			if (rawUserInfo != null && !rawUserInfo.isBlank()) {
-				String[] userInfo = adminAccount.getUserInfo().split(GeneralValue.regexForSplitUserInfo);
-				logger.info("User info = " + rawUserInfo);
-
-				model.addAttribute("fullName", userInfo[0]);
-				logger.info(userInfo[0]);
-				model.addAttribute("address", userInfo[1]);
-				logger.info(userInfo[1]);
-				model.addAttribute("phone", userInfo[2]);
-				logger.info(userInfo[2]);
-				model.addAttribute("birthday", userInfo[3]);
-				logger.info(userInfo[3]);
-			}
-
-			model.addAttribute("accountExtent", new AccountExtension());
-			return "updateUserInfo";
-
-		} catch (HttpStatusCodeException | IOException e) {
-			logger.info("Login failed");
-			model.addAttribute("error", "Incorrect email or password!");
+		Account checkResult = this.accountService.checkAccountLogin(account);
+		if (checkResult == null) {
+			LOGGER.info("Login failed");
+			model.addAttribute("error", "Email hoặc mật khẩu không hợp lệ!");
 			return "login";
 		}
+
+		session = this.accountService.addInitSessionValue(session, checkResult);
+		User userInfo = this.accountService.extractUserInfo(checkResult);
+		
+		if (userInfo != null) {
+			model.addAttribute("fullName", userInfo.getFullName());
+			model.addAttribute("address", userInfo.getAddress());
+			model.addAttribute("phone", userInfo.getPhone());
+			model.addAttribute("birthday", userInfo.getBirthDay());
+		} else {
+			model.addAttribute("fullName", null);
+			model.addAttribute("address", null);
+			model.addAttribute("phone", null);
+			model.addAttribute("birthday", null);
+		}
+		
+		model.addAttribute("username", checkResult.getUsername());
+		model.addAttribute("email", checkResult.getEmail());
+		model.addAttribute("password", checkResult.getPassword());
+		
+		model.addAttribute("accountExtent", new AccountExtension());
+		return "updateUserInfo";
 	}
 
 	@RequestMapping(value = "/updateAcountInfo", method = RequestMethod.POST)
 	public String updateAccountInfo(@Valid @ModelAttribute("accountExtent") AccountExtension accountExtent,
 			HttpSession session, BindingResult result, Model model) {
+		
+		LOGGER.info("Begin updating account info ==========================");
+		if (result.hasErrors()) {
+			return "error";
+		}
+		
 		if (session.getAttribute("id") == null) {
-			logger.info("Redirect to login page ==============");
+			LOGGER.info("Redirect to login page ==============");
 			model.addAttribute("account", new Account());
 			return "login";
 		}
 
-		logger.info("Begin updating account info ==========================");
-		if (result.hasErrors()) {
-			return "error";
-		}
-
+		Boolean updateSuccess = this.accountService.updateAccountInfo(session, accountExtent);
 		String baseUrl = GeneralValue.SERVER_CORE_HOST + ":"
 				+ GeneralValue.SERVER_CORE_PORT  + "/accounts?updateUser=false";
 
@@ -208,9 +170,9 @@ public class AccountController {
 
 		try {
 			ResponseEntity<String> response = restTemplate.exchange(baseUrl, HttpMethod.PUT, entity, String.class);
-			logger.info("Sending RestTemplate ===================");
+			LOGGER.info("Sending RestTemplate ===================");
 
-			model.addAttribute("error", "Updating account info success!");
+			model.addAttribute("message", "Updating account info success!");
 			model.addAttribute("username", accountExtent.getUsername());
 			model.addAttribute("email", accountExtent.getEmail());
 			model.addAttribute("password", accountExtent.getPassword());
@@ -222,8 +184,8 @@ public class AccountController {
 			return "updateUserInfo";
 
 		} catch (HttpStatusCodeException e) {
-			logger.info("Updating account info failed");
-			model.addAttribute("error", "Updating account info failed!");
+			LOGGER.info("Updating account info failed");
+			model.addAttribute("message", "Updating account info failed!");
 			return "updateUserInfo";
 		}
 	}
@@ -231,7 +193,7 @@ public class AccountController {
 	@RequestMapping(value = "/renderCreateAccount", method = RequestMethod.GET)
 	public String renderCreateAccount(Model model, HttpSession session) {
 		if (session.getAttribute("id") == null) {
-			logger.info("Redirect to login page ==============");
+			LOGGER.info("Redirect to login page ==============");
 			model.addAttribute("account", new Account());
 			return "login";
 		}
@@ -246,7 +208,7 @@ public class AccountController {
 	public String uploadFile(@Valid @ModelAttribute("myFile") MyFile myFile,
 			@Valid @ModelAttribute("report") ReportError report, Model model, HttpSession session) {
 		if (session.getAttribute("id") == null) {
-			logger.info("Redirect to login page ==============");
+			LOGGER.info("Redirect to login page ==============");
 			model.addAttribute("account", new Account());
 			return "login";
 		}
@@ -258,9 +220,9 @@ public class AccountController {
 			MultipartFile multipartFile = myFile.getMultipartFile();
 
 			String fileName = multipartFile.getOriginalFilename();
-			logger.info("file name = " + fileName);
+			LOGGER.info("file name = " + fileName);
 			model.addAttribute("fileName", fileName);
-			File file = new File(this.fileService.getFolderUpload(), fileName);
+			File file = new File(this.getFolderUpload(), fileName);
 			multipartFile.transferTo(file);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -270,10 +232,9 @@ public class AccountController {
 	}
 
 	@RequestMapping(value = "/readFile", method = RequestMethod.POST)
-	public String manageFile(@Valid @ModelAttribute("report") ReportError report, 
-			Model model, HttpSession session) {
+	public String manageFile(@Valid @ModelAttribute("report") ReportError report, Model model, HttpSession session) {
 		if (session.getAttribute("id") == null) {
-			logger.info("Redirect to login page ==============");
+			LOGGER.info("Redirect to login page ==============");
 			model.addAttribute("account", new Account());
 			return "login";
 		}
@@ -301,7 +262,7 @@ public class AccountController {
 		List<Account> listAccounts = null;
 		List<User> listUser = null;
 		int fieldNumber = 0;
-		logger.info("========================= link file  = " + linkFile);
+		LOGGER.info("========================= link file  = " + linkFile);
 
 		try {
 
@@ -323,9 +284,9 @@ public class AccountController {
 
 			while (sheetIterator.hasNext()) {
 				sheet = sheetIterator.next();
-				logger.info("=> " + sheet.getSheetName());
+				LOGGER.info("=> " + sheet.getSheetName());
 
-				logger.info("\n\nIterating over Rows and Columns using Iterator\n");
+				LOGGER.info("\n\nIterating over Rows and Columns using Iterator\n");
 				Iterator<Row> rowIterator = sheet.rowIterator();
 				while (rowIterator.hasNext()) {
 					row = rowIterator.next();
@@ -338,7 +299,7 @@ public class AccountController {
 
 					while (cellIterator.hasNext()) {
 						fieldNumber++;
-						logger.info("================== fiel number = " + fieldNumber);
+						LOGGER.info("================== fiel number = " + fieldNumber);
 
 						// exclude the first row of table: fieldNumber from -3 to 0
 						if (fieldNumber < 1) {
@@ -352,15 +313,15 @@ public class AccountController {
 						case 1:
 							account = new Account();
 							account.setEmail(cellValue);
-							logger.info("====================== Account email = " + account.getEmail());
+							LOGGER.info("====================== Account email = " + account.getEmail());
 							break;
 						case 2:
 							account.setPassword(cellValue);
-							logger.info("====================== Account pass = " + account.getPassword());
+							LOGGER.info("====================== Account pass = " + account.getPassword());
 							break;
 						case 3:
 							account.setUsername(cellValue);
-							logger.info("====================== Account usrname = " + account.getUsername());
+							LOGGER.info("====================== Account usrname = " + account.getUsername());
 							account.setImei(null);
 							account.setIsActive(AccountStatus.ACTIVE.getValue());
 							account.setUpdateImeiCounter(0);
@@ -386,7 +347,6 @@ public class AccountController {
 							listUser.add(tmpUser);
 							break;
 						}
-						logger.info("======================" + cellValue);
 					}
 				}
 
@@ -428,8 +388,8 @@ public class AccountController {
 		try {
 			multipartFile = mapper.readValue(inputFile, MultipartFile.class);
 			fileName = multipartFile.getOriginalFilename();
-			logger.info("file name = " + fileName);
-			File file = new File(this.fileService.getFolderUpload(), fileName);
+			LOGGER.info("file name = " + fileName);
+			File file = new File(this.getFolderUpload(), fileName);
 			multipartFile.transferTo(file);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -437,17 +397,25 @@ public class AccountController {
 		return fileName;
 	}
 
+	public File getFolderUpload() {
+		File folderUpload = new File(GeneralValue.FOLDER_IMPORT_FILE);
+		if (!folderUpload.exists()) {
+			folderUpload.mkdirs();
+		}
+		return folderUpload;
+	}
+
 	@RequestMapping(value = "/createNewAccountManually", method = RequestMethod.POST)
 	public String createNewAccountManually(@Valid @ModelAttribute("newAccount") AccountExtension account, BindingResult result,
 			Model model, HttpSession session) {
 
 		if (session.getAttribute("id") == null) {
-			logger.info("Redirect to login page ==============");
+			LOGGER.info("Redirect to login page ==============");
 			model.addAttribute("account", new Account());
 			return "login";
 		}
 
-		logger.info("Begin create new account ==========================");
+		LOGGER.info("Begin create new account ==========================");
 		if (result.hasErrors()) {
 			return "error";
 		}

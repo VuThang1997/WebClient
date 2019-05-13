@@ -64,13 +64,13 @@ public class ReportController {
 		
 		if (listCourse != null && !listCourse.isEmpty()) {
 			for (Course course: listCourse) {
-				logger.info("course name = " + course.getCourseName());
+				logger.info("semester name = " + course.getCourseName());
 			}
 			
 			model.put("allCourses", listCourse);
-			logger.info("List course is putted ===========================");
+			logger.info("List semester is putted ===========================");
 		} else {
-			logger.info("List course is null ===========================");
+			logger.info("List semester is null ===========================");
 		}
 		
 		return "generalReportForClass";

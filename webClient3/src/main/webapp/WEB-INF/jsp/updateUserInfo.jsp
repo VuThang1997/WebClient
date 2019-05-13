@@ -53,8 +53,8 @@
 						<div class="row">
 							<div class="col-md-12">
 								<h4>Về thông tin tài khoản</h4>
-								<c:if test="${not empty error}">
-									<div class="errorAccount">${error}</div>
+								<c:if test="${not empty message}">
+									<div class="message">${message}</div>
 								</c:if>
 								<hr>
 							</div>
@@ -168,7 +168,8 @@
 												$('#new_birthday').datepicker(
 												{
 													uiLibrary : 'bootstrap4',
-													format: 'yyyy-mm-dd'
+													format: 'yyyy-mm-dd',
+													value: "1995-01-01"
 												});
 											</script>
 										</div>
