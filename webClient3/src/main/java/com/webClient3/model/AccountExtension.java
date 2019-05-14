@@ -1,8 +1,5 @@
 package com.webClient3.model;
 
-import java.time.LocalDate;
-import java.util.Date;
-
 public class AccountExtension extends Account {
 
 	private String oldEmail;

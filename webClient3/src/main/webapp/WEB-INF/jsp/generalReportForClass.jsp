@@ -60,7 +60,7 @@
                     <div class="card">
                         <div class="card-body">
                             <div class="row">
-                                <div id="error_div" class="row col-4 alert alert-warning ">
+                                
                                 </div>
                                 <div class="col-md-12">
                                     <h4>BÁO CÁO TỔNG HỢP CHO LỚP</h4>
@@ -129,7 +129,10 @@
                                     <div id="div_link" class="col-md-12" style="text-align:center">
                                         <a id="link_report" href="#"><i>Click để tải báo cáo</i></a>
                                     </div>
-
+									<br />
+									<div class="alert alert-warning text-center" role="alert">
+										<p id="message"></p>
+									</div>
                                 </div>
                             </div>
                         </div>

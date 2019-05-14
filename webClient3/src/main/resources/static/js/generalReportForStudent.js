@@ -1,15 +1,20 @@
 $(document).ready(function () {
-    $("#error_div").hide();
+    $("#message").hide();
+	$(".alert").hide();
     $("#link_report").hide();
     $("#img_loader").hide();
+	
+	
+	
     $("#generate_report_pdf").click(function (e) {
         e.preventDefault();
+		$("#message").hide();
+		$(".alert").hide();
         $("#img_loader").show();
         console.log()
         $.ajax({
             type: "POST",
             dataType: "json",
-            //url: host + ":" + port + "/studentGeneralReport?adminID=" + id,
             url: protocol_server_core + "://"
                     + host_server_core + ":" + port_server_core
                     + "/studentGeneralReport?adminID=" + id,
@@ -22,15 +27,19 @@ $(document).ready(function () {
                 fileType: "pdf"
             }),
             success: function (data) {
-                $("#img_loader").hide();
+				$("#img_loader").hide();
                 let linkDown = data["description"];
                 let linkDownload = protocol_client + "://" + host_client + ":" + port_client + '/download/' + linkDown + "/" + linkDown
                         + ".pdf";
                 $("#link_report").attr("href", linkDownload);
                 $("#link_report").show();
             },
-            error: function () {
+            error: function (data) {
+				let message = data.responseJSON.description;
                 $("#img_loader").hide();
+				$("#message").show();
+				$("#message").text(message);
+				$(".alert").show();
                 console.log($("#email").val() + $("option:selected").val() + $("#begin_at").val() + $("#finish_at").val());
             }
         });
@@ -38,11 +47,12 @@ $(document).ready(function () {
 
     $("#generate_report_xlsx").click(function (e) {
         e.preventDefault();
+		$("#message").hide();
+		$(".alert").hide();
         $("#img_loader").show();
         $.ajax({
             type: "POST",
             dataType: "json",
-            //url: host + ":" + port  + "/studentGeneralReport?adminID=" + id,
             url: protocol_server_core + "://"
                     + host_server_core + ":" + port_server_core
                     + "/studentGeneralReport?adminID=" + id,
@@ -63,7 +73,11 @@ $(document).ready(function () {
                 $("#link_report").show();
             },
             error: function () {
+				let message = data.responseJSON.description;
                 $("#img_loader").hide();
+				$("#message").show();
+				$("#message").text(message);
+				$(".alert").show();
                 console.log($("#email").val() + $("option:selected").val() + $("#begin_at").val() + $("#finish_at").val());
             }
         });

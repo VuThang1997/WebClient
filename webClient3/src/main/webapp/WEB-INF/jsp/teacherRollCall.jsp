@@ -35,11 +35,13 @@
     </head>
 
     <body>
+    	 <c:if test="${empty sessionScope.id}">
+            <c:redirect url="/"/>
+        </c:if>
+        
         <script>
             var id = ${sessionScope.id};
             var userRole = ${sessionScope.role};
-            //var host = ${sessionScope.host};
-            //var port = ${sessionScope.port};
         </script>
         <jsp:include page="header.jsp" />
 
@@ -54,9 +56,6 @@
                 <div class="col-md-9">
                     <div class="card">
                         <div class="card-body">
-
-                            <div id="error_div" class="alert alert-warning" role="alert">${error}</div>
-                            <hr />
 
                             <div class="row col-md-12">
                                 <h4>Giảng viên điểm danh</h4>
@@ -81,12 +80,17 @@
                                 <br />
                                 <button id="roll_call_btn" type="submit" class="btn btn-primary">Điểm danh!</button>
                                 <hr />
+								<div class="alert alert-warning" role="alert">
+									<p id="message"></p>
+								</div>
+								
                                 <div class="loader col-md-12">
                                     <img id = "img_loader" src= "images/loader.gif" style= "" alt="Loading..." />
                                 </div>
                                 <div class="row text-center">
                                     <div id="qrcode" style="width:200px; height:200px; margin-top:15px; margin: 0 auto;"></div>
                                 </div>
+
                             </div>
                         </div>
 

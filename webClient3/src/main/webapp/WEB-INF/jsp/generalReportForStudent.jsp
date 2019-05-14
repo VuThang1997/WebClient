@@ -58,7 +58,7 @@
                     <div class="card">
                         <div class="card-body">
                             <div class="row">
-                                <div id="error_div" class="row col-4 alert alert-warning ">
+                               
                                 </div>
                                 <div class="col-md-12">
                                     <h4>BÁO CÁO TỔNG HỢP CHO SINH VIÊN</h4>
@@ -106,15 +106,7 @@
                                                 </script>                     
                                             </div>
                                         </div>
-                                        <!-- <div class="row">
-                                          <label for="file_type_select" class="col-4 col-form-label">Chọn định dạng xuất file: </label> 
-                                                                          <div class="col-4">
-                                                                             <select id="file_type_select" class="browser-default custom-select">
-                                                                                          <option value="pdf" selected>PDF</option>
-                                                                                          <option value="xlsx">Excel</option>
-                                                                                  </select>
-                                                                          </div>
-                                        </div> -->
+                                        
                                     </form>
 
                                     <div class="col-md-12 row">
@@ -131,7 +123,10 @@
                                     <div id="div_link" class="col-md-12" style="text-align:center">
                                         <a id="link_report" href="#"><i>Click this link to download report</i></a>
                                     </div>
-
+									<br />
+									<div class="alert alert-warning text-center" role="alert">
+										<p id="message"></p>
+									</div>
                                 </div>
                             </div>
                         </div>
@@ -139,7 +134,6 @@
                     </div>
                 </div>
             </div>
-        </div>
 
         <jsp:include page="footer.jsp" />
 

@@ -1,5 +1,6 @@
 $(document).ready(function () {
-    $("#error_div").hide();
+    $("#message").hide();
+	$(".alert").hide();
     var classID = -1;
     var roomID = -1;
     $("#img_loader").hide();
@@ -9,11 +10,11 @@ $(document).ready(function () {
         $.ajax({
             type: "GET",
             dataType: "json",
-            //url: host + ":" + port + "/listRooms?classID=" + classID,
             url: "http://localhost:8080/listRooms?classID=" + classID,
             contentType: 'application/json',
             success: function (data) {
-                $("#error_div").hide();
+                $("#message").hide();
+				$(".alert").hide();
                 var arrayLength = data.length;
                 for (var i = 0; i < arrayLength; i++) {
                     var room = data[i];
@@ -25,8 +26,8 @@ $(document).ready(function () {
 
             },
             error: function () {
-                $("#error_div").text("Error happened!");
-                $("#error_div").show();
+                $("#message").show();
+                $("#message").text("Có lỗi xảy ra với đường truyền!");
             }
         });
 
@@ -39,44 +40,48 @@ $(document).ready(function () {
         roomID = $("#room_select :selected").val();
         console.log(classID + " + " + roomID);
         if (classID == -1 || roomID == -1) {
-            $("#error_div").text("Phải chọn lớp học và phòng học trước!");
-            $("#error_div").show();
+            $("#message").text("Phải chọn lớp học và phòng học trước!");
+            $("#message").show();
+        } else {
+            $.ajax({
+                type: "POST",
+                dataType: "json",
+                url: "http://localhost:8080/teacherRollCall",
+                contentType: 'application/json',
+                data: JSON.stringify({
+                    teacherID: id,
+                    classID: classID,
+                    roomID: roomID
+                }),
+                success: function (data) {
+                    $("#img_loader").hide();
+                    var identifyString = data["description"];
+                    console.log("identi = " + identifyString);
+
+                    var qrcode = new QRCode(document.getElementById("qrcode"), {
+                        width: 200,
+                        height: 200
+                    });
+                    function makeCode() {
+                        qrcode.makeCode(identifyString);
+                    }
+                    makeCode();
+                },
+                error: function () {
+                	$("#message").show();
+                	$("#message").text("Điểm danh không thành công!");
+					$(".alert").show();
+                    $("#img_loader").hide();
+                    console.log("error happen");
+                }
+            });
         }
+        
         console.log("body" + JSON.stringify({
             teacherID: id,
             classID: classID,
             roomID: roomID
         }));
-        $.ajax({
-            type: "POST",
-            dataType: "json",
-            //url: host + ":" + port + "/teacherRollCall",
-
-            url: "http://localhost:8080/teacherRollCall",
-            contentType: 'application/json',
-            data: JSON.stringify({
-                teacherID: id,
-                classID: classID,
-                roomID: roomID
-            }),
-            success: function (data) {
-                $("#img_loader").hide();
-                var identifyString = data["description"];
-                console.log("identi = " + identifyString);
-
-                var qrcode = new QRCode(document.getElementById("qrcode"), {
-                    width: 200,
-                    height: 200
-                });
-                function makeCode() {
-                    qrcode.makeCode(identifyString);
-                }
-                makeCode();
-            },
-            error: function () {
-                $("#img_loader").hide();
-                console.log("error");
-            }
-        });
     });
+    
 });

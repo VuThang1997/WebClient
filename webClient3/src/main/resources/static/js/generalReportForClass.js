@@ -1,8 +1,9 @@
 $(document).ready(
         function () {
-            $("#error_div").hide();
-            $("#link_report").hide();
+            $("#message").hide();
+			$(".alert").hide();
             $("#img_loader").hide();
+			$("#link_report").hide();
             var courseID = -1;
             var classID = -1;
 
@@ -19,21 +20,22 @@ $(document).ready(
                                     + "/listClass?courseID=" + courseID,
                             contentType: 'application/json',
                             success: function (data) {
-                                $("#error_div").hide();
-                                var arrayLength = data.length;
-                                for (var i = 0; i < arrayLength; i++) {
-                                    var classInstance = data[i];
-                                    var opt = document.createElement('option');
-                                    opt.value = classInstance["id"];
-                                    opt.innerHTML = classInstance["className"];
-                                    $("#class_select").append(opt);
-                                }
-
+									$("#message").hide();
+									$(".alert").hide();
+									var arrayLength = data.length;
+									for (var i = 0; i < arrayLength; i++) {
+										var classInstance = data[i];
+										var opt = document.createElement('option');
+										opt.value = classInstance["id"];
+										opt.innerHTML = classInstance["className"];
+										$("#class_select").append(opt);
+									}
                             },
                             error: function () {
-                                $("#error_div").text(
-                                        "Học phần này không có lớp học nào!");
-                                $("#error_div").show();
+								$(".alert").show();
+								$("#message").show();
+								$("#message").text("Học phần này không có lớp học nào!");
+                                
                             }
                         });
 
@@ -57,6 +59,8 @@ $(document).ready(
                                 fileType: "pdf"
                             }),
                             success: function (data) {
+								$("#message").hide();
+								$(".alert").hide();
                                 $("#img_loader").hide();
                                 let linkDown = data["description"];
                                 let linkDownload = protocol_client + "://" + host_client + ":" + port_client + '/download/' + linkDown + "/" + linkDown
@@ -67,7 +71,11 @@ $(document).ready(
                                 $("#link_report").show();
                             },
                             error: function () {
+								let message = data.responseJSON.description;
                                 $("#img_loader").hide();
+								$(".alert").show();
+								$("#message").show();
+								$("#message").text(message);
                                 console.log($("#email").val()
                                         + $("option:selected").val()
                                         + $("#begin_at").val()
@@ -94,6 +102,8 @@ $(document).ready(
                                 fileType: "xls"
                             }),
                             success: function (data) {
+								$("#message").hide();
+								$(".alert").hide();
                                 $("#img_loader").hide();
                                 let linkDown = data["description"];
                                 let linkDownload = protocol_client + "://" + host_client + ":" + port_client + '/download/' + linkDown + "/" + linkDown
@@ -105,7 +115,11 @@ $(document).ready(
                                 $("#link_report").show();
                             },
                             error: function () {
+								let message = data.responseJSON.description;
                                 $("#img_loader").hide();
+								$(".alert").show();
+								$("#message").show();
+								$("#message").text(message);
                                 console.log($("#email").val()
                                         + $("option:selected").val()
                                         + $("#begin_at").val()
