@@ -2,6 +2,8 @@ $(document).ready(function() {
 	var courseID = -1;
 	var classID = -1;
 	
+	$("#message_manual").hide();
+	
 	$.validator.addMethod("EMAIL", function(value, element) {
 			return this.optional(element) || /^[a-zA-Z0-9._-]+@[a-zA-Z0-9-]+\.[a-zA-Z.]{2,5}$/i
 						.test(value);
@@ -56,6 +58,64 @@ $(document).ready(function() {
 			error : function() {
 				$("#error_div").text("Học phần này không có lớp học nào!");
 				$("#error_div").show();
+			}
+		});
+	});
+	
+	$("#course_select_manual").on('change', function(e) {
+		let courseIDManual = $("option:selected", this).val();
+		console.log("course id manual = " + courseIDManual);
+		$.ajax({
+			type : "GET",
+			dataType : "json",
+			url : protocol_server_core + "://"
+					+ host_server_core + ":" + port_server_core
+					+ "/listClass?courseID=" + courseIDManual,
+			contentType : 'application/json',
+			success : function(data) {
+				$("#class_select_manual option[value != '0']").remove();
+				let arrayLength = data.length;
+				let classInstance;
+				let opt;
+				for (let i = 0; i < arrayLength; i++) {
+					$("#message_manual").hide();
+					classInstance = data[i];
+					opt = document.createElement('option');
+					opt.value = classInstance["id"];
+					opt.innerHTML = classInstance["className"];
+					$("#class_select_manual").append(opt);
+				}
+			},
+			error : function() {
+				$("#error_manual").text("Học phần này không có lớp học nào!");
+				$("#error_manual").show();
+			}
+		});
+	});
+	
+	$("#add_student_manual").click(function(e){
+		e.preventDefault();
+		console.log("student email = " + $("#email").val());
+		console.log("class id = " + $('#class_select_manual :selected').val());
+		$.ajax({
+			type : "POST",
+			dataType : "json",
+			url : protocol_server_core + "://"
+					+ host_server_core + ":" + port_server_core
+					+ "/studentClasses",
+			contentType : 'application/json',
+			data: JSON.stringify({
+				   studentEmail: $("#email").val(),
+				   classID: $('#class_select_manual :selected').val()
+				   
+			 }),
+			success : function(data) {
+				$("#message_manual").text("Thêm sinh viên thành công!");
+				$("#message_manual").show();
+			},
+			error : function() {
+				$("#message_manual").text("Không thể thêm sinh viên vào lớp học!");
+				$("#message_manual").show();
 			}
 		});
 	});

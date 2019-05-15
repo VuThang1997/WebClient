@@ -63,75 +63,55 @@
 						</div>
 						<div class="card-body col-md-12">
 							<form>
+								
 								<div class="form-group row">
-									<label for="email" class="col-4 col-form-label">Email
-										*</label>
-									<div class="col-8">
-										<input id="new_email" name="new_email"
-											placeholder="New Email" class="form-control here" type="text" />
-									</div>
-								</div>
-
-								<div class="form-group row">
-									<label for="fullName" class="col-4 col-form-label">Họ tên *</label>
-									<div class="col-8">
-										<input id="fullName" name="fullName"
-											placeholder="Full Name" class="form-control here" type="text" />
-									</div>
-								</div>
-
-								<div class="form-group row">
-									<label for="address" class="col-4 col-form-label">Địa
-										chỉ </label>
-									<div class="col-8">
-										<input id="address" name="address"
-											placeholder="Address" class="form-control here" type="text" />
+									<label for="course_select_manual" class="col-md-5 col-form-label">
+										Chọn học phần *: 
+									</label>
+									<div class="col-md-7">
+										 <select id="course_select_manual" class="browser-default custom-select">
+										   		<option value="0" selected>Chọn học phần</option>
+											    <c:forEach items="${allCourses2}" var="courseManul">
+												    <option value="${courseManul.courseID}">${courseManul.courseName}</option>
+												</c:forEach>
+											</select>
 									</div>
 								</div>
 								
 								<div class="form-group row">
-									<label for="phone" class="col-4 col-form-label">Số ĐT:</label>
-									<div class="col-8">
-										<input id="phone" name="phone"
-											placeholder="Phone" class="form-control here" type="text" />
-									</div>
-								</div>
-
-								<div class="form-group row">
-									<label for="birthday" class="col-4 col-form-label">Ngày
-										sinh
+									<label for="class_select_manual" class="col-md-5 col-form-label">
+										Chọn lớp học *: 
 									</label>
-									<div class="col-8">
-										<input id="birthday" width="276" />
-										<script>
-											$('#birthday').datepicker({
-												uiLibrary : 'bootstrap4',
-												format : 'yyyy-mm-dd',
-												value: '1995-01-01'
-											});
-										</script>
+									<div class="col-md-7">
+										 <select id="class_select_manual" class="browser-default custom-select">
+										 	<option value="0" selected>Chọn lớp học</option>
+											<!-- dùng js để tạo lựa chọn -->
+										</select>
 									</div>
 								</div>
-
-								<input id="role" name="role_input"
-									class="form-control here" type="hidden" />
+								
+								<div class="form-group row">
+									<label for="email" class="col-4 col-form-label">
+										Email sinh viên *</label>
+									<div class="col-8">
+										<input id="email" name="email" 
+										placeholder="Student email" class="form-control here" type="text" />
+									</div>
+								</div>
 
 								<div class="form-group row">
 									<div class="offset-4 col-8">
-										<button id="submit_account" name="submit_account"
-											type="submit" class="btn btn-primary">Tạo tài khoản</button>
+										<button id="add_student_manual" name="submit_account"
+											type="submit" class="btn btn-primary">Thêm sinh viên</button>
 									</div>
 								</div>
 
-								<c:if test="${not empty error2}">
-									<div id="error_div2"
-										class="col-md-12 text-center alert alert-warning ">
-										${error2}</div>
-								</c:if>
+								<div id="message_manual" class="col-md-12 text-center alert alert-warning "></div>
 							</form>
 						</div>
 					</div>
 				</div>
+				
 				<div class="card col-md-6">
 					<div class="card-body">
 						<div>

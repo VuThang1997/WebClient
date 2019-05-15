@@ -40,7 +40,9 @@
 </head>
 
 <body>
-
+	<c:if test="${empty sessionScope.id}">
+		<c:redirect url="/"/>
+	</c:if>
 	<jsp:include page="header.jsp" />
 
 	<!-- Page Content -->

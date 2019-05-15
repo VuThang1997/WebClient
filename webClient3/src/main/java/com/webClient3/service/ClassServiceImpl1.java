@@ -1,6 +1,5 @@
 package com.webClient3.service;
 
-import java.util.Iterator;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -41,40 +40,18 @@ public class ClassServiceImpl1 implements ClassService {
 
 	@Override
 	public ReportError createMultipleStudentClass(List<String> listStudentEmail, int classID) {
-		LOGGER.info("Begin creating multiple student-class ==========================");
+		LOGGER.info("========================== Call createMultipleStudentClass service");
 		ReportError report = null;
-		if (listStudentEmail == null || listStudentEmail.isEmpty()) {
-			report = new ReportError(400, "Danh sách không có email nào!");
-			return report;
-		}
 		
-		String tmpEmail = null;
-		String rowsOfInvalidAccount = "";
-		int invalidAccount = 0;
-		int rowCounter = 0;
-		Iterator<String> listIte = listStudentEmail.iterator();
-		
-		while (listIte.hasNext()) {
-			tmpEmail = listIte.next();
-			rowCounter ++;
-			if (tmpEmail == null || tmpEmail.isEmpty()) {
-				invalidAccount ++;
-				
-				//when read excel template, row 1 is excluded
-				//so rowCounter = 0 is the col No.1
-				rowsOfInvalidAccount += (rowCounter+1) + ", ";
-				listIte.remove();
-			}
-		}
-		
-		//add classID as the last row of list = hotfix
-		listStudentEmail.add("" + classID);
-		
+		//this situation should never be happened because of if-else in controller
+//		if (listStudentEmail == null || listStudentEmail.isEmpty()) {
+//			report = new ReportError(400, "Danh sách không có email nào!");
+//			return report;
+//		}
 		
 		String baseUrl = GeneralValue.SERVER_CORE_HOST + ":" + GeneralValue.SERVER_CORE_PORT 
 				+ "/createMultipleStudentClass";
 		
-
 		HttpHeaders header = new HttpHeaders();
 		header.setContentType(MediaType.APPLICATION_JSON);
 		header.add("Accept", MediaType.APPLICATION_JSON_VALUE);
@@ -82,10 +59,9 @@ public class ClassServiceImpl1 implements ClassService {
 		ObjectMapper mapper = new ObjectMapper();
 		try {
 			String jsonString = mapper.writeValueAsString(listStudentEmail);
-
 			HttpEntity<Object> requestEntity = new HttpEntity<Object>(jsonString, header);
-
-			ResponseEntity<ReportError> response = restTemplate.exchange(baseUrl, HttpMethod.POST, requestEntity,
+			ResponseEntity<ReportError> response = restTemplate.exchange(baseUrl, 
+					HttpMethod.POST, requestEntity,
 					ReportError.class);
 			LOGGER.info("Sending RestTemplate ===================");
 
