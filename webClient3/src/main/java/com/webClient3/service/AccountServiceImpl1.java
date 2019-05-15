@@ -134,13 +134,13 @@ public class AccountServiceImpl1 implements AccountService {
 			LOGGER.info("Sending RestTemplate ===================");
 
 			report = response.getBody();
-			String[] infoResponse = report.getDescription().split("+");
+			String[] infoResponse = report.getDescription().split("-");
 			int reponseInvalidAccount = Integer.parseInt(infoResponse[0]);
 			rowsOfInvalidAccount += infoResponse[1];
 			
 			LOGGER.info("==================== rows of invalid = " + rowsOfInvalidAccount);
 			
-			report.setDescription((invalidAccount + reponseInvalidAccount) + "+" + rowsOfInvalidAccount);
+			report.setDescription((invalidAccount + reponseInvalidAccount) + "-" + rowsOfInvalidAccount);
 			return report;
 
 		} catch (HttpStatusCodeException | JsonProcessingException e) {

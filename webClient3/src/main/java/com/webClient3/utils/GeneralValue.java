@@ -52,5 +52,5 @@ public class GeneralValue {
     public static final String SERVER_CORE_HOST = "http://localhost";
     public static final String SERVER_CORE_PORT = "8080";
     
-    public static final String FOLDER_IMPORT_FILE = "C:\\Users\\BePro\\Desktop\\excel_folder";
+    public static final String FOLDER_IMPORT_FILE = "G:\\thangnh\\EXCEL_IMPORT_FILE";
 }

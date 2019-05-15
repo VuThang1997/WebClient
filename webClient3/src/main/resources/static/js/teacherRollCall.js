@@ -67,9 +67,10 @@ $(document).ready(function () {
                     }
                     makeCode();
                 },
-                error: function () {
+                error: function (data) {
+					let message = data.responseJSON.description;
                 	$("#message").show();
-                	$("#message").text("Điểm danh không thành công!");
+                	$("#message").text(message);
 					$(".alert").show();
                     $("#img_loader").hide();
                     console.log("error happen");

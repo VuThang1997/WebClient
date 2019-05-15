@@ -57,7 +57,7 @@ public class ClassServiceImpl1 implements ClassService {
 		while (listIte.hasNext()) {
 			tmpEmail = listIte.next();
 			rowCounter ++;
-			if (tmpEmail == null || tmpEmail.isBlank()) {
+			if (tmpEmail == null || tmpEmail.isEmpty()) {
 				invalidAccount ++;
 				
 				//when read excel template, row 1 is excluded

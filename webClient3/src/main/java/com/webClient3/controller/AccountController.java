@@ -192,13 +192,13 @@ public class AccountController {
 
 		Map<String, String> params = new HashMap<String, String>();
 		if (accountExtent.getEmail() == null || accountExtent.getEmail() == "null"
-				|| accountExtent.getEmail().isBlank()) {
+				|| accountExtent.getEmail().isEmpty()) {
 			accountExtent.setEmail(session.getAttribute("email").toString());
 		}
 		params.put("email", accountExtent.getEmail());
 
 		if (accountExtent.getPassword() == null || accountExtent.getPassword() == "null"
-				|| accountExtent.getPassword().isBlank()) {
+				|| accountExtent.getPassword().isEmpty()) {
 			accountExtent.setPassword(session.getAttribute("password").toString());
 		}
 		params.put("password", accountExtent.getPassword());
@@ -366,6 +366,7 @@ public class AccountController {
 							account.setIsActive(AccountStatus.ACTIVE.getValue());
 							account.setUpdateImeiCounter(0);
 							account.setUserInfo(null);
+                                                        account.setRole(report.getErrorCode());
 
 							listAccounts.add(account);
 							break;
@@ -403,11 +404,11 @@ public class AccountController {
 
 		if (report.getErrorCode() == 200) {
 			// mọi account đều hợp lệ
-			if (report.getDescription().contains("0")) {
+			if (report.getDescription().contains("0-0")) {
 				model.addAttribute("error", "Tạo tài khoản thành công!");
 
 			} else {
-				String[] infoReport = report.getDescription().split("+");
+				String[] infoReport = report.getDescription().split("-");
 				model.addAttribute("error", infoReport[0] + " tài khoản có dữ liệu không hợp lệ ở các dòng: " + infoReport[1]);
 			}
 		} else {
