@@ -167,7 +167,9 @@
 											type="submit" class="btn btn-primary">Tạo tài khoản</button>
 									</div>
 								</div>
-
+								<div class="loader col-md-12">
+                                    <img id = "img_loader" src= "images/loader.gif" style= "" alt="Loading..." />
+                                </div>
 								<c:if test="${not empty error2}">
 									<div id="error_div"
 										class="col-md-12 text-center alert alert-warning ">
@@ -212,7 +214,7 @@
 						<br />
 
 						<div class="col-md-12 text-center">
-							<form:form method="POST" action="/readFile"
+							<form:form id = "submit_account_by_file" method="POST" action="/readFile"
 								modelAttribute="report">
 								<form:input path="description" type="hidden"
 									value='<%=request.getAttribute("fileName")%>' />
@@ -223,7 +225,9 @@
 								</c:if>
 							</form:form>
 						</div>
-
+						<div class="loader col-md-12">
+                                    <img id = "img_file_loader" src= "images/loader.gif" style= "" alt="Loading..." />
+                        </div>
 						<c:if test="${not empty error}">
 							<div id="error_div"
 								class="col-md-12 text-center alert alert-warning ">

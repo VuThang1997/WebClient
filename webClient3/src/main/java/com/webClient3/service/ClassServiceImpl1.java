@@ -70,7 +70,7 @@ public class ClassServiceImpl1 implements ClassService {
 
 		} catch (HttpStatusCodeException | JsonProcessingException e) {
 			LOGGER.info("Error happend ==========================");
-			report = new ReportError(400, "ThÃªm sinh viÃªn khÃ´ng thÃ nh cÃ´ng!");
+			report = new ReportError(400, "Thêm sinh viên không thành công!");
 			return report;
 		}
 	}

@@ -288,7 +288,7 @@ public class AccountController {
 		}
 
 		if (isValidRole == false) {
-			model.addAttribute("error", "Bạn phải chọn loại tài khoản!");
+			model.addAttribute("error", "Báº¡n pháº£i chá»�n loáº¡i tÃ i khoáº£n!");
 			model.addAttribute("myFile", new MyFile());
 			model.addAttribute("newAccount", new AccountExtension());
 			model.addAttribute("report", new ReportError());
@@ -403,13 +403,13 @@ public class AccountController {
 		}
 
 		if (report.getErrorCode() == 200) {
-			// mọi account đều hợp lệ
+			// má»�i account Ä‘á»�u há»£p lá»‡
 			if (report.getDescription().contains("0-0")) {
 				model.addAttribute("error", "Tạo tài khoản thành công!");
 
 			} else {
 				String[] infoReport = report.getDescription().split("-");
-				model.addAttribute("error", infoReport[0] + " tài khoản có dữ liệu không hợp lệ ở các dòng: " + infoReport[1]);
+				model.addAttribute("error", infoReport[0] + " tài khoản không hợp lệ ở các dòng: " + infoReport[1]);
 			}
 		} else {
 			model.addAttribute("error", "Tạo tài khoản không thành công!");

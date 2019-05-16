@@ -134,7 +134,7 @@ public class ClassController {
 
         ModelAndView modelAndView = new ModelAndView("createStudentClass");
         if (report.getErrorCode() == 0) {
-            modelAndView.addObject("error", "Bạn phải chọn lớp học!");
+            modelAndView.addObject("error", "B?n ph?i ch?n l?p h?c");
             this.prepareForCreateStudentClassView(modelAndView);
             return modelAndView;
         }
@@ -145,7 +145,7 @@ public class ClassController {
 
         List<String> listEmail = this.fileService.readFileExcelToGetListEmail(linkFile);
         if (listEmail == null || listEmail.isEmpty()) {
-            modelAndView.addObject("error", "File excel không tồn tại email sinh viên nào!");
+            modelAndView.addObject("error", "File excel kh�ng c� sinh vi�n n�o!");
         } else {
             int classID = report.getErrorCode();
             LOGGER.info("class ID in controller = " + classID);
@@ -153,18 +153,18 @@ public class ClassController {
 
             if (report.getErrorCode() == 200) {
                 if (report.getDescription().equalsIgnoreCase("0-")) {
-                    modelAndView.addObject("error", "Thêm sinh viên theo file thành công");
+                    modelAndView.addObject("error", "Th�m sinh vi�n theo file th�nh c�ng!");
 
                 } else if (report.getDescription().equalsIgnoreCase("All accounts are invalid!")) {
-                    modelAndView.addObject("error", "Không có tài khoản nào hợp lệ!");
+                    modelAndView.addObject("error", "Kh�ng c� t�i kho?n n�o h?p l?!");
 
                 } else {
                     String[] infoReport = report.getDescription().split("-");
-                    modelAndView.addObject("error", infoReport[0] + " tài khoản có dữ liệu không hợp lệ ở các dòng: " + infoReport[1]);
+                    modelAndView.addObject("error", infoReport[0] + " t�i kho?n kh�ng h?p l? ? c? d�ng: " + infoReport[1]);
 
                 }
             } else {
-                modelAndView.addObject("error", "Thêm sinh viên theo file thất bại!");
+                modelAndView.addObject("error", "Th�m sinh vi�n theo file th?t b?i!");
             }
         }
 
