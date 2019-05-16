@@ -48,7 +48,7 @@ public class ClassServiceImpl1 implements ClassService {
 //			report = new ReportError(400, "Danh sách không có email nào!");
 //			return report;
 //		}
-		
+		listStudentEmail.add("" + classID);
 		String baseUrl = GeneralValue.SERVER_CORE_HOST + ":" + GeneralValue.SERVER_CORE_PORT 
 				+ "/createMultipleStudentClass";
 		
