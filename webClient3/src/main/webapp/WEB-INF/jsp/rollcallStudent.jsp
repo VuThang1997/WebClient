@@ -30,12 +30,10 @@
 <script src="js/createAccount.js" type="text/javascript"></script>
 <script type="text/javascript"
 	src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.13.1/jquery.validate.min.js"></script>
-	
-<script src="https://unpkg.com/gijgo@1.9.13/js/gijgo.min.js" type="text/javascript"></script>
-<link href="https://unpkg.com/gijgo@1.9.13/css/gijgo.min.css" rel="stylesheet" type="text/css" />
 
 <script src="js/config.js" type="text/javascript"></script>
-<script src="js/createStudentClass.js" type="text/javascript"></script>
+<script src="js/rollcallStudent.js" type="text/javascript"></script>
+<script src="js/config.js"></script>
 </head>
 
 <body>
@@ -44,6 +42,10 @@
 	</c:if>
 	<jsp:include page="header.jsp" />
 
+	<script>
+	 	id = ${sessionScope.id};
+	 	console.log("user id = 	" + id);
+	</script>
 	<!-- Page Content -->
 	<div class="container-fluid bg-info">
 		<div class="row">
@@ -55,9 +57,10 @@
 			<div class="row col-md-9">
 				<div class="card col-md-6">
 					<div class="card-body">
+						
 						<div>
 							<div class="col-md-12 text-center">
-								<h4>THÊM SINH VIÊN</h4>
+								<h4>ĐIỂM DANH SINH VIÊN</h4>
 								<hr>
 							</div>
 						</div>
@@ -71,7 +74,7 @@
 									<div class="col-md-7">
 										 <select id="course_select_manual" class="browser-default custom-select">
 										   		<option value="0" selected>Chọn học phần</option>
-											    <c:forEach items="${allCourses2}" var="courseManul">
+											    <c:forEach items="${allCourses}" var="courseManul">
 												    <option value="${courseManul.courseID}">${courseManul.courseName}</option>
 												</c:forEach>
 											</select>
@@ -91,6 +94,18 @@
 								</div>
 								
 								<div class="form-group row">
+									<label for="room_select_manual" class="col-md-5 col-form-label">
+										Chọn phòng học *: 
+									</label>
+									<div class="col-md-7">
+										 <select id="room_select_manual" class="browser-default custom-select">
+										 	<option value="0" selected>Chọn phòng học</option>
+											<!-- dùng js để tạo lựa chọn -->
+										</select>
+									</div>
+								</div>
+								
+								<div class="form-group row">
 									<label for="email" class="col-4 col-form-label">
 										Email sinh viên *</label>
 									<div class="col-8">
@@ -98,17 +113,30 @@
 										placeholder="Student email" class="form-control here" type="text" />
 									</div>
 								</div>
+								
+								<div class="form-group row">
+									<label for="reason_select" class="col-4 col-form-label">
+										Lí do *</label>
+									<div class="col-md-7">
+										 <select id="reason_select" class="browser-default custom-select">
+										 	<option value="1" selected>Bị ốm</option>
+											<option value="2">Lí do khác</option>
+										</select>
+									</div>
+								</div>
+								
 
 								<div class="form-group row">
 									<div class="offset-4 col-8">
-										<button id="add_student_manual" name="submit_account"
-											type="submit" class="btn btn-primary">Thêm sinh viên</button>
+										<button id="rollcall_student_manual" name="rollcall_student_manual"
+											type="submit" class="btn btn-primary">Điểm danh sinh viên</button>
 									</div>
 								</div>
 
 								<div id="message_manual" class="col-md-12 text-center alert alert-warning "></div>
 							</form>
 						</div>
+					
 					</div>
 				</div>
 				
@@ -116,7 +144,7 @@
 					<div class="card-body">
 						<div>
 							<div class="col-md-12 text-center">
-								<h4>THÊM SINH VIÊN THEO FILE</h4>
+								<h4>ĐIỂM DANH SINH VIÊN THEO FILE</h4>
 								<hr>
 							</div>
 						</div>
@@ -135,6 +163,7 @@
 							</div>
 						</div>
 						
+						<br />
 						<div class="row col-md-12">
 							<label for="class_select" class="col-md-5 col-form-label">
 								Chọn lớp học *: 
@@ -146,8 +175,21 @@
 								</select>
 							</div>
 						</div>
+						<br />
+						<div class="form-group row">
+							<label for="room_select" class="col-md-5 col-form-label">
+								Chọn phòng học *: 
+							</label>
+							<div class="col-md-7">
+								<select id="room_select" class="browser-default custom-select">
+										<option value="0" selected>Chọn phòng học</option>
+										<!-- dùng js để tạo lựa chọn -->
+								</select>
+							</div>
+						</div>
+						
 						<div class="col-md-12">
-							<form:form method="POST" action="/uploadFileStudentClass"
+							<form:form method="POST" action="/uploadFileStudentRollcall"
 								enctype="multipart/form-data" modelAttribute="myFile">
 									 Select a file *: <form:input id="input_file"
 									path="multipartFile" type="file" name="myFile" />
@@ -159,24 +201,26 @@
 						<br />
 
 						<div class="col-md-12 text-center">
-							<form:form id="form_submit" method="POST" action="/readFileStudentClass" modelAttribute="report">
-								<form:input path="description" type="hidden"
+							<form:form id="form_submit" method="POST" action="/readFileStudentRollcall" 
+										modelAttribute="classModel">
+								<form:input path="className" type="hidden"
 									value='<%=request.getAttribute("fileName")%>' />
-								<form:input id="classId" path="errorCode" type="hidden" />
+								<form:input id="classId" path="maxStudent" type="hidden" />
+								<form:input id="roomId" path="currentLesson" type="hidden" />
 								
 								<c:if test="${not empty fileName}">
-									<button id="create_btn" type="submit" class="btn btn-primary">
-										Thêm sinh viên
+									<button id="rollcall_btn" type="submit" class="btn btn-primary">
+										Điểm danh
 									</button>
 								</c:if>
 							</form:form>
 						</div>
 
-						<c:if test="${not empty error}">
-							<div id="error_div"
-								class="col-md-12 text-center alert alert-warning ">
-								${error}</div>
-						</c:if>
+					
+						<div id="message" class="col-md-12 text-center alert alert-warning ">
+							<c:if test="${not empty message}">${message}</c:if>
+						</div>
+						
 						<br />
 					</div>
 				</div>

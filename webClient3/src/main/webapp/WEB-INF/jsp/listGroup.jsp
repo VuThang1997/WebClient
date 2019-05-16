@@ -41,10 +41,9 @@
 					<span class="menu-ico-collapse"><i class="fa fa-chevron-down"></i></span>
 				</a>
 			
-				
 				<div class="collapse list-group-submenu" id="sub_categories_1">
 					<a href="/renderTeacherRollCallView" class="list-group-item sub-item" data-parent="#sub_categories_1" style="padding-left: 78px;">Giảng viên điểm danh</a>
-					<a href="#" class="list-group-item sub-item" data-parent="#sub_categories_1" style="padding-left: 78px;">Điểm danh cho sinh viên</a>
+					<a href="/renderRollcallStudentView" class="list-group-item sub-item" data-parent="#sub_categories_1" style="padding-left: 78px;">Điểm danh cho sinh viên</a>
 				</div>
 			</c:if>
 			

@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import com.webClient3.model.Account;
 import com.webClient3.model.Course;
 import com.webClient3.model.Semester;
+import com.webClient3.service.ClassService;
 import com.webClient3.service.ReportService;
 
 @Controller
@@ -23,11 +24,15 @@ public class ReportController {
 
 	private Logger logger = LoggerFactory.getLogger(ReportController.class);
 	private ReportService reportService;
+	private ClassService classService;
 
 	@Autowired
-	public ReportController(@Qualifier("ReportServiceImpl1") ReportService reportService) {
+	public ReportController(
+			@Qualifier("ReportServiceImpl1") ReportService reportService,
+			@Qualifier("ClassServiceImpl1") ClassService classService) {
 		super();
 		this.reportService = reportService;
+		this.classService = classService;
 	}
 
 	@RequestMapping(value = "/renderGeneralReportView1", method = RequestMethod.GET)
@@ -60,8 +65,7 @@ public class ReportController {
 			return "login";
 		}
 		
-		List<Course> listCourse = this.reportService.findAllCourse();
-		
+		List<Course> listCourse = this.classService.getAllCourse();
 		if (listCourse != null && !listCourse.isEmpty()) {
 			for (Course course: listCourse) {
 				logger.info("course name = " + course.getCourseName());

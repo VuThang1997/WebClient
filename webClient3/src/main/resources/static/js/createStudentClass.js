@@ -3,15 +3,13 @@ $(document).ready(function() {
 	var classID = -1;
 	
 	$("#message_manual").hide();
-	$("#img_loader").hide();
-	$("#img_file_loader").hide();
-
+	
 	$.validator.addMethod("EMAIL", function(value, element) {
 			return this.optional(element) || /^[a-zA-Z0-9._-]+@[a-zA-Z0-9-]+\.[a-zA-Z.]{2,5}$/i
 						.test(value);
 	}, "Email không hợp lệ! ");
 
-	$('#form_add_student_to_class').validate({
+	$('#form_create_account').validate({
 		errorClass : 'errors',
 		rules : {
 			email : {
@@ -97,8 +95,6 @@ $(document).ready(function() {
 	
 	$("#add_student_manual").click(function(e){
 		e.preventDefault();
-		$("#img_loader").show();
-
 		console.log("student email = " + $("#email").val());
 		console.log("class id = " + $('#class_select_manual :selected').val());
 		$.ajax({
@@ -114,13 +110,11 @@ $(document).ready(function() {
 				   
 			 }),
 			success : function(data) {
-				$("#img_loader").hide();
-				$("#message_manual").text(data.description);
+				$("#message_manual").text("Thêm sinh viên thành công!");
 				$("#message_manual").show();
 			},
-			error : function(data) {
-				$("#img_loader").hide();
-				$("#message_manual").text(data.responseJSON.description);
+			error : function() {
+				$("#message_manual").text("Không thể thêm sinh viên vào lớp học!");
 				$("#message_manual").show();
 			}
 		});
@@ -180,7 +174,6 @@ $(document).ready(function() {
 		
 		$("#create_btn").click(function(e){
 			 e.preventDefault();
-			 $("#img_file_loader").show();
 			sessionStorage.removeItem("classID");
 			sessionStorage.removeItem("courseID");
 			$("#form_submit").submit();
