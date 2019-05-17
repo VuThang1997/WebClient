@@ -38,7 +38,7 @@
 					<span class="menu-ico-collapse"><i class="fa fa-chevron-down"></i></span>
 				</a>
 				<div class="collapse list-group-submenu" id="sub_categories_4">
-					<a href="createRoom.jsp" class="list-group-item sub-item" data-parent="#sub_categories_4" style="padding-left: 78px;">Thêm phòng học</a>
+					<a href="/renderCreateRoom" class="list-group-item sub-item" data-parent="#sub_categories_4" style="padding-left: 78px;">Thêm phòng học</a>
 					<a href="/renderGetRoomInfo" class="list-group-item sub-item" data-parent="#sub_categories_4" style="padding-left: 78px;">Xem thông tin phòng học</a>
 					<a href="/renderUpdateRoomInfo" class="list-group-item sub-item" data-parent="#sub_categories_4" style="padding-left: 78px;">Cập nhật thông tin phòng học</a>
 					<a href="/renderDeleteRoom" class="list-group-item sub-item" data-parent="#sub_categories_4" style="padding-left: 78px;">Xóa phòng học</a>
@@ -49,9 +49,19 @@
 					<span class="menu-ico-collapse"><i class="fa fa-chevron-down"></i></span>
 				</a>
 				<div class="collapse list-group-submenu" id="sub_categories_5">
-					<a href="createSemester.jsp" class="list-group-item sub-item" data-parent="#sub_categories_5" style="padding-left: 78px;">Thêm học kì</a>
+					<a href="/renderCreateSemester" class="list-group-item sub-item" data-parent="#sub_categories_5" style="padding-left: 78px;">Thêm học kì</a>
 					<a href="/renderGetSemesterInfo" class="list-group-item sub-item" data-parent="#sub_categories_5" style="padding-left: 78px;">Xem thông tin học kì</a>
 					<a href="/renderUpdateSemesterInfo" class="list-group-item sub-item" data-parent="#sub_categories_5" style="padding-left: 78px;">Cập nhật thông tin học kì</a>
+				</div>
+				
+				<a class="list-group-item list-group-item-warning list-group-item-action" data-remote="true" href="#sub_categories_6" id="categories_6" data-toggle="collapse" data-parent="#sub_categories_6">
+					<span>Quản lí học phần</span>
+					<span class="menu-ico-collapse"><i class="fa fa-chevron-down"></i></span>
+				</a>
+				<div class="collapse list-group-submenu" id="sub_categories_6">
+					<a href="/renderCreateCourse" class="list-group-item sub-item" data-parent="#sub_categories_6" style="padding-left: 78px;">Thêm học phần</a>
+					<a href="/renderGetCourseInfo" class="list-group-item sub-item" data-parent="#sub_categories_6" style="padding-left: 78px;">Xem thông tin học phần</a>
+					<a href="/renderUpdateCourseInfo" class="list-group-item sub-item" data-parent="#sub_categories_6" style="padding-left: 78px;">Cập nhật thông tin học phần</a>
 				</div>
 			</c:if>
 			

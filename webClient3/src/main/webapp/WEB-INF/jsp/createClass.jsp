@@ -31,9 +31,9 @@
 <script type="text/javascript"
 	src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.13.1/jquery.validate.min.js"></script>
 
-<link href="css/createA.css" rel="stylesheet">
-
 <script src="js/config.js" type="text/javascript"></script>
+<script src="js/createClass.js" type="text/javascript"></script>
+
 </head>
 
 <body>
@@ -85,8 +85,9 @@
                                  </div>
 								
 								<div class="form-group row">
-									<label for="class_name" class="col-4 col-form-label">Tên
-										tài khoản *</label>
+									<label for="class_name" class="col-4 col-form-label">
+										Tên lớp học
+									</label>
 									<div class="col-8">
 										<input id="class_name" name="class_name"
 											placeholder="Class Name" class="form-control here" type="text" />
@@ -99,7 +100,7 @@
 									</label>
 									<div class="col-8">
 										<input id="max_student"
-											name="max_student" placeholder="Max number of student"
+											name="max_student" placeholder="Max number of students"
 											class="form-control here" type="text" />
 									</div>
 								</div>
@@ -110,43 +111,24 @@
 									</label>
 									<div class="col-8">
 										<input id="number_of_lesson"
-											name="number_of_lesson" placeholder="Max number of student"
+											name="number_of_lesson" placeholder="Number of lessons"
 											class="form-control here" type="text" />
 									</div>
 								</div>
 
 								<div class="form-group row">
-									<label for="new_email" class="col-4 col-form-label">Email
-										*</label>
-									<div class="col-8">
-										<form:input path="email" id="new_email" name="new_email"
-											placeholder="New Email" class="form-control here" type="text" />
-									</div>
-								</div>
-
-								<div class="form-group row">
-									<label for="fullName" class="col-4 col-form-label">Họ tên *</label>
-									<div class="col-8">
-										<form:input path="fullName" id="fullName" name="fullName"
-											placeholder="Full Name" class="form-control here" type="text" />
-									</div>
-								</div>
-
-								
-								<form:input path="role" id="role" name="role_input"
-									class="form-control here" type="hidden" />
-
-								<div class="form-group row">
 									<div class="offset-4 col-8">
-										<button id="submit_account" name="submit_account"
-											type="submit" class="btn btn-primary">Tạo tài khoản</button>
+										<button id="add_class" name="add_class"
+											type="submit" class="btn btn-primary">Thêm lớp học</button>
 									</div>
 								</div>
 
+								<div class="loader col-md-12">
+                                    <img id = "img_loader" src= "images/loader.gif" style= "" alt="Loading..." />
+                                </div>
 								
-									<div id="error_div"
-										class="col-md-12 text-center alert alert-warning ">
-									</div>
+								<div id="message" class="col-md-12 text-center alert alert-warning ">
+								</div>
 								
 							</form>
 						</div>

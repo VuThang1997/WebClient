@@ -30,7 +30,7 @@
 <script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.13.1/jquery.validate.min.js"></script>
 
 <script src="js/config.js" type="text/javascript"></script>
-<script src="js/createRoom.js" type="text/javascript"></script>
+<script src="js/updateCourse.js" type="text/javascript"></script>
 </head>
 
 <body>
@@ -52,66 +52,50 @@
 					<div class="card-body">
 						<div>
 							<div class="col-md-12 text-center">
-								<h4>THÊM PHÒNG HỌC</h4>
+								<h4>CẬP NHẬT THÔNG TIN HỌC PHẦN</h4>
 								<hr>
 							</div>
 						</div>
 						<div class="card-body col-md-12">
-							<form id="create_room_form">
+							<form id="update_course_form">
 								<div class="form-group row">
+									<label for="course_select" class="col-md-4 col-form-label">
+										Chọn học phần: 
+									</label>
+									<div class="col-md-8">
+										 <select id="course_select" class="browser-default custom-select">
+										   		<option value="0" selected>Chọn phòng học</option>
+											    <c:forEach items="${allCourses}" var="course">
+												    <option value="${course.courseID}">${course.courseName}</option>
+												</c:forEach>
+											</select>
+									</div>
+								</div>
+								
+								<div class="form-group row show_info">
 									<label for="room_name" class="col-4 col-form-label">
-										Tên phòng học *
+										Tên học phần *
 									</label>
 									<div class="col-8">
-										<input id="room_name" name="room_name"
-											placeholder="Room Name" class="form-control here" type="text" />
+										<input id="course_name" name="course_name" 
+											placeholder="Course Name" class="form-control here" type="text" />
 									</div>
 								</div>
 
-								<div class="form-group row">
-									<label for="address" class="col-4 col-form-label">
-										Địa chỉ *
+								<div class="form-group row show_info">
+									<label for="description" class="col-4 col-form-label">
+										Mô tả học phần *
 									</label>
 									<div class="col-8">
-										<input id="address" name="address" placeholder="Address"
-											class="form-control here" type="text" />
-									</div>
-								</div>
-
-								<div class="form-group row">
-									<label for="latitude" class="col-4 col-form-label">
-										Vĩ độ *
-									</label>
-									<div class="col-8">
-										<input id="latitude" name="latitude" placeholder="Latitude"
+										<input id="description" name="description" placeholder="Description"
 											class="form-control here" type="text" />
 									</div>
 								</div>
 								
-								<div class="form-group row">
-									<label for="longitude" class="col-4 col-form-label">
-										Kinh độ *
-									</label>
-									<div class="col-8">
-										<input id="longitude" name="longitude" placeholder="Longitude"
-											class="form-control here" type="text" />
-									</div>
-								</div>
-								
-								<div class="form-group row">
-									<label for="mac_addr" class="col-4 col-form-label">
-										Địa chỉ MAC *
-									</label>
-									<div class="col-8">
-										<input id="mac_addr" name="mac_addr" placeholder="MAC Address"
-											class="form-control here" type="text" />
-									</div>
-								</div>
-
 								<div class="form-group row">
 									<div class="offset-4 col-8">
-										<button id="submit_room" name="submit_room"
-											type="submit" class="btn btn-primary">Thêm phòng học</button>
+										<button id="update_course" name="update_course"
+											type="submit" class="btn btn-primary">Cập nhật thông tin</button>
 									</div>
 								</div>
 								

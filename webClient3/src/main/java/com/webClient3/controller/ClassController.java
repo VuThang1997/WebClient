@@ -24,6 +24,7 @@ import com.webClient3.model.MyFile;
 import com.webClient3.model.ReportError;
 import com.webClient3.model.Semester;
 import com.webClient3.service.ClassService;
+import com.webClient3.service.CourseSevice;
 import com.webClient3.service.FileService;
 import com.webClient3.service.SemesterService;
 import com.webClient3.utils.GeneralValue;
@@ -33,23 +34,25 @@ public class ClassController {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(ClassController.class);
 	private SemesterService semesterService;
+	private CourseSevice courseSevice;
 	private ClassService classService;
 	private FileService fileService;
 
 	public ClassController() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	@Autowired
 	public ClassController(@Qualifier("ClassServiceImpl1") ClassService classService,
 			@Qualifier("FileServiceImpl1") FileService fileService,
-			@Qualifier("SemesterServiceImpl1") SemesterService semesterService) {
+			@Qualifier("SemesterServiceImpl1") SemesterService semesterService,
+			@Qualifier("CourseServiceImpl1") CourseSevice courseSevice) {
 
 		super();
 		this.classService = classService;
 		this.fileService = fileService;
 		this.semesterService = semesterService;
+		this.courseSevice = courseSevice;
 	}
 
 	@RequestMapping(value = "/renderCreateStudentClass", method = RequestMethod.GET)
@@ -66,7 +69,7 @@ public class ClassController {
 			return "login";
 		}
 
-		List<Course> listCourse = this.classService.getAllCourse();
+		List<Course> listCourse = this.courseSevice.getAllCourse();
 
 		if (listCourse != null && !listCourse.isEmpty()) {
 			for (Course course : listCourse) {
@@ -106,7 +109,7 @@ public class ClassController {
 			model.addAttribute("error", "Upload failed");
 		}
 
-		List<Course> listCourse = this.classService.getAllCourse();
+		List<Course> listCourse = this.courseSevice.getAllCourse();
 		
 		if (listCourse != null && !listCourse.isEmpty()) {
 			for (Course course : listCourse) {
@@ -175,7 +178,7 @@ public class ClassController {
 		modelAndView.addObject("myFile", new MyFile());
 		modelAndView.addObject("report", new ReportError());
 
-		List<Course> listCourse = this.classService.getAllCourse();
+		List<Course> listCourse = this.courseSevice.getAllCourse();
 		if (listCourse != null && !listCourse.isEmpty()) {
 			for (Course course : listCourse) {
 				LOGGER.info("course name = " + course.getCourseName());
@@ -197,7 +200,7 @@ public class ClassController {
 		}
 
 		ModelAndView modelAndView = new ModelAndView("createClass");
-		List<Course> listCourse = this.classService.getAllCourse();
+		List<Course> listCourse = this.courseSevice.getAllCourse();
 		if (listCourse != null && !listCourse.isEmpty()) {
 			for (Course course : listCourse) {
 				LOGGER.info("course name = " + course.getCourseName());

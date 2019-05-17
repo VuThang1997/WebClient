@@ -6,7 +6,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -18,7 +17,6 @@ import org.springframework.web.client.RestTemplate;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.webClient3.model.Course;
 import com.webClient3.model.ReportError;
 import com.webClient3.utils.GeneralValue;
 
@@ -75,31 +73,6 @@ public class ClassServiceImpl1 implements ClassService {
 			LOGGER.info("Error happend ==========================");
 			report = new ReportError(400, "Thêm sinh viên không thành công!");
 			return report;
-		}
-	}
-
-	@Override
-	public List<Course> getAllCourse() {
-		LOGGER.info("Begin retrieving all course ==========================");
-		String baseUrl = GeneralValue.SERVER_CORE_HOST + ":" + GeneralValue.SERVER_CORE_PORT + "/courses/all";
-
-		HttpHeaders header = new HttpHeaders();
-		header.setContentType(MediaType.APPLICATION_JSON);
-		header.add("Accept", MediaType.APPLICATION_JSON_VALUE);
-
-		try {
-			ResponseEntity<List<Course>> response = restTemplate.exchange(
-					baseUrl, 
-					HttpMethod.GET, null, 
-					new ParameterizedTypeReference<List<Course>>(){});
-			LOGGER.info("Sending RestTemplate ===================");
-			
-			List<Course> listCourse = response.getBody();
-			return listCourse;
-
-		} catch (HttpStatusCodeException e) {
-			LOGGER.info("retrieve no record ==========================");
-			return null;
 		}
 	}
 

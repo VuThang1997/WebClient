@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -26,33 +27,35 @@ import com.webClient3.model.MyFile;
 import com.webClient3.model.ReportError;
 import com.webClient3.model.TeacherClass;
 import com.webClient3.service.ClassService;
+import com.webClient3.service.CourseSevice;
 import com.webClient3.service.FileService;
 import com.webClient3.service.RollcallService;
 import com.webClient3.utils.GeneralValue;
-import org.springframework.validation.BindingResult;
 
 @Controller
 public class RollcallController {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(RollcallController.class);
 	private RollcallService rollcallService;
+	private CourseSevice courseSevice;
 	private FileService fileService;
 	private ClassService classService;
 	
 	public RollcallController() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	@Autowired
 	public RollcallController(
 			@Qualifier("RollcallServiceImpl1") RollcallService rollcallService,
 			@Qualifier("ClassServiceImpl1") ClassService classService,
-			@Qualifier("FileServiceImpl1") FileService fileService) {
+			@Qualifier("FileServiceImpl1") FileService fileService,
+			@Qualifier("CourseServiceImpl1") CourseSevice courseSevice) {
 		super();
 		this.rollcallService = rollcallService;
 		this.classService = classService;
 		this.fileService = fileService;
+		this.courseSevice = courseSevice;
 	}
 	
 	@RequestMapping(value = "/renderTeacherRollCallView", method = RequestMethod.GET)
@@ -185,7 +188,7 @@ public class RollcallController {
 		modelAndView.addObject("myFile", new MyFile());
 		modelAndView.addObject("classModel", new Class());
 		
-		List<Course> listCourses = this.classService.getAllCourse();
+		List<Course> listCourses = this.courseSevice.getAllCourse();
 		if (listCourses != null && !listCourses.isEmpty()) {
 			for (Course course : listCourses) {
 				LOGGER.info("course name = " + course.getCourseName());
