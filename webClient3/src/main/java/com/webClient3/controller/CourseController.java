@@ -14,22 +14,22 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.webClient3.model.Course;
-import com.webClient3.service.CourseSevice;
+import com.webClient3.service.CourseService;
 
 @Controller
 public class CourseController {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(CourseController.class);
-	private CourseSevice courseSevice;
+	private CourseService courseService;
 	
 	public CourseController() {
 		super();
 	}
 
 	@Autowired
-	public CourseController(@Qualifier("CourseSeviceImpl1") CourseSevice courseSevice) {
+	public CourseController(@Qualifier("CourseServiceImpl1") CourseService courseService) {
 		super();
-		this.courseSevice = courseSevice;
+		this.courseService = courseService;
 	}
 	
 	@RequestMapping(value = "/renderCreateCourse", method = RequestMethod.GET)
@@ -80,7 +80,7 @@ public class CourseController {
 //	}
 	
 	public ModelAndView prepareForCreateCourseView(ModelAndView modelAndView) {
-		List<Course> listCourse = this.courseSevice.getAllCourse();
+		List<Course> listCourse = this.courseService.getAllCourse();
 		if (listCourse != null && !listCourse.isEmpty()) {
 			for (Course course : listCourse) {
 				LOGGER.info("course name = " + course.getCourseName());

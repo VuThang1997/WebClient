@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.webClient3.model.Course;
 
-public interface CourseSevice {
+public interface CourseService {
 
 	List<Course> getAllCourse();
 }

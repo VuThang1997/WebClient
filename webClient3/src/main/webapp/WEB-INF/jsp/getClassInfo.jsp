@@ -31,7 +31,7 @@
 	src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.13.1/jquery.validate.min.js"></script>
 
 <script src="js/config.js" type="text/javascript"></script>
-<script src="js/createClass.js" type="text/javascript"></script>
+<script src="js/getClassInfo.js" type="text/javascript"></script>
 
 </head>
 
@@ -54,27 +54,27 @@
 					<div class="card-body">
 						<div>
 							<div class="col-md-12 text-center">
-								<h4>THÊM LỚP HỌC</h4>
+								<h4>XEM THÔNG TIN LỚP HỌC</h4>
 								<hr>
 							</div>
 						</div>
 						<div class="card-body col-md-12">
-							<form id="form_create_class" >
-								
+							<form id="form_class_info" >
+							
 								<div class="form-group row">
                                      <label for="semester_select" class="col-5 col-form-label">Chọn học kì: </label> 
                                      <div class="col-7">
                                          <select id="semester_select" class="browser-default custom-select">
 											<option value="0" selected>Chọn học kì</option>
-                                             <c:forEach items="${allSemester}" var="semester">
-                                                <option value="${semester.semesterID}">${semester.semesterName}</option>
+                                             <c:forEach items="${allSemesters}" var="semester">
+                                                 <option value="${semester.semesterID}">${semester.semesterName}</option>
                                              </c:forEach>
                                          </select>
                                      </div>
-                                  </div>
+                                 </div>
                                      
                                  <div class="form-group row">
-                                     <label for="course_select" class="col-5 col-form-label">Chọn học kì: </label> 
+                                     <label for="course_select" class="col-5 col-form-label">Chọn học phần: </label> 
                                      <div class="col-7">
                                          <select id="course_select" class="browser-default custom-select">
 											<option value="0" selected>Chọn học phần</option>
@@ -84,8 +84,20 @@
                                          </select>
                                      </div>
                                  </div>
+                                 
+                                 <div class="form-group row">
+									<label for="class_select" class="col-md-5 col-form-label">
+										Chọn lớp học *: 
+									</label>
+									<div class="col-md-7">
+										 <select id="class_select" class="browser-default custom-select">
+										 	<option value="0" selected>Chọn lớp học</option>
+											<!-- dùng js để tạo lựa chọn -->
+										</select>
+									</div>
+								</div>
 								
-								<div class="form-group row">
+								<div class="form-group row show_info">
 									<label for="class_name" class="col-5 col-form-label">
 										Tên lớp học
 									</label>
@@ -95,7 +107,7 @@
 									</div>
 								</div>
 
-								<div class="form-group row">
+								<div class="form-group row show_info">
 									<label for="max_student" class="col-5 col-form-label">
 										Số lượng học sinh *
 									</label>
@@ -106,7 +118,7 @@
 									</div>
 								</div>
 
-								<div class="form-group row">
+								<div class="form-group row show_info">
 									<label for="number_of_lesson" class="col-5 col-form-label">
 										Số tiết học *
 									</label>
@@ -116,11 +128,13 @@
 											class="form-control here" type="text" />
 									</div>
 								</div>
-
+								
 								<div class="form-group row">
 									<div class="offset-4 col-8">
-										<button id="add_class" name="add_class"
-											type="submit" class="btn btn-primary">Thêm lớp học</button>
+										<button id="update_class" name="update_class"
+											type="submit" class="btn btn-primary">
+												Cập nhật thông tin
+										</button>
 									</div>
 								</div>
 

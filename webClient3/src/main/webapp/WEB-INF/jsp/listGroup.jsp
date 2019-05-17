@@ -28,6 +28,7 @@
 			
 				<div class="collapse list-group-submenu" id="sub_categories_1">
 					<a href="/renderCreateClass" class="list-group-item sub-item" data-parent="#sub_categories_1" style="padding-left: 78px;">Thêm lớp học</a>
+					<a href="/renderGetClassInfo" class="list-group-item sub-item" data-parent="#sub_categories_1" style="padding-left: 78px;">Xem thông tin lớp học</a>
 					<a href="/renderCreateStudentClass" class="list-group-item sub-item" data-parent="#sub_categories_1" style="padding-left: 78px;">Thêm sinh viên</a>
 					<a href="#" class="list-group-item sub-item" data-parent="#sub_categories_1" style="padding-left: 78px;">SubSubPos3</a>
 					<a href="#" class="list-group-item sub-item" data-parent="#sub_categories_1" style="padding-left: 78px;">SubSubPos4</a>
