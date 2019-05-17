@@ -10,5 +10,4 @@ public interface ClassService {
 	ReportError createMultipleStudentClass(List<String> listStudentEmail, int classID);
 
 	List<Course> getAllCourse();
-
 }
