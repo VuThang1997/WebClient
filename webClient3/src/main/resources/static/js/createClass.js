@@ -5,23 +5,41 @@ $(document).ready(function() {
 	
 	let linkDownload = protocol_client + "://" + host_client + ":" + port_client + '/download/Import_Template_File/StudentClass.xlsx';
     $("#link_report").attr("href",linkDownload);
-	$.validator.addMethod("EMAIL", function(value, element) {
-			return this.optional(element) || /^[a-zA-Z0-9._-]+@[a-zA-Z0-9-]+\.[a-zA-Z.]{2,5}$/i
-						.test(value);
-	}, "Email không hợp lệ! ");
+    
+    $.validator.addMethod('minStrict', function (value, el, param) {
+        return value > param;
+    });
+	
 
 	$('#form_create_class').validate({
 		errorClass : 'errors',
 		rules : {
 			class_name : {
-			required : true,
-			EMAIL : "required EMAIL",
-			email : true
+				required : true,
+			},
+			max_student: {
+			    required: true,
+			    minStrict: 20,
+			    number: true
+			},
+			number_of_lesson: {
+			    required: true,
+			    minStrict: 5,
+			    number: true
 			}
 		},
+		
 		messages : {
-			email : {
-				required : "Mời nhập email!"
+			class_name : {
+				required : "Mời nhập tên lớp",
+			},
+			max_student: {
+				required : "Mời nhập số lượng học sinh tối đa!",
+				minStrict: "Lớp học không thể có ít hơn 20 học sinh"
+			},
+			number_of_lesson: {
+				required : "Mời nhập số lượng buổi học!",
+				minStrict: "Lớp học không thể có ít hơn 5 buổi học"
 			}
 		},
 		highlight : function(element) {
@@ -32,20 +50,27 @@ $(document).ready(function() {
 		}
 	});
 
-	$("#add_student_manual").click(function(e){
+	$("#add_class").click(function(e){
 		e.preventDefault();
 		$("#img_loader").show();
-
-		console.log("student email = " + $("#email").val());
-		console.log("class id = " + $('#class_select_manual :selected').val());
+		"className", "maxStudent", "numberOfLessons", "courseID",
+	"semesterID")) {
+		console.log("semester id = " + $('#semester_select :selected').val());
+		console.log("course id = " + $('#course_select :selected').val());
+		
 		$.ajax({
 			type : "POST",
 			dataType : "json",
 			url : protocol_server_core + "://"
 					+ host_server_core + ":" + port_server_core
-					+ "/studentClasses",
+					+ "/classes",
 			contentType : 'application/json',
 			data: JSON.stringify({
+				className: 
+				maxStudent:
+				numberOfLessons:
+				courseID
+				semesterID
 				   studentEmail: $("#email").val(),
 				   classID: $('#class_select_manual :selected').val()
 				   
