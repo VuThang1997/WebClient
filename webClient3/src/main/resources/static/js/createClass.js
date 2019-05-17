@@ -1,10 +1,8 @@
 $(document).ready(function() {
-	var courseID = -1;
-	var classID = -1;
-	
-	$("#message_manual").hide();
+	$("#message").hide();
 	$("#img_loader").hide();
 	$("#img_file_loader").hide();
+	
 	let linkDownload = protocol_client + "://" + host_client + ":" + port_client + '/download/Import_Template_File/StudentClass.xlsx';
     $("#link_report").attr("href",linkDownload);
 	$.validator.addMethod("EMAIL", function(value, element) {
@@ -12,10 +10,10 @@ $(document).ready(function() {
 						.test(value);
 	}, "Email không hợp lệ! ");
 
-	$('#form_add_student_to_class').validate({
+	$('#form_create_class').validate({
 		errorClass : 'errors',
 		rules : {
-			email : {
+			class_name : {
 			required : true,
 			EMAIL : "required EMAIL",
 			email : true
@@ -34,10 +32,6 @@ $(document).ready(function() {
 		}
 	});
 
-	
-	
-	
-	
 	$("#add_student_manual").click(function(e){
 		e.preventDefault();
 		$("#img_loader").show();
@@ -79,7 +73,7 @@ $(document).ready(function() {
 			$("#form_submit").submit();
 		});
 		
-	//=========================MANUAL============================
+	//=========================FILE========================
 		$("#course_select").on('change', function(e) {
 			courseID = $("option:selected", this).val();
 			console.log("course ID after course_select is changed = " + courseID);

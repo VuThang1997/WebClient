@@ -40,6 +40,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.webClient3.enumData.AccountRole;
@@ -220,6 +221,17 @@ public class AccountController {
 			model.addAttribute("error", "Updating account info failed!");
 			return "updateUserInfo";
 		}
+	}
+	
+	@RequestMapping(value = "/renderDisableAccount", method = RequestMethod.GET)
+	public ModelAndView renderDisableAccount(HttpSession session) {
+		if (session.getAttribute("id") == null) {
+			logger.info("Redirect to login page ==============");
+			return new ModelAndView("redirect:/");
+		}
+		
+		ModelAndView modelAndView = new ModelAndView("disableAccount");
+		return modelAndView;
 	}
 
 	@RequestMapping(value = "/renderCreateAccount", method = RequestMethod.GET)

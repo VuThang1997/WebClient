@@ -14,7 +14,7 @@
 				
 				<div class="collapse list-group-submenu" id="sub_categories_3">
 					<a href="/renderCreateAccount" class="list-group-item sub-item" data-parent="#sub_categories_3" style="padding-left: 78px;">Tạo tài khoản</a>
-					<a href="/disableAccount.jsp" class="list-group-item sub-item" data-parent="#sub_categories_2" style="padding-left: 78px;">Vô hiệu hóa tài khoản</a>
+					<a href="/renderDisableAccount" class="list-group-item sub-item" data-parent="#sub_categories_2" style="padding-left: 78px;">Vô hiệu hóa tài khoản</a>
 					<a href="#" class="list-group-item sub-item" data-parent="#sub_categories_2" style="padding-left: 78px;">SubSubPos3</a>
 					<a href="#" class="list-group-item sub-item" data-parent="#sub_categories_2" style="padding-left: 78px;">SubSubPos4</a>
 				</div>
