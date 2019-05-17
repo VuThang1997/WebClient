@@ -157,12 +157,13 @@ public class FileServiceImpl1 implements FileService{
 							
 							break;
 						case 3:
+							LOGGER.info("===================== cell value = " + cellValue);
 							int reason = Integer.parseInt(cellValue);
 							reportError.setErrorCode(reason);
 							listStudentRollcall.add(reportError);
+							LOGGER.info("====================== reason = " + reportError.getErrorCode());
 							reportError = null;
 							fieldNumber = 0;
-							LOGGER.info("====================== reason = " + reportError.getErrorCode());
 							break;
 						}
 					}

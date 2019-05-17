@@ -122,12 +122,6 @@ public class AccountController {
 				return "login";
 			}
 
-			if (adminAccount.getIsActive() == AccountStatus.INACTIVE.getValue()) {
-				logger.info("This account is still inactive");
-				model.addAttribute("error", "This account is still inactive!");
-				return "login";
-			}
-
 			session.setAttribute("id", adminAccount.getId());
 			session.setAttribute("role", adminAccount.getRole());
 			session.setAttribute("email", adminAccount.getEmail());
@@ -161,7 +155,7 @@ public class AccountController {
 
 		} catch (HttpStatusCodeException | IOException e) {
 			logger.info("Login failed");
-			model.addAttribute("error", "Incorrect email or password!");
+			model.addAttribute("error", "Incorrect email or password or this account has been disabled!");
 			return "login";
 		}
 	}

@@ -86,7 +86,6 @@ public class RollcallController {
 		}
 
 		ModelAndView modelAndView = this.prepareForRollcallStudentView();
-		
 	
 		return modelAndView;
 	}

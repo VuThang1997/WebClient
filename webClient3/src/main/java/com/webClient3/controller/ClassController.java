@@ -22,14 +22,17 @@ import com.webClient3.model.Account;
 import com.webClient3.model.Course;
 import com.webClient3.model.MyFile;
 import com.webClient3.model.ReportError;
+import com.webClient3.model.Semester;
 import com.webClient3.service.ClassService;
 import com.webClient3.service.FileService;
+import com.webClient3.service.SemesterService;
 import com.webClient3.utils.GeneralValue;
 
 @Controller
 public class ClassController {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(ClassController.class);
+	private SemesterService semesterService;
 	private ClassService classService;
 	private FileService fileService;
 
@@ -40,11 +43,13 @@ public class ClassController {
 
 	@Autowired
 	public ClassController(@Qualifier("ClassServiceImpl1") ClassService classService,
-			@Qualifier("FileServiceImpl1") FileService fileService) {
+			@Qualifier("FileServiceImpl1") FileService fileService,
+			@Qualifier("SemesterServiceImpl1") SemesterService semesterService) {
 
 		super();
 		this.classService = classService;
 		this.fileService = fileService;
+		this.semesterService = semesterService;
 	}
 
 	@RequestMapping(value = "/renderCreateStudentClass", method = RequestMethod.GET)
@@ -164,76 +169,6 @@ public class ClassController {
 
 		this.prepareForCreateStudentClassView(modelAndView);
 		return modelAndView;
-
-//		int fieldNumber = 0;
-//		LOGGER.info("========================= link file  = " + linkFile);
-//
-//		try {
-//
-//			// Creating a Workbook from an Excel file (.xls or .xlsx)
-//			Workbook workbook = WorkbookFactory.create(new File(linkFile));
-//
-//			// Create a DataFormatter to format and get each cell's value as String
-//			DataFormatter dataFormatter = new DataFormatter();
-//
-//			Iterator<Sheet> sheetIterator = workbook.sheetIterator();
-//			Iterator<Cell> cellIterator = null;
-//			Sheet sheet = null;
-//			Cell cell = null;
-//			Row row = null;
-//			String cellValue = null;
-//			listEmail = new ArrayList<>();
-//
-//			while (sheetIterator.hasNext()) {
-//				sheet = sheetIterator.next();
-//				LOGGER.info("=> " + sheet.getSheetName());
-//
-//				LOGGER.info("\n\nIterating over Rows and Columns using Iterator\n");
-//				Iterator<Row> rowIterator = sheet.rowIterator();
-//				while (rowIterator.hasNext()) {
-//					row = rowIterator.next();
-//					
-//					//exclude the first row = header of table
-//					if (row.getRowNum() == 0) {
-//						continue;
-//					}
-//
-//					// Now let's iterate over the columns of the current row
-//					cellIterator = row.cellIterator();
-//
-//					while (cellIterator.hasNext()) {
-//						fieldNumber++;
-//						LOGGER.info("================== fiel number = " + fieldNumber);
-//
-//						cell = cellIterator.next();
-//						cellValue = dataFormatter.formatCellValue(cell);
-//
-//						switch (fieldNumber) {
-//						case 1:
-//							studentEmail = cellValue;
-//							listEmail.add(studentEmail);
-//							LOGGER.info("====================== Student email = " + studentEmail);
-//							break;
-//						case 2:
-//							fieldNumber = 0;
-//							break;
-//						}
-//					}
-//				}
-//
-//			}
-//
-//			int classID = report.getErrorCode();
-//			LOGGER.info("class ID in controller = " + classID);
-//			report = this.classService.createMultipleStudentClass(listEmail, classID);
-//			
-//		} catch (EncryptedDocumentException | InvalidFormatException | IOException e) {
-//			e.printStackTrace();
-//			modelAndView.addObject("error", "Tạo tài khoản không thành công!");
-//			this.prepareForCreateStudentClassView(modelAndView);
-//			return modelAndView;
-//		}
-
 	}
 
 	public ModelAndView prepareForCreateStudentClassView(ModelAndView modelAndView) {
@@ -251,6 +186,40 @@ public class ClassController {
 			LOGGER.info("List course is null ===========================");
 		}
 
+		return modelAndView;
+	}
+	
+	@RequestMapping(value = "/renderCreateClass", method = RequestMethod.POST)
+	public ModelAndView renderCreateClass(HttpSession session) {
+		if (session.getAttribute("id") == null) {
+			LOGGER.info("Redirect to login page ==============");
+			return new ModelAndView("redirect:/");
+		}
+
+		ModelAndView modelAndView = new ModelAndView("createClass");
+		List<Course> listCourse = this.classService.getAllCourse();
+		if (listCourse != null && !listCourse.isEmpty()) {
+			for (Course course : listCourse) {
+				LOGGER.info("course name = " + course.getCourseName());
+			}
+
+			modelAndView.addObject("allCourses", listCourse);
+		} else {
+			LOGGER.info("List course is null ===========================");
+		}
+		
+		List<Semester> listSemester = this.semesterService.findAllSemester();
+		for (Semester semester: listSemester) {
+			LOGGER.info("semester name = " + semester.getSemesterName());
+		}
+		if (listSemester != null && !listSemester.isEmpty()) {
+			modelAndView.addObject("allSemester", listSemester);
+			LOGGER.info("List semester is putted ===========================");
+		} else {
+			LOGGER.info("List semester is null ===========================");
+		}
+
+		this.prepareForCreateStudentClassView(modelAndView);
 		return modelAndView;
 	}
 }
