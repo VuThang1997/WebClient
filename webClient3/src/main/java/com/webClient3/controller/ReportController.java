@@ -32,7 +32,7 @@ public class ReportController {
 	public ReportController(
 			@Qualifier("SemesterServiceImpl1") SemesterService semesterService,
 			@Qualifier("ClassServiceImpl1") ClassService classService,
-			@Qualifier("CourseServiceImpl1") CourseSevice courseSevice) {
+			@Qualifier("CourseSeviceImpl1") CourseSevice courseSevice) {
 		super();
 		this.semesterService = semesterService;
 		this.classService = classService;

@@ -27,7 +27,7 @@ public class CourseController {
 	}
 
 	@Autowired
-	public CourseController(@Qualifier("CourseServiceImpl1") CourseSevice courseSevice) {
+	public CourseController(@Qualifier("CourseSeviceImpl1") CourseSevice courseSevice) {
 		super();
 		this.courseSevice = courseSevice;
 	}
