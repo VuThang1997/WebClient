@@ -46,7 +46,7 @@ public class ClassController {
 	public ClassController(@Qualifier("ClassServiceImpl1") ClassService classService,
 			@Qualifier("FileServiceImpl1") FileService fileService,
 			@Qualifier("SemesterServiceImpl1") SemesterService semesterService,
-			@Qualifier("CourseServiceImpl1") CourseSevice courseSevice) {
+			@Qualifier("CourseSeviceImpl1") CourseSevice courseSevice) {
 
 		super();
 		this.classService = classService;

@@ -50,7 +50,7 @@ public class RollcallController {
 			@Qualifier("RollcallServiceImpl1") RollcallService rollcallService,
 			@Qualifier("ClassServiceImpl1") ClassService classService,
 			@Qualifier("FileServiceImpl1") FileService fileService,
-			@Qualifier("CourseServiceImpl1") CourseSevice courseSevice) {
+			@Qualifier("CourseSeviceImpl1") CourseSevice courseSevice) {
 		super();
 		this.rollcallService = rollcallService;
 		this.classService = classService;
