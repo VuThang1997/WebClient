@@ -17,22 +17,26 @@ import com.webClient3.model.Account;
 import com.webClient3.model.Course;
 import com.webClient3.model.Semester;
 import com.webClient3.service.ClassService;
-import com.webClient3.service.ReportService;
+import com.webClient3.service.CourseSevice;
+import com.webClient3.service.SemesterService;
 
 @Controller
 public class ReportController {
 
 	private Logger logger = LoggerFactory.getLogger(ReportController.class);
-	private ReportService reportService;
+	private SemesterService semesterService;
 	private ClassService classService;
+	private CourseSevice courseSevice;
 
 	@Autowired
 	public ReportController(
-			@Qualifier("ReportServiceImpl1") ReportService reportService,
-			@Qualifier("ClassServiceImpl1") ClassService classService) {
+			@Qualifier("SemesterServiceImpl1") SemesterService semesterService,
+			@Qualifier("ClassServiceImpl1") ClassService classService,
+			@Qualifier("CourseServiceImpl1") CourseSevice courseSevice) {
 		super();
-		this.reportService = reportService;
+		this.semesterService = semesterService;
 		this.classService = classService;
+		this.courseSevice = courseSevice;
 	}
 
 	@RequestMapping(value = "/renderGeneralReportView1", method = RequestMethod.GET)
@@ -43,7 +47,7 @@ public class ReportController {
 			return "login";
 		}
 		
-		List<Semester> listSemester = this.reportService.findAllSemester();
+		List<Semester> listSemester = this.semesterService.findAllSemester();
 		for (Semester semester: listSemester) {
 			logger.info("semester name = " + semester.getSemesterName());
 		}
@@ -65,7 +69,7 @@ public class ReportController {
 			return "login";
 		}
 		
-		List<Course> listCourse = this.classService.getAllCourse();
+		List<Course> listCourse = this.courseSevice.getAllCourse();
 		if (listCourse != null && !listCourse.isEmpty()) {
 			for (Course course: listCourse) {
 				logger.info("course name = " + course.getCourseName());

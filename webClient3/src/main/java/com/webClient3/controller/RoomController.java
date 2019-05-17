@@ -19,7 +19,7 @@ import com.webClient3.service.RoomService;
 @Controller
 public class RoomController {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(ClassController.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(RoomController.class);
 	private RoomService roomService;
 	
 	public RoomController() {
@@ -30,6 +30,17 @@ public class RoomController {
 	public RoomController(@Qualifier("RoomServiceImpl1") RoomService roomService) {
 		super();
 		this.roomService = roomService;
+	}
+	
+	@RequestMapping(value = "/renderCreateRoom", method = RequestMethod.GET)
+	public ModelAndView renderCreateRoom(HttpSession session) {
+		if (session.getAttribute("id") == null) {
+			LOGGER.info("Redirect to login page ==============");
+			return new ModelAndView("redirect:/");
+		}
+
+		ModelAndView modelAndView = new ModelAndView("createRoom");
+		return modelAndView;
 	}
 
 	@RequestMapping(value = "/renderGetRoomInfo", method = RequestMethod.GET)

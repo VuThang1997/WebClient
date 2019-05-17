@@ -32,6 +32,18 @@ public class SemesterController {
 		this.semesterService = semesterService;
 	}
 	
+	@RequestMapping(value = "/renderCreateSemester", method = RequestMethod.GET)
+	public ModelAndView renderCreateSemester(HttpSession session) {
+		if (session.getAttribute("id") == null) {
+			LOGGER.info("Redirect to login page ==============");
+			return new ModelAndView("redirect:/");
+		}
+
+		ModelAndView modelAndView = new ModelAndView("createSemester");
+		return modelAndView;
+	}
+
+	
 	@RequestMapping(value = "/renderGetSemesterInfo", method = RequestMethod.GET)
 	public ModelAndView renderGetSemesterInfo(HttpSession session) {
 		if (session.getAttribute("id") == null) {
