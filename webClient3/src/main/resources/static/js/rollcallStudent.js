@@ -3,7 +3,39 @@ $(document).ready(function() {
 	//var classID = -1;
 	$("#message").hide();
 	$("#message_manual").hide();
-	
+	$("#img_file_loader").hide();
+	$("#img_loader").hide();
+	let linkDownload = protocol_client + "://" + host_client + ":" + port_client + '/download/Import_Template_File/StudentClass.xlsx';
+    $("#link_report").attr("href",linkDownload);
+	$.validator
+                            .addMethod(
+                                    "EMAIL",
+                                    function (value, element) {
+                                        return this.optional(element)
+                                                || /^[a-zA-Z0-9._-]+@[a-zA-Z0-9-]+\.[a-zA-Z.]{2,5}$/i
+                                                .test(value);
+                                    }, "Email không hợp lệ! ");
+	$('#rollcall_for_student').validate({
+		errorClass : 'errors',
+		rules : {
+			email : {
+			required : true,
+			EMAIL : "required EMAIL",
+			email : true
+			}
+		},
+		messages : {
+			email : {
+				required : "Mời nhập email!"
+			}
+		},
+		highlight : function(element) {
+			$(element).parent().addClass('error')
+		},
+		unhighlight : function(element) {
+			$(element).parent().removeClass('error')
+		}
+	});
 	window.onload = function() {
 		if (sessionStorage.getItem('courseID') != null) {
 			let classID = sessionStorage.getItem('classID');
@@ -38,7 +70,42 @@ $(document).ready(function() {
 						$("#class_select").val(classID);
 						$("#classId").val(classID);
 						console.log("classID hidden input: "+ $("#classId").val());
+						$.ajax({
+			type : "GET",
+			dataType : "json",
+			url : protocol_server_core + "://"
+					+ host_server_core + ":" + port_server_core
+					+ "/listRooms?classID=" + classID,
+			contentType : 'application/json',
+			success : function(data) {
+				$("#room_select option[value != '0']").remove();
+				let arrayLength = data.length;
+				console.log(arrayLength);
+				let room, opt;
+				
+				for (let i = 0; i < arrayLength; i++) {
+					$("#message").hide();
+					room = data[i];
+					console.log(room);
+					opt = document.createElement('option');
+					opt.value = room["id"];
+					opt.innerHTML = room["roomName"];
+					$("#room_select").append(opt);
+				}
+				roomID = sessionStorage.getItem('roomID');
+				if (roomID != null) {
+						$("#room_select").val(roomID);
+						$("#roomId").val(roomID);
+						console.log("roomID hidden input: "+ $("#roomID").val());
 					}
+			},
+			error : function() {
+				$("#message").text("Lớp này hiện tại không có phòng học nào hoặc xảy ra lỗi đường truyền!");
+				$("#message").show();
+			}
+		});
+					}
+					
 				},
 				error : function() {
 					$("#message").text("Học phần này không có lớp học nào!");
@@ -125,12 +192,16 @@ $(document).ready(function() {
 		
 	window.onbeforeunload = function() {
 		sessionStorage.setItem("classID", $("#class_select").val());
+		
 		sessionStorage.setItem("courseID", $("#course_select").val());
-		sessionStorage.setItem('roomID',  $("#room-select").val());
+		console.log($("#room_select").val());
+		sessionStorage.setItem('roomID',  $("#room_select").val());
+		console.log(sessionStorage.getItem('roomID'));
 	}
 		
 	$("#rollcall_btn").click(function(e){
 		e.preventDefault();
+		$("#img_file_loader").show();
 		sessionStorage.removeItem("classID");
 		sessionStorage.removeItem("courseID");
 		sessionStorage.removeItem("roomID");
@@ -211,6 +282,7 @@ $(document).ready(function() {
 	
 	$("#rollcall_student_manual").click(function(e){
 		e.preventDefault();
+		$("#img_loader").show();
 		console.log("student email = " + $("#email").val());
 		console.log("reason = " + $('#reason_select :selected').val());
 		console.log("class id manual = " + $('#class_select_manual :selected').val());
@@ -232,11 +304,13 @@ $(document).ready(function() {
 				   
 			 }),
 			success : function(data) {
+				$("#img_loader").hide();
 				$("#message_manual").text("Thêm sinh viên thành công!");
 				$("#message_manual").show();
 			},
-			error : function() {
-				$("#message_manual").text("Không thể thêm sinh viên vào lớp học!");
+			error : function(data) {
+				$("#img_loader").hide();
+				$("#message_manual").text(data.responseJSON.description);
 				$("#message_manual").show();
 			}
 		});

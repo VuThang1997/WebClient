@@ -29,6 +29,7 @@ import com.webClient3.service.ClassService;
 import com.webClient3.service.FileService;
 import com.webClient3.service.RollcallService;
 import com.webClient3.utils.GeneralValue;
+import org.springframework.validation.BindingResult;
 
 @Controller
 public class RollcallController {
@@ -120,18 +121,24 @@ public class RollcallController {
 	
 	@RequestMapping(value = "/readFileStudentRollcall", method = RequestMethod.POST)
 	public ModelAndView readFileRollcallStudent(
-			@Valid @ModelAttribute("classModel") Class classInstance,
+			@Valid @ModelAttribute("classModel") Class classInstance, BindingResult result,
+			Model model,
 			HttpSession session) {
 		if (session.getAttribute("id") == null) {
 			LOGGER.info("Redirect to login page ==============");
 			return new ModelAndView("redirect:/");
 		}
-
+                LOGGER.info("Begin roll call for student ==========================");
+		if (result.hasErrors()) {
+                        LOGGER.info("binding error");
+			return new ModelAndView("error");
+		}
 		ModelAndView modelAndView = this.prepareForRollcallStudentView();
 		
 		//report.ErrorCode hold ClassID value
 		//report.Description hold fileName
 		if (classInstance.getMaxStudent() == 0) {
+                         LOGGER.info("binding error");
 			modelAndView.addObject("message", "Bạn phải chọn lớp học!");
 			return modelAndView;
 		}

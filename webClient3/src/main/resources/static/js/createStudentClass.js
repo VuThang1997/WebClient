@@ -5,7 +5,8 @@ $(document).ready(function() {
 	$("#message_manual").hide();
 	$("#img_loader").hide();
 	$("#img_file_loader").hide();
-
+	let linkDownload = protocol_client + "://" + host_client + ":" + port_client + '/download/Import_Template_File/StudentClass.xlsx';
+    $("#link_report").attr("href",linkDownload);
 	$.validator.addMethod("EMAIL", function(value, element) {
 			return this.optional(element) || /^[a-zA-Z0-9._-]+@[a-zA-Z0-9-]+\.[a-zA-Z.]{2,5}$/i
 						.test(value);

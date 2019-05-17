@@ -160,9 +160,9 @@ public class FileServiceImpl1 implements FileService{
 							int reason = Integer.parseInt(cellValue);
 							reportError.setErrorCode(reason);
 							listStudentRollcall.add(reportError);
+                                                        LOGGER.info("====================== reason = " + reportError.getErrorCode());
 							reportError = null;
 							fieldNumber = 0;
-							LOGGER.info("====================== reason = " + reportError.getErrorCode());
 							break;
 						}
 					}

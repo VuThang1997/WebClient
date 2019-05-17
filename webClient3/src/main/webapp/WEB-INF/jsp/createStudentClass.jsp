@@ -156,6 +156,7 @@
 								<br>
 								<br>
 								<input type="submit">
+								<a id="link_report" href="#"><i>Tải template mẫu</i></a>
 							</form:form>
 						</div>
 						<br />
