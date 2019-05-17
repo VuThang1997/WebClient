@@ -65,13 +65,13 @@
 							</div>
 						</div>
 						<div class="card-body col-md-12">
-							<form>
+							<form id = "rollcall_for_student">
 								
 								<div class="form-group row">
-									<label for="course_select_manual" class="col-md-5 col-form-label">
-										Chọn học phần *: 
+									<label for="course_select_manual" class="col-md-4 col-form-label">
+										Học phần *: 
 									</label>
-									<div class="col-md-7">
+									<div class="col-md-8">
 										 <select id="course_select_manual" class="browser-default custom-select">
 										   		<option value="0" selected>Chọn học phần</option>
 											    <c:forEach items="${allCourses}" var="courseManul">
@@ -82,10 +82,10 @@
 								</div>
 								
 								<div class="form-group row">
-									<label for="class_select_manual" class="col-md-5 col-form-label">
-										Chọn lớp học *: 
+									<label for="class_select_manual" class="col-md-4 col-form-label">
+										Lớp học *: 
 									</label>
-									<div class="col-md-7">
+									<div class="col-md-8">
 										 <select id="class_select_manual" class="browser-default custom-select">
 										 	<option value="0" selected>Chọn lớp học</option>
 											<!-- dùng js để tạo lựa chọn -->
@@ -94,10 +94,10 @@
 								</div>
 								
 								<div class="form-group row">
-									<label for="room_select_manual" class="col-md-5 col-form-label">
-										Chọn phòng học *: 
+									<label for="room_select_manual" class="col-md-4 col-form-label">
+										Phòng học *: 
 									</label>
-									<div class="col-md-7">
+									<div class="col-md-8">
 										 <select id="room_select_manual" class="browser-default custom-select">
 										 	<option value="0" selected>Chọn phòng học</option>
 											<!-- dùng js để tạo lựa chọn -->
@@ -117,7 +117,7 @@
 								<div class="form-group row">
 									<label for="reason_select" class="col-4 col-form-label">
 										Lí do *</label>
-									<div class="col-md-7">
+									<div class="col-md-8">
 										 <select id="reason_select" class="browser-default custom-select">
 										 	<option value="1" selected>Bị ốm</option>
 											<option value="2">Lí do khác</option>
@@ -132,7 +132,9 @@
 											type="submit" class="btn btn-primary">Điểm danh sinh viên</button>
 									</div>
 								</div>
-
+								<div class="loader col-md-12">
+                            <img id = "img_loader" src= "images/loader.gif" style= "" alt="Loading..." />
+                        </div>
 								<div id="message_manual" class="col-md-12 text-center alert alert-warning "></div>
 							</form>
 						</div>
@@ -150,10 +152,10 @@
 						</div>
 
 						<div class="row col-md-12">
-							<label for="course_select" class="col-md-5 col-form-label">
-								Chọn học phần *: 
+							<label for="course_select" class="col-md-4 col-form-label">
+								Học phần *: 
 							</label>
-							<div class="col-md-7">
+							<div class="col-md-8">
 								 <select id="course_select" class="browser-default custom-select">
 								   		<option value="0" selected>Chọn học phần</option>
 									    <c:forEach items="${allCourses}" var="course">
@@ -165,10 +167,10 @@
 						
 						<br />
 						<div class="row col-md-12">
-							<label for="class_select" class="col-md-5 col-form-label">
-								Chọn lớp học *: 
+							<label for="class_select" class="col-md-4 col-form-label">
+								Lớp học *: 
 							</label>
-							<div class="col-md-7">
+							<div class="col-md-8">
 								 <select id="class_select" class="browser-default custom-select">
 								 	<option value="0" selected>Chọn lớp học</option>
 									<!-- dùng js để tạo lựa chọn -->
@@ -176,11 +178,11 @@
 							</div>
 						</div>
 						<br />
-						<div class="form-group row">
-							<label for="room_select" class="col-md-5 col-form-label">
-								Chọn phòng học *: 
+						<div class="col-md-12 row">
+							<label for="room_select" class="col-md-4 col-form-label">
+								Phòng học *: 
 							</label>
-							<div class="col-md-7">
+							<div class="col-md-8">
 								<select id="room_select" class="browser-default custom-select">
 										<option value="0" selected>Chọn phòng học</option>
 										<!-- dùng js để tạo lựa chọn -->
@@ -196,6 +198,7 @@
 								<br>
 								<br>
 								<input type="submit">
+                                <a id="link_report" href="#"><i>Tải template mẫu</i></a>
 							</form:form>
 						</div>
 						<br />
@@ -215,12 +218,14 @@
 								</c:if>
 							</form:form>
 						</div>
-
-					
-						<div id="message" class="col-md-12 text-center alert alert-warning ">
-							<c:if test="${not empty message}">${message}</c:if>
-						</div>
-						
+						<div class="loader col-md-12">
+                            <img id = "img_file_loader" src= "images/loader.gif" style= "" alt="Loading..." />
+                        </div>
+					    <c:if test="${not empty message}">
+							<div
+								class="col-md-12 text-center alert alert-warning ">
+								${message}</div>
+						</c:if>
 						<br />
 					</div>
 				</div>

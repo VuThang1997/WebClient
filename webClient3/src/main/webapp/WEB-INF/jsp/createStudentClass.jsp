@@ -62,13 +62,13 @@
 							</div>
 						</div>
 						<div class="card-body col-md-12">
-							<form>
+							<form id = "form_add_student_to_class">
 								
 								<div class="form-group row">
-									<label for="course_select_manual" class="col-md-5 col-form-label">
+									<label for="course_select_manual" class="col-md-4 col-form-label">
 										Chọn học phần *: 
 									</label>
-									<div class="col-md-7">
+									<div class="col-md-8">
 										 <select id="course_select_manual" class="browser-default custom-select">
 										   		<option value="0" selected>Chọn học phần</option>
 											    <c:forEach items="${allCourses2}" var="courseManul">
@@ -79,10 +79,10 @@
 								</div>
 								
 								<div class="form-group row">
-									<label for="class_select_manual" class="col-md-5 col-form-label">
+									<label for="class_select_manual" class="col-md-4 col-form-label">
 										Chọn lớp học *: 
 									</label>
-									<div class="col-md-7">
+									<div class="col-md-8">
 										 <select id="class_select_manual" class="browser-default custom-select">
 										 	<option value="0" selected>Chọn lớp học</option>
 											<!-- dùng js để tạo lựa chọn -->
@@ -95,7 +95,7 @@
 										Email sinh viên *</label>
 									<div class="col-8">
 										<input id="email" name="email" 
-										placeholder="Student email" class="form-control here" type="text" />
+										placeholder="Email sinh viên" class="form-control here" type="text" />
 									</div>
 								</div>
 
@@ -105,7 +105,9 @@
 											type="submit" class="btn btn-primary">Thêm sinh viên</button>
 									</div>
 								</div>
-
+								<div class="loader col-md-12">
+                                    <img id = "img_loader" src= "images/loader.gif" style= "" alt="Loading..." />
+                                </div>
 								<div id="message_manual" class="col-md-12 text-center alert alert-warning "></div>
 							</form>
 						</div>
@@ -154,6 +156,7 @@
 								<br>
 								<br>
 								<input type="submit">
+								<a id="link_report" href="#"><i>Tải template mẫu</i></a>
 							</form:form>
 						</div>
 						<br />
@@ -171,7 +174,9 @@
 								</c:if>
 							</form:form>
 						</div>
-
+						<div class="loader col-md-12">
+                                    <img id = "img_file_loader" src= "images/loader.gif" style= "" alt="Loading..." />
+                        </div>
 						<c:if test="${not empty error}">
 							<div id="error_div"
 								class="col-md-12 text-center alert alert-warning ">
