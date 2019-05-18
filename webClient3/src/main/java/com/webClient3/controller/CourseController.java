@@ -88,7 +88,7 @@ public class CourseController {
 
 			modelAndView.addObject("allCourses", listCourse);
 		} else {
-			LOGGER.info("List room is null ===========================");
+			LOGGER.info("List course is null ===========================");
 		}
 
 		return modelAndView;

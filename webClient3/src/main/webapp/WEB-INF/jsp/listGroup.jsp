@@ -30,8 +30,6 @@
 					<a href="/renderCreateClass" class="list-group-item sub-item" data-parent="#sub_categories_1" style="padding-left: 78px;">Thêm lớp học</a>
 					<a href="/renderGetClassInfo" class="list-group-item sub-item" data-parent="#sub_categories_1" style="padding-left: 78px;">Xem thông tin lớp học</a>
 					<a href="/renderCreateStudentClass" class="list-group-item sub-item" data-parent="#sub_categories_1" style="padding-left: 78px;">Thêm sinh viên</a>
-					<a href="#" class="list-group-item sub-item" data-parent="#sub_categories_1" style="padding-left: 78px;">SubSubPos3</a>
-					<a href="#" class="list-group-item sub-item" data-parent="#sub_categories_1" style="padding-left: 78px;">SubSubPos4</a>
 				</div>
 				
 				<a class="list-group-item list-group-item-warning list-group-item-action" data-remote="true" href="#sub_categories_4" id="categories_4" data-toggle="collapse" data-parent="#sub_categories_4">
@@ -63,6 +61,15 @@
 					<a href="/renderCreateCourse" class="list-group-item sub-item" data-parent="#sub_categories_6" style="padding-left: 78px;">Thêm học phần</a>
 					<a href="/renderGetCourseInfo" class="list-group-item sub-item" data-parent="#sub_categories_6" style="padding-left: 78px;">Xem thông tin học phần</a>
 					<a href="/renderUpdateCourseInfo" class="list-group-item sub-item" data-parent="#sub_categories_6" style="padding-left: 78px;">Cập nhật thông tin học phần</a>
+				</div>
+				
+				<a class="list-group-item list-group-item-warning list-group-item-action" data-remote="true" href="#sub_categories_7" id="categories_7" data-toggle="collapse" data-parent="#sub_categories_7">
+					<span>Quản lí tiết học</span>
+					<span class="menu-ico-collapse"><i class="fa fa-chevron-down"></i></span>
+				</a>
+				<div class="collapse list-group-submenu" id="sub_categories_7">
+					<a href="/renderCreateClassRoom" class="list-group-item sub-item" data-parent="#sub_categories_7" style="padding-left: 78px;">Thêm tiết học</a>
+					<a href="/renderUpdateClassRoom" class="list-group-item sub-item" data-parent="#sub_categories_7" style="padding-left: 78px;">Xem và cập nhật thông tin tiết học</a>
 				</div>
 			</c:if>
 			
