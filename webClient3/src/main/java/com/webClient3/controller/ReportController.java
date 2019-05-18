@@ -61,6 +61,28 @@ public class ReportController {
 		return "generalReportForStudent";
 	}
 	
+	@RequestMapping(value = "/renderGeneralReportForTeacher", method = RequestMethod.GET)
+	public String renderGeneralReportForTeacher(ModelMap model, HttpSession session) {
+		if (session.getAttribute("id") == null) {
+			logger.info("Redirect to login page ==============");
+			model.addAttribute("account", new Account());
+			return "login";
+		}
+		
+		List<Semester> listSemester = this.semesterService.findAllSemester();
+		for (Semester semester: listSemester) {
+			logger.info("semester name = " + semester.getSemesterName());
+		}
+		if (listSemester != null && !listSemester.isEmpty()) {
+			model.put("allSemester", listSemester);
+			logger.info("List semester is putted ===========================");
+		} else {
+			logger.info("List semester is null ===========================");
+		}
+		
+		return "generalReportForTeacher";
+	}
+	
 	@RequestMapping(value = "/renderGeneralReportForClass", method = RequestMethod.GET)
 	public String renderGeneralReportForClass(ModelMap model, HttpSession session) {
 		if (session.getAttribute("id") == null) {

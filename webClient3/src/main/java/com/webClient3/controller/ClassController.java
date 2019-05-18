@@ -173,6 +173,33 @@ public class ClassController {
 		this.prepareForCreateStudentClassView(modelAndView);
 		return modelAndView;
 	}
+	
+	@RequestMapping(value = "/renderCreateTeacherClass", method = RequestMethod.GET)
+	public ModelAndView renderCreateTeacherClass(ModelMap model, HttpSession session) {
+		if (session.getAttribute("id") == null) {
+			LOGGER.info("Redirect to login page ==============");
+			return new ModelAndView("redirect:/");
+		}
+
+		ModelAndView modelAndView = new ModelAndView("createTeacherClass");
+		modelAndView = this.prepareForCreateTeacherClassView(modelAndView);
+		return modelAndView;
+	}
+	
+	public ModelAndView prepareForCreateTeacherClassView(ModelAndView modelAndView) {
+		List<Course> listCourse = this.courseService.getAllCourse();
+		if (listCourse != null && !listCourse.isEmpty()) {
+			for (Course course : listCourse) {
+				LOGGER.info("course name = " + course.getCourseName());
+			}
+
+			modelAndView.addObject("allCourses", listCourse);
+		} else {
+			LOGGER.info("List course is null ===========================");
+		}
+
+		return modelAndView;
+	}
 
 	public ModelAndView prepareForCreateStudentClassView(ModelAndView modelAndView) {
 		modelAndView.addObject("myFile", new MyFile());

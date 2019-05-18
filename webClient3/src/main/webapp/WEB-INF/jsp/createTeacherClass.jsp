@@ -30,9 +30,12 @@
 <script src="js/createAccount.js" type="text/javascript"></script>
 <script type="text/javascript"
 	src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.13.1/jquery.validate.min.js"></script>
+	
+<script src="https://unpkg.com/gijgo@1.9.13/js/gijgo.min.js" type="text/javascript"></script>
+<link href="https://unpkg.com/gijgo@1.9.13/css/gijgo.min.css" rel="stylesheet" type="text/css" />
 
 <script src="js/config.js" type="text/javascript"></script>
-<script src="js/createTeacherClass.js" type="text/javascript"></script>
+<script src="js/createStudentClass.js" type="text/javascript"></script>
 </head>
 
 <body>
@@ -54,33 +57,33 @@
 					<div class="card-body">
 						<div>
 							<div class="col-md-12 text-center">
-								<h4>THÊM SINH VIÊN</h4>
+								<h4>THÊM GIẢNG VIÊN</h4>
 								<hr>
 							</div>
 						</div>
 						<div class="card-body col-md-12">
-							<form id = "form_add_student_to_class">
+							<form id = "form_add_teacher_to_class">
 								
 								<div class="form-group row">
-									<label for="course_select_manual" class="col-md-4 col-form-label">
-										Chọn học phần *: 
+									<label for="course_select" class="col-md-4 col-form-label">
+										Chọn học phần: 
 									</label>
 									<div class="col-md-8">
-										 <select id="course_select_manual" class="browser-default custom-select">
+										 <select id="course_select" class="browser-default custom-select">
 										   		<option value="0" selected>Chọn học phần</option>
-											    <c:forEach items="${allCourses2}" var="courseManul">
-												    <option value="${courseManul.courseID}">${courseManul.courseName}</option>
+											    <c:forEach items="${allCourses}" var="course">
+												    <option value="${course.courseID}">${course.courseName}</option>
 												</c:forEach>
 											</select>
 									</div>
 								</div>
 								
 								<div class="form-group row">
-									<label for="class_select_manual" class="col-md-4 col-form-label">
-										Chọn lớp học *: 
+									<label for="class_select" class="col-md-4 col-form-label">
+										Chọn lớp học : 
 									</label>
 									<div class="col-md-8">
-										 <select id="class_select_manual" class="browser-default custom-select">
+										 <select id="class_select_" class="browser-default custom-select">
 										 	<option value="0" selected>Chọn lớp học</option>
 											<!-- dùng js để tạo lựa chọn -->
 										</select>
@@ -89,30 +92,30 @@
 								
 								<div class="form-group row">
 									<label for="email" class="col-4 col-form-label">
-										Email sinh viên *</label>
+										Email giảng viên *</label>
 									<div class="col-8">
 										<input id="email" name="email" 
-										placeholder="Email sinh viên" class="form-control here" type="text" />
+										placeholder="Teacher email" class="form-control here" type="text" />
 									</div>
 								</div>
 
 								<div class="form-group row">
 									<div class="offset-4 col-8">
-										<button id="add_student_manual" name="submit_account"
-											type="submit" class="btn btn-primary">Thêm sinh viên</button>
+										<button id="add_teacher" name="add_teacher"
+											type="submit" class="btn btn-primary">Thêm giảng viênn</button>
 									</div>
 								</div>
 								<div class="loader col-md-12">
                                     <img id = "img_loader" src= "images/loader.gif" style= "" alt="Loading..." />
                                 </div>
-								<div id="message_manual" class="col-md-12 text-center alert alert-warning "></div>
+								<div id="messagel" class="col-md-12 text-center alert alert-warning "></div>
 							</form>
 						</div>
 					</div>
 				</div>
 				
 				<div class="card col-md-6">
-					<div class="card-body">
+<%-- 					<div class="card-body">
 						<div>
 							<div class="col-md-12 text-center">
 								<h4>THÊM SINH VIÊN THEO FILE</h4>
@@ -180,7 +183,7 @@
 								${error}</div>
 						</c:if>
 						<br />
-					</div>
+					</div> --%>
 				</div>
 			</div>
 		</div>

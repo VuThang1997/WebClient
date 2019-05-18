@@ -30,6 +30,7 @@
 					<a href="/renderCreateClass" class="list-group-item sub-item" data-parent="#sub_categories_1" style="padding-left: 78px;">Thêm lớp học</a>
 					<a href="/renderGetClassInfo" class="list-group-item sub-item" data-parent="#sub_categories_1" style="padding-left: 78px;">Xem thông tin lớp học</a>
 					<a href="/renderCreateStudentClass" class="list-group-item sub-item" data-parent="#sub_categories_1" style="padding-left: 78px;">Thêm sinh viên</a>
+					<a href="/renderCreateTeacherClass" class="list-group-item sub-item" data-parent="#sub_categories_1" style="padding-left: 78px;">Thêm giảng viên</a>
 				</div>
 				
 				<a class="list-group-item list-group-item-warning list-group-item-action" data-remote="true" href="#sub_categories_4" id="categories_4" data-toggle="collapse" data-parent="#sub_categories_4">
@@ -93,5 +94,6 @@
 				<div class="collapse list-group-submenu" id="sub_categories_2">
 					<a href="/renderGeneralReportView1" class="list-group-item sub-item" data-parent="#sub_categories_2" style="padding-left: 78px;">Báo cáo điểm danh theo sinh viên</a>
 					<a href="/renderGeneralReportForClass" class="list-group-item sub-item" data-parent="#sub_categories_2" style="padding-left: 78px;">Báo cáo tổng hợp điểm danh theo lớp</a>
+					<a href="/renderGeneralReportForTeacher" class="list-group-item sub-item" data-parent="#sub_categories_2" style="padding-left: 78px;">Báo cáo tổng hợp điểm danh theo giảng viên</a>
 				</div>
 			</div> 
