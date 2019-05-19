@@ -80,8 +80,6 @@
                                         </div>
                                     </form>
 
-
-
                                     <br />
                                     <div id="message" class="alert alert-warning text-center" role="alert">
                                     </div>

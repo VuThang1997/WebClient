@@ -1,4 +1,5 @@
 
+
 $(document).ready(function() {
 	$("#message").hide();
 	$("#img_loader").hide();
@@ -30,7 +31,7 @@ $(document).ready(function() {
 		}
 	});
 	
-	$("#activate_btn").click(function(e){
+	$("#activate_account_form").submit(function(e){
 		e.preventDefault();
 		$("#img_loader").show();
 		console.log("email = " + $("#email").val());
@@ -49,8 +50,9 @@ $(document).ready(function() {
 				$("#message").text("Kích hoạt tài khoản thành công!");
 				$("#message").show();
 			},
-			error : function() {
-				$("#message").text("Kích hoạt tài khoản thất bại!");
+			error : function(data) {
+				$("#img_loader").hide();
+				$("#message").text(data.responseJSON.description);
 				$("#message").show();
 			}
 		});
