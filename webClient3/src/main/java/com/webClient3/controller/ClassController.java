@@ -24,7 +24,7 @@ import com.webClient3.model.MyFile;
 import com.webClient3.model.ReportError;
 import com.webClient3.model.Semester;
 import com.webClient3.service.ClassService;
-import com.webClient3.service.CourseSevice;
+import com.webClient3.service.CourseService;
 import com.webClient3.service.FileService;
 import com.webClient3.service.SemesterService;
 import com.webClient3.utils.GeneralValue;
@@ -34,7 +34,7 @@ public class ClassController {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(ClassController.class);
 	private SemesterService semesterService;
-	private CourseSevice courseSevice;
+	private CourseService courseService;
 	private ClassService classService;
 	private FileService fileService;
 
@@ -46,13 +46,13 @@ public class ClassController {
 	public ClassController(@Qualifier("ClassServiceImpl1") ClassService classService,
 			@Qualifier("FileServiceImpl1") FileService fileService,
 			@Qualifier("SemesterServiceImpl1") SemesterService semesterService,
-			@Qualifier("CourseSeviceImpl1") CourseSevice courseSevice) {
+			@Qualifier("CourseServiceImpl1") CourseService courseService) {
 
 		super();
 		this.classService = classService;
 		this.fileService = fileService;
 		this.semesterService = semesterService;
-		this.courseSevice = courseSevice;
+		this.courseService = courseService;
 	}
 
 	@RequestMapping(value = "/renderCreateStudentClass", method = RequestMethod.GET)
@@ -69,7 +69,7 @@ public class ClassController {
 			return "login";
 		}
 
-		List<Course> listCourse = this.courseSevice.getAllCourse();
+		List<Course> listCourse = this.courseService.getAllCourse();
 
 		if (listCourse != null && !listCourse.isEmpty()) {
 			for (Course course : listCourse) {
@@ -109,7 +109,7 @@ public class ClassController {
 			model.addAttribute("error", "Upload failed");
 		}
 
-		List<Course> listCourse = this.courseSevice.getAllCourse();
+		List<Course> listCourse = this.courseService.getAllCourse();
 		
 		if (listCourse != null && !listCourse.isEmpty()) {
 			for (Course course : listCourse) {
@@ -173,12 +173,39 @@ public class ClassController {
 		this.prepareForCreateStudentClassView(modelAndView);
 		return modelAndView;
 	}
+	
+	@RequestMapping(value = "/renderCreateTeacherClass", method = RequestMethod.GET)
+	public ModelAndView renderCreateTeacherClass(ModelMap model, HttpSession session) {
+		if (session.getAttribute("id") == null) {
+			LOGGER.info("Redirect to login page ==============");
+			return new ModelAndView("redirect:/");
+		}
+
+		ModelAndView modelAndView = new ModelAndView("createTeacherClass");
+		modelAndView = this.prepareForCreateTeacherClassView(modelAndView);
+		return modelAndView;
+	}
+	
+	public ModelAndView prepareForCreateTeacherClassView(ModelAndView modelAndView) {
+		List<Course> listCourse = this.courseService.getAllCourse();
+		if (listCourse != null && !listCourse.isEmpty()) {
+			for (Course course : listCourse) {
+				LOGGER.info("course name = " + course.getCourseName());
+			}
+
+			modelAndView.addObject("allCourses", listCourse);
+		} else {
+			LOGGER.info("List course is null ===========================");
+		}
+
+		return modelAndView;
+	}
 
 	public ModelAndView prepareForCreateStudentClassView(ModelAndView modelAndView) {
 		modelAndView.addObject("myFile", new MyFile());
 		modelAndView.addObject("report", new ReportError());
 
-		List<Course> listCourse = this.courseSevice.getAllCourse();
+		List<Course> listCourse = this.courseService.getAllCourse();
 		if (listCourse != null && !listCourse.isEmpty()) {
 			for (Course course : listCourse) {
 				LOGGER.info("course name = " + course.getCourseName());
@@ -192,7 +219,7 @@ public class ClassController {
 		return modelAndView;
 	}
 	
-	@RequestMapping(value = "/renderCreateClass", method = RequestMethod.POST)
+	@RequestMapping(value = "/renderCreateClass", method = RequestMethod.GET)
 	public ModelAndView renderCreateClass(HttpSession session) {
 		if (session.getAttribute("id") == null) {
 			LOGGER.info("Redirect to login page ==============");
@@ -200,7 +227,7 @@ public class ClassController {
 		}
 
 		ModelAndView modelAndView = new ModelAndView("createClass");
-		List<Course> listCourse = this.courseSevice.getAllCourse();
+		List<Course> listCourse = this.courseService.getAllCourse();
 		if (listCourse != null && !listCourse.isEmpty()) {
 			for (Course course : listCourse) {
 				LOGGER.info("course name = " + course.getCourseName());
@@ -217,6 +244,40 @@ public class ClassController {
 		}
 		if (listSemester != null && !listSemester.isEmpty()) {
 			modelAndView.addObject("allSemester", listSemester);
+			LOGGER.info("List semester is putted ===========================");
+		} else {
+			LOGGER.info("List semester is null ===========================");
+		}
+
+		this.prepareForCreateStudentClassView(modelAndView);
+		return modelAndView;
+	}
+	
+	@RequestMapping(value = "/renderGetClassInfo", method = RequestMethod.GET)
+	public ModelAndView renderGetClassInfo(HttpSession session) {
+		if (session.getAttribute("id") == null) {
+			LOGGER.info("Redirect to login page ==============");
+			return new ModelAndView("redirect:/");
+		}
+
+		ModelAndView modelAndView = new ModelAndView("getClassInfo");
+		List<Course> listCourse = this.courseService.getAllCourse();
+		if (listCourse != null && !listCourse.isEmpty()) {
+			for (Course course : listCourse) {
+				LOGGER.info("course name = " + course.getCourseName());
+			}
+
+			modelAndView.addObject("allCourses", listCourse);
+		} else {
+			LOGGER.info("List course is null ===========================");
+		}
+		
+		List<Semester> listSemester = this.semesterService.findAllSemester();
+		for (Semester semester: listSemester) {
+			LOGGER.info("semester name = " + semester.getSemesterName());
+		}
+		if (listSemester != null && !listSemester.isEmpty()) {
+			modelAndView.addObject("allSemesters", listSemester);
 			LOGGER.info("List semester is putted ===========================");
 		} else {
 			LOGGER.info("List semester is null ===========================");

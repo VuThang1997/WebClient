@@ -17,7 +17,7 @@ import com.webClient3.model.Account;
 import com.webClient3.model.Course;
 import com.webClient3.model.Semester;
 import com.webClient3.service.ClassService;
-import com.webClient3.service.CourseSevice;
+import com.webClient3.service.CourseService;
 import com.webClient3.service.SemesterService;
 
 @Controller
@@ -26,17 +26,17 @@ public class ReportController {
 	private Logger logger = LoggerFactory.getLogger(ReportController.class);
 	private SemesterService semesterService;
 	private ClassService classService;
-	private CourseSevice courseSevice;
+	private CourseService courseService;
 
 	@Autowired
 	public ReportController(
 			@Qualifier("SemesterServiceImpl1") SemesterService semesterService,
 			@Qualifier("ClassServiceImpl1") ClassService classService,
-			@Qualifier("CourseSeviceImpl1") CourseSevice courseSevice) {
+			@Qualifier("CourseServiceImpl1") CourseService courseService) {
 		super();
 		this.semesterService = semesterService;
 		this.classService = classService;
-		this.courseSevice = courseSevice;
+		this.courseService = courseService;
 	}
 
 	@RequestMapping(value = "/renderGeneralReportView1", method = RequestMethod.GET)
@@ -61,6 +61,28 @@ public class ReportController {
 		return "generalReportForStudent";
 	}
 	
+	@RequestMapping(value = "/renderGeneralReportForTeacher", method = RequestMethod.GET)
+	public String renderGeneralReportForTeacher(ModelMap model, HttpSession session) {
+		if (session.getAttribute("id") == null) {
+			logger.info("Redirect to login page ==============");
+			model.addAttribute("account", new Account());
+			return "login";
+		}
+		
+		List<Semester> listSemester = this.semesterService.findAllSemester();
+		for (Semester semester: listSemester) {
+			logger.info("semester name = " + semester.getSemesterName());
+		}
+		if (listSemester != null && !listSemester.isEmpty()) {
+			model.put("allSemester", listSemester);
+			logger.info("List semester is putted ===========================");
+		} else {
+			logger.info("List semester is null ===========================");
+		}
+		
+		return "generalReportForTeacher";
+	}
+	
 	@RequestMapping(value = "/renderGeneralReportForClass", method = RequestMethod.GET)
 	public String renderGeneralReportForClass(ModelMap model, HttpSession session) {
 		if (session.getAttribute("id") == null) {
@@ -69,7 +91,7 @@ public class ReportController {
 			return "login";
 		}
 		
-		List<Course> listCourse = this.courseSevice.getAllCourse();
+		List<Course> listCourse = this.courseService.getAllCourse();
 		if (listCourse != null && !listCourse.isEmpty()) {
 			for (Course course: listCourse) {
 				logger.info("course name = " + course.getCourseName());

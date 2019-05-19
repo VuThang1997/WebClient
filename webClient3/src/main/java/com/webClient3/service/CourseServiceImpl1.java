@@ -19,19 +19,18 @@ import com.webClient3.model.Course;
 import com.webClient3.utils.GeneralValue;
 
 @Service
-@Qualifier("CourseSeviceImpl1")
-public class CourseSeviceImpl1 implements CourseSevice{
+@Qualifier("CourseServiceImpl1")
+public class CourseServiceImpl1 implements CourseService{
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(CourseSeviceImpl1.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(CourseServiceImpl1.class);
 	private RestTemplate restTemplate;
 	
-	public CourseSeviceImpl1() {
+	public CourseServiceImpl1() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	@Autowired
-	public CourseSeviceImpl1(RestTemplate restTemplate) {
+	public CourseServiceImpl1(RestTemplate restTemplate) {
 		super();
 		this.restTemplate = restTemplate;
 	}

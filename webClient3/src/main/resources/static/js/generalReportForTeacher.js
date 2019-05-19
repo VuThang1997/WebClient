@@ -15,7 +15,7 @@ $(document).ready(function () {
             dataType: "json",
             url: protocol_server_core + "://"
                     + host_server_core + ":" + port_server_core
-                    + "/studentGeneralReport?adminID=" + id,
+                    + "/teacherGeneralReport?adminID=" + id,
             contentType: 'application/json',
             data: JSON.stringify({
                 email: $("#email").val(),
@@ -53,7 +53,7 @@ $(document).ready(function () {
             dataType: "json",
             url: protocol_server_core + "://"
                     + host_server_core + ":" + port_server_core
-                    + "/studentGeneralReport?adminID=" + id,
+                    + "/teacherGeneralReport?adminID=" + id,
             contentType: 'application/json',
             data: JSON.stringify({
                 email: $("#email").val(),

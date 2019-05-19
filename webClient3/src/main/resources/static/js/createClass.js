@@ -5,23 +5,41 @@ $(document).ready(function() {
 	
 	let linkDownload = protocol_client + "://" + host_client + ":" + port_client + '/download/Import_Template_File/StudentClass.xlsx';
     $("#link_report").attr("href",linkDownload);
-	$.validator.addMethod("EMAIL", function(value, element) {
-			return this.optional(element) || /^[a-zA-Z0-9._-]+@[a-zA-Z0-9-]+\.[a-zA-Z.]{2,5}$/i
-						.test(value);
-	}, "Email không hợp lệ! ");
+    
+    $.validator.addMethod('minStrict', function (value, el, param) {
+        return value > param;
+    });
+	
 
 	$('#form_create_class').validate({
 		errorClass : 'errors',
 		rules : {
 			class_name : {
-			required : true,
-			EMAIL : "required EMAIL",
-			email : true
+				required : true,
+			},
+			max_student: {
+			    required: true,
+			    minStrict: 19,
+			    number: true
+			},
+			number_of_lesson: {
+			    required: true,
+			    minStrict: 4,
+			    number: true
 			}
 		},
+		
 		messages : {
-			email : {
-				required : "Mời nhập email!"
+			class_name : {
+				required : "Mời nhập tên lớp",
+			},
+			max_student: {
+				required : "Mời nhập số lượng học sinh tối đa!",
+				minStrict: "Lớp học không thể có ít hơn 20 học sinh"
+			},
+			number_of_lesson: {
+				required : "Mời nhập số lượng buổi học!",
+				minStrict: "Lớp học không thể có ít hơn 5 buổi học"
 			}
 		},
 		highlight : function(element) {
@@ -32,48 +50,49 @@ $(document).ready(function() {
 		}
 	});
 
-	$("#add_student_manual").click(function(e){
+	$("#add_class").click(function(e){
 		e.preventDefault();
 		$("#img_loader").show();
-
-		console.log("student email = " + $("#email").val());
-		console.log("class id = " + $('#class_select_manual :selected').val());
+		console.log("semester id = " + $('#semester_select :selected').val());
+		console.log("course id = " + $('#course_select :selected').val());
+		
+		console.log(JSON.stringify({
+				className: $("#class_name").val(),
+				maxStudent: $("#max_student").val(),
+				numberOfLessons: $("#number_of_lesson").val(),
+				courseID: $('#course_select :selected').val(),
+				semesterID: $('#semester_select :selected').val()  
+			 }));
+		
 		$.ajax({
 			type : "POST",
 			dataType : "json",
 			url : protocol_server_core + "://"
 					+ host_server_core + ":" + port_server_core
-					+ "/studentClasses",
+					+ "/classes",
 			contentType : 'application/json',
 			data: JSON.stringify({
-				   studentEmail: $("#email").val(),
-				   classID: $('#class_select_manual :selected').val()
-				   
+				className: $("#class_name").val(),
+				maxStudent: $("#max_student").val(),
+				numberOfLessons: $("#number_of_lesson").val(),
+				courseID: $('#course_select :selected').val(),
+				semesterID: $('#semester_select :selected').val()  
 			 }),
 			success : function(data) {
 				$("#img_loader").hide();
-				$("#message_manual").text(data.description);
-				$("#message_manual").show();
+				$("#message").text("Thêm lớp học thành công!");
+				$("#message").show();
 			},
 			error : function(data) {
 				$("#img_loader").hide();
-				$("#message_manual").text(data.responseJSON.description);
-				$("#message_manual").show();
+				$("#message").text("Thêm lớp học thất bại!");
+				$("#message").show();
 			}
 		});
 	});
 		
-	
-		
-		$("#create_btn").click(function(e){
-			 e.preventDefault();
-			 $("#img_file_loader").show();
-			sessionStorage.removeItem("classID");
-			sessionStorage.removeItem("courseID");
-			$("#form_submit").submit();
-		});
-		
 	//=========================FILE========================
+	/*	
 		$("#course_select").on('change', function(e) {
 			courseID = $("option:selected", this).val();
 			console.log("course ID after course_select is changed = " + courseID);
@@ -109,7 +128,8 @@ $(document).ready(function() {
 			$("#classId").val($("#class_select").val());
 			console.log("classId in hidden input = " + $("#classId").val());
 		});
-			
+		
+	
 			window.onload = function() {
 				classID = sessionStorage.getItem('classID');
 				courseID = sessionStorage.getItem('courseID');
@@ -156,4 +176,5 @@ $(document).ready(function() {
 				sessionStorage.setItem("classID", $("#class_select").val());
 				sessionStorage.setItem("courseID", $("#course_select").val());
 			}
-		
+*/
+});

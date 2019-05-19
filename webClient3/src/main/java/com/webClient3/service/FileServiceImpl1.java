@@ -2,6 +2,7 @@ package com.webClient3.service;
 
 import java.io.File;
 import java.io.IOException;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -19,6 +20,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
+import com.webClient3.enumData.AfternoonTimeFrame;
+import com.webClient3.enumData.MorningTimeFrame;
+import com.webClient3.model.ClassRoom;
 import com.webClient3.model.ReportError;
 import com.webClient3.utils.GeneralValue;
 
@@ -176,5 +180,129 @@ public class FileServiceImpl1 implements FileService{
 		}
 		
 		return listStudentRollcall;
+	}
+
+	@Override
+	public List<ClassRoom> readFileExcelForListClassRoom(String linkFile) {
+		int fieldNumber = 0;
+		List<ClassRoom> listClassRoom = null;
+		ClassRoom tmpClassRoom = null;
+		LOGGER.info("========================= link file  = " + linkFile);
+
+		try {
+
+			// Creating a Workbook from an Excel file (.xls or .xlsx)
+			Workbook workbook = WorkbookFactory.create(new File(linkFile));
+
+			// Create a DataFormatter to format and get each cell's value as String
+			DataFormatter dataFormatter = new DataFormatter();
+
+			Iterator<Sheet> sheetIterator = workbook.sheetIterator();
+			Iterator<Cell> cellIterator = null;
+			Sheet sheet = null;
+			Cell cell = null;
+			Row row = null;
+			String cellValue = null;
+			String enumName = "FRAME";
+			int weekday = -1;
+			LocalTime tmpBegin = null;
+			LocalTime tmpFinish = null;
+			listClassRoom = new ArrayList<>();
+
+			while (sheetIterator.hasNext()) {
+				sheet = sheetIterator.next();
+
+				LOGGER.info("\n\nIterating over Rows and Columns using Iterator\n");
+				Iterator<Row> rowIterator = sheet.rowIterator();
+				while (rowIterator.hasNext()) {
+					row = rowIterator.next();
+					
+					//exclude the first row = header of table
+					if (row.getRowNum() == 0) {
+						continue;
+					}
+
+					// Now let's iterate over the columns of the current row
+					cellIterator = row.cellIterator();
+
+					while (cellIterator.hasNext()) {
+						fieldNumber++;
+						cell = cellIterator.next();
+						cellValue = dataFormatter.formatCellValue(cell);
+
+						switch (fieldNumber) {
+						case 1:
+							tmpClassRoom = new ClassRoom();
+							tmpClassRoom.getClassInstance().setClassName(cellValue);
+							LOGGER.info("====================== class name  = " + cellValue);
+							break;
+						case 2:
+							weekday = Integer.parseInt(cellValue);
+							tmpClassRoom.setWeekday(weekday);
+							break;
+						case 3:
+							tmpBegin = null;
+							enumName += cellValue;
+							LOGGER.info("====================== enum name  = " + enumName);
+							
+							for (MorningTimeFrame frame: MorningTimeFrame.values()) {
+								LOGGER.info("====================== frame name  = " + frame.name());
+								if (enumName.equalsIgnoreCase(frame.name())) {
+									tmpBegin = frame.getValue();
+									break;
+								}
+							}
+							
+							if (tmpBegin == null) {
+								for (AfternoonTimeFrame frame: AfternoonTimeFrame.values()) {
+									LOGGER.info("====================== frame name  = " + frame.name());
+									if (enumName.equalsIgnoreCase(frame.name())) {
+										tmpBegin = frame.getValue();
+										break;
+									}
+								}
+							}
+							
+							tmpClassRoom.setBeginAt(tmpBegin);
+							break;
+						case 4:
+							tmpFinish = null;
+							enumName += cellValue;
+							LOGGER.info("====================== enum name  = " + enumName);
+							
+							for (MorningTimeFrame frame: MorningTimeFrame.values()) {
+								LOGGER.info("====================== frame name  = " + frame.name());
+								if (enumName.equalsIgnoreCase(frame.name())) {
+									tmpFinish = frame.getValue();
+									break;
+								}
+							}
+							
+							if (tmpFinish == null) {
+								for (AfternoonTimeFrame frame: AfternoonTimeFrame.values()) {
+									LOGGER.info("====================== frame name  = " + frame.name());
+									if (enumName.equalsIgnoreCase(frame.name())) {
+										tmpFinish = frame.getValue();
+										break;
+									}
+								}
+							}
+							
+							tmpClassRoom.setFinishAt(tmpFinish);
+							listClassRoom.add(tmpClassRoom);
+							tmpClassRoom = null;
+							fieldNumber = 0;
+							break;
+						}	
+					}
+				}
+
+			}
+		} catch(EncryptedDocumentException | InvalidFormatException | IOException e) {
+			e.printStackTrace();
+			LOGGER.info("=========== Error happened when reading excel file!");
+		}
+		
+		return listClassRoom;
 	}
 }

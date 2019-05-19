@@ -27,7 +27,7 @@ import com.webClient3.model.MyFile;
 import com.webClient3.model.ReportError;
 import com.webClient3.model.TeacherClass;
 import com.webClient3.service.ClassService;
-import com.webClient3.service.CourseSevice;
+import com.webClient3.service.CourseService;
 import com.webClient3.service.FileService;
 import com.webClient3.service.RollcallService;
 import com.webClient3.utils.GeneralValue;
@@ -37,7 +37,7 @@ public class RollcallController {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(RollcallController.class);
 	private RollcallService rollcallService;
-	private CourseSevice courseSevice;
+	private CourseService courseService;
 	private FileService fileService;
 	private ClassService classService;
 	
@@ -50,12 +50,12 @@ public class RollcallController {
 			@Qualifier("RollcallServiceImpl1") RollcallService rollcallService,
 			@Qualifier("ClassServiceImpl1") ClassService classService,
 			@Qualifier("FileServiceImpl1") FileService fileService,
-			@Qualifier("CourseSeviceImpl1") CourseSevice courseSevice) {
+			@Qualifier("CourseServiceImpl1") CourseService courseService) {
 		super();
 		this.rollcallService = rollcallService;
 		this.classService = classService;
 		this.fileService = fileService;
-		this.courseSevice = courseSevice;
+		this.courseService = courseService;
 	}
 	
 	@RequestMapping(value = "/renderTeacherRollCallView", method = RequestMethod.GET)
@@ -188,7 +188,7 @@ public class RollcallController {
 		modelAndView.addObject("myFile", new MyFile());
 		modelAndView.addObject("classModel", new Class());
 		
-		List<Course> listCourses = this.courseSevice.getAllCourse();
+		List<Course> listCourses = this.courseService.getAllCourse();
 		if (listCourses != null && !listCourses.isEmpty()) {
 			for (Course course : listCourses) {
 				LOGGER.info("course name = " + course.getCourseName());
