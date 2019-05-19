@@ -126,6 +126,7 @@ public class ClassRoomController {
 			int roomID = roomIdHolder.getErrorCode();
 			LOGGER.info("room ID in controller = " + roomID);
 			ReportError report = this.classService.creatMultipleClassRoom(listClassRoom, roomID);
+			//ReportError report = this.classService.creatMultipleClassRoom(listClassRoom, 3);
 
 			if (report.getErrorCode() == 200) {
 				if (report.getDescription().equalsIgnoreCase("0-")) {

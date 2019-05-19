@@ -10,7 +10,7 @@ $(document)
                     window.onload = function () {
                         if (sessionStorage.getItem('roomID') !== null) {
                         	let roomID = sessionStorage.getItem('roomID');
-                            console.log("session storage : " + accountType);
+                            console.log("session storage : " + roomID);
                             
                             $("#room_select").val(roomID);
                             console.log("room_select in onload = "+ $("#room_select").val());

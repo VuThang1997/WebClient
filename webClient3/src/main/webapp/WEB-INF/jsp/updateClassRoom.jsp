@@ -30,7 +30,8 @@
 <script type="text/javascript"
 	src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.13.1/jquery.validate.min.js"></script>
 
-<link href="css/createAccount.css" rel="stylesheet">
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.0-alpha14/js/tempusdominus-bootstrap-4.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.0-alpha14/css/tempusdominus-bootstrap-4.min.css" />
 
 <script src="js/config.js" type="text/javascript"></script>
 <script src="js/updateClassRoom.js" type="text/javascript"></script>
@@ -75,104 +76,88 @@
 								</div>
 								
 								<div class="form-group row">
-									<label for="class_select" class="col-md-4 col-form-label">
+									<label for="class_select" class="col-md-5 col-form-label">
 										Chọn lớp học *: 
 									</label>
-									<div class="col-md-8">
+									<div class="col-md-7">
 										 <select id="class_select" class="browser-default custom-select">
 										 	<option value="0" selected>Chọn lớp học</option>
 											<!-- dùng js để tạo lựa chọn -->
 										</select>
 									</div>
 								</div>
+								
+								<div class="form-group row">
+									<label for="lesson_select" class="col-5 col-form-label">
+										Chọn tiết học: </label>
+									<div class="col-7">
+										<select id="lesson_select" class="browser-default custom-select">
+											<option value="0" selected>Chọn tiết học</option>
+											<!-- use js to generate -->
+										</select>
+									</div>
+								</div>
 
 								<div class="form-group row">
-									<label for="username" class="col-4 col-form-label">
+									<label for="weekday" class="col-5 col-form-label">
 										
 									</label>
-									<div class="col-8">
-										<form:input path="username" id="username" name="username"
-											placeholder="Username" class="form-control here" type="text" />
+									<div class="col-7">
+										<input id="weekday" name="weekday"
+											placeholder="Weekday" class="form-control here" type="text" />
 									</div>
 								</div>
 
 								<div class="form-group row">
-									<label for="new_password" class="col-4 col-form-label">Mật
-										khẩu *</label>
-									<div class="col-8">
-										<form:input path="password" id="new_password"
-											name="new_password" placeholder="New Password"
-											class="form-control here" type="password" />
+									<label for="begin_at" class="col-5 col-form-label">
+										Giờ bắt đầu (cũ)
+									</label>
+									<div class="col-7">
+										<input id="begin_at" width="276" readonly />
 									</div>
 								</div>
 
 								<div class="form-group row">
-									<label for="retype_password" class="col-4 col-form-label">Nhập
-										lại *</label>
-									<div class="col-8">
-										<input id="retype_password" name="retype_password"
-											placeholder="Retype passwrod" class="form-control here"
-											type="password" />
+									<label for="finish_at" class="col-5 col-form-label">
+										Giờ kết thúc (cũ)
+									</label>
+									<div class="col-7">
+										<input id="begin_at" width="276" readonly />
+									</div>
+								</div>
+								
+								<div class="form-group row">
+									<label for="new_begin_at" class="col-5 col-form-label">
+										Giờ bắt đầu (mới)
+									</label>
+									<div class="col-7">
+										<select id="new_begin_at" class="browser-default custom-select">
+											<option value="00:00:00" selected>Chọn giờ bắt đầu</option>
+											<c:forEach items="${allBeginTime}" var="time">
+												<option value="${time}">${time}</option>
+											</c:forEach>
+										</select>
 									</div>
 								</div>
 
 								<div class="form-group row">
-									<label for="new_email" class="col-4 col-form-label">Email
-										*</label>
-									<div class="col-8">
-										<form:input path="email" id="new_email" name="new_email"
-											placeholder="New Email" class="form-control here" type="text" />
+									<label for="new_finish_at" class="col-5 col-form-label">
+										Giờ kết thúc (mới)
+									</label>
+									<div class="col-7">
+										<select id="new_finish_at" class="browser-default custom-select">
+											<option value="00:00:00" selected>Chọn giờ bắt đầu</option>
+											<c:forEach items="${allFinishTime}" var="time">
+												<option value="${time}">${time}</option>
+											</c:forEach>
+										</select>
 									</div>
 								</div>
-
-								<div class="form-group row">
-									<label for="fullName" class="col-4 col-form-label">Họ
-										tên *</label>
-									<div class="col-8">
-										<form:input path="fullName" id="fullName" name="fullName"
-											placeholder="Full Name" class="form-control here" type="text" />
-									</div>
-								</div>
-
-								<div class="form-group row">
-									<label for="address" class="col-4 col-form-label">Địa
-										chỉ </label>
-									<div class="col-8">
-										<form:input path="address" id="address" name="address"
-											placeholder="Address" class="form-control here" type="text" />
-									</div>
-								</div>
-
-								<div class="form-group row">
-									<label for="phone" class="col-4 col-form-label">Số ĐT:</label>
-									<div class="col-8">
-										<form:input path="phone" id="phone" name="phone"
-											placeholder="Phone" class="form-control here" type="text" />
-									</div>
-								</div>
-
-								<div class="form-group row">
-									<label for="birthday" class="col-4 col-form-label">Ngày
-										sinh </label>
-									<div class="col-8">
-										<form:input path="birthday" id="birthday" width="276" />
-										<script>
-											$('#birthday').datepicker({
-												uiLibrary : 'bootstrap4',
-												format : 'yyyy-mm-dd',
-												value : '1995-01-01'
-											});
-										</script>
-									</div>
-								</div>
-
-								<form:input path="role" id="role" name="role_input"
-									class="form-control here" type="hidden" />
 
 								<div class="form-group row">
 									<div class="offset-4 col-8">
-										<button id="submit_account" name="submit_account"
-											type="submit" class="btn btn-primary">Tạo tài khoản</button>
+										<button id="update_classroom" name="update_classroom"
+											type="submit" class="btn btn-primary">Cập nhật tiết học</button>
 									</div>
 								</div>
 								<div class="loader col-md-12">

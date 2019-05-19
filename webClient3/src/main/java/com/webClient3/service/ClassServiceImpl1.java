@@ -20,7 +20,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.webClient3.model.ClassRoom;
 import com.webClient3.model.ReportError;
-import com.webClient3.model.Semester;
 import com.webClient3.utils.GeneralValue;
 
 @Service
@@ -95,6 +94,7 @@ public class ClassServiceImpl1 implements ClassService {
 		header.add("Accept", MediaType.APPLICATION_JSON_VALUE);
 
 		ObjectMapper mapper = new ObjectMapper();
+		mapper.findAndRegisterModules();
 		try {
 			String jsonString = mapper.writeValueAsString(listClassRoom);
 			HttpEntity<Object> requestEntity = new HttpEntity<Object>(jsonString, header);

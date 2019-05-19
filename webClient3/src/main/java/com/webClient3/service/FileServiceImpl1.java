@@ -22,6 +22,7 @@ import org.springframework.stereotype.Service;
 
 import com.webClient3.enumData.AfternoonTimeFrame;
 import com.webClient3.enumData.MorningTimeFrame;
+import com.webClient3.model.Class;
 import com.webClient3.model.ClassRoom;
 import com.webClient3.model.ReportError;
 import com.webClient3.utils.GeneralValue;
@@ -233,6 +234,7 @@ public class FileServiceImpl1 implements FileService{
 						switch (fieldNumber) {
 						case 1:
 							tmpClassRoom = new ClassRoom();
+							tmpClassRoom.setClassInstance(new Class());
 							tmpClassRoom.getClassInstance().setClassName(cellValue);
 							LOGGER.info("====================== class name  = " + cellValue);
 							break;
@@ -242,6 +244,7 @@ public class FileServiceImpl1 implements FileService{
 							break;
 						case 3:
 							tmpBegin = null;
+							enumName = "FRAME";
 							enumName += cellValue;
 							LOGGER.info("====================== enum name  = " + enumName);
 							
@@ -267,6 +270,7 @@ public class FileServiceImpl1 implements FileService{
 							break;
 						case 4:
 							tmpFinish = null;
+							enumName = "FRAME";
 							enumName += cellValue;
 							LOGGER.info("====================== enum name  = " + enumName);
 							
