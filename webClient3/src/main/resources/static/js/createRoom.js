@@ -4,55 +4,25 @@ $(document)
      $("#img_loader").hide();
      $("#message").hide();
     
-     $('#create_room_form').validate({
-      errorClass : 'errors',
+     $("#create_room_form").validate({
       rules : {
-    	  room_name : {
-	        required : true
-	       },
-	      address : {
-		     required : true
-		  },
-		  latitude : {
-			required : true
-		  },
-		  longitude : {
-			required : true
-		  },
-		  mac_addr: {
-			  required : true
-		  }
+    	  room_name : "required",
+	      address : "required",
+		  latitude : "required",
+		  longitude : "required"
       },
       messages : {
-    	room_name : {
-    		required : "Mời nhập tên phòng!"
-        },
+    	room_name : "Mời nhập tên phòng!",
         
-        address : {
-    		required : "Mời nhập địa chỉ phòng!"
-        },
+        address : "Mời nhập địa chỉ phòng!",
         
-        latitude : {
-    		required : "Mời nhập vĩ độ!"
-        },
+        latitude : "Mời nhập vĩ độ!",
         
-        longitude : {
-    		required : "Mời nhập kinh độ!"
-        },
-        
-        mac_addr : {
-    		required : "Mời nhập địa chỉ MAC của WAP!"
-        }
-      },
-      highlight : function(element) {
-       $(element).parent().addClass('error')
-      },
-      unhighlight : function(element) {
-       $(element).parent().removeClass('error')
+        longitude : "Mời nhập kinh độ!"
       }
      });
 
-     $("#submit_room").click(function(e){
+     $("#create_room_form").submit(function(e){
 		  e.preventDefault();
 		  $("#img_loader").show();
 		  
@@ -76,7 +46,7 @@ $(document)
 				   $("#message").show();
 			   },
 			   error: function() {
-				   $("#img_loader").show();
+				   $("#img_loader").hide();
 				   $("#message").text("Thêm phòng học thất bại!");
 				   $("#message").show();
 			   }

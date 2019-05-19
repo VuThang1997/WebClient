@@ -30,7 +30,7 @@ $(document).ready(function() {
 		}
 	});
 	
-	$("#disable_btn").click(function(e){
+	$("#disable_account_form").submit(function(e){
 		e.preventDefault();
 		$("#img_loader").show();
 		console.log("email = " + $("#email").val());
@@ -49,8 +49,9 @@ $(document).ready(function() {
 				$("#message").text("Vô hiệu hóa tài khoản thành công!");
 				$("#message").show();
 			},
-			error : function() {
-				$("#message").text("Vô hiệu hóa tài khoản thất bại!");
+			error : function(data) {
+				$("#img_loader").hide();
+				$("#message").text(data.responseJSON.description);
 				$("#message").show();
 			}
 		});
