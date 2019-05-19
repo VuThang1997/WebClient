@@ -1,6 +1,7 @@
 package com.webClient3.controller;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
@@ -32,7 +33,7 @@ import com.webClient3.utils.GeneralValue;
 
 @Controller
 public class ClassRoomController {
-	
+
 	private static final Logger LOGGER = LoggerFactory.getLogger(ClassRoomController.class);
 	private RoomService roomService;
 	private FileService fileService;
@@ -43,10 +44,9 @@ public class ClassRoomController {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	
+
 	@Autowired
-	public ClassRoomController(
-			@Qualifier("RoomServiceImpl1") RoomService roomService,
+	public ClassRoomController(@Qualifier("RoomServiceImpl1") RoomService roomService,
 			@Qualifier("FileServiceImpl1") FileService fileService,
 			@Qualifier("ClassServiceImpl1") ClassService classService,
 			@Qualifier("CourseServiceImpl1") CourseService courseService) {
@@ -68,7 +68,7 @@ public class ClassRoomController {
 		modelAndView = this.prepareForCreateClassRoomView(modelAndView);
 		return modelAndView;
 	}
-	
+
 	@RequestMapping(value = "/uploadClassRoomFile", method = RequestMethod.POST)
 	public ModelAndView uploadClassRoomFile(@Valid @ModelAttribute("myFile") MyFile myFile,
 			@Valid @ModelAttribute("roomIdHolder") ReportError roomIdHolder, HttpSession session) {
@@ -85,7 +85,7 @@ public class ClassRoomController {
 			String fileName = multipartFile.getOriginalFilename();
 			LOGGER.info("file name = " + fileName);
 			modelAndView.addObject("fileName", fileName);
-			
+
 			File file = new File(this.fileService.getFolderUpload(), fileName);
 			multipartFile.transferTo(file);
 		} catch (Exception e) {
@@ -94,27 +94,26 @@ public class ClassRoomController {
 		}
 		return modelAndView;
 	}
-	
+
 	@RequestMapping(value = "/readClassRoomFile", method = RequestMethod.POST)
-	public ModelAndView readClassRoomFile(
-			@Valid @ModelAttribute("roomIdHolder") ReportError roomIdHolder, BindingResult result,
-			Model model, HttpSession session) {
-		
+	public ModelAndView readClassRoomFile(@Valid @ModelAttribute("roomIdHolder") ReportError roomIdHolder,
+			BindingResult result, Model model, HttpSession session) {
+
 		if (result.hasErrors()) {
-            LOGGER.info("binding error");
+			LOGGER.info("binding error");
 			return new ModelAndView("error");
 		}
-		
+
 		if (session.getAttribute("id") == null) {
 			LOGGER.info("Redirect to login page ==============");
 			return new ModelAndView("redirect:/");
 		}
-        LOGGER.info("Begin read ClassRoom excel file ==========================");
+		LOGGER.info("Begin read ClassRoom excel file ==========================");
 
-        ModelAndView modelAndView = new ModelAndView("createClassRoom");
+		ModelAndView modelAndView = new ModelAndView("createClassRoom");
 		modelAndView = this.prepareForCreateClassRoomView(modelAndView);
-		
-		//report.ErrorCode hold ClassID value
+
+		// report.ErrorCode hold ClassID value
 
 		String fileName = roomIdHolder.getDescription();
 		String linkFile = GeneralValue.FOLDER_IMPORT_FILE + File.separator + fileName;
@@ -147,27 +146,27 @@ public class ClassRoomController {
 
 		return modelAndView;
 	}
-	
-	@RequestMapping(value = "/renderUpdateClassRoom", method = RequestMethod.POST)
+
+	@RequestMapping(value = "/renderUpdateClassRoom", method = RequestMethod.GET)
 	public ModelAndView renderUpdateClassRoom(HttpSession session) {
-		
+
 		if (session.getAttribute("id") == null) {
 			LOGGER.info("Redirect to login page ==============");
 			return new ModelAndView("redirect:/");
 		}
-		
-        LOGGER.info("Begin update ClassRoom ==========================");
 
-        ModelAndView modelAndView = new ModelAndView("updateClassRoom");
+		LOGGER.info("Begin update ClassRoom ==========================");
+
+		ModelAndView modelAndView = new ModelAndView("updateClassRoom");
 		modelAndView = this.prepareForCreateClassRoomView(modelAndView);
-		
+
 		return modelAndView;
 	}
-	
+
 	public ModelAndView prepareForCreateClassRoomView(ModelAndView modelAndView) {
 		modelAndView.addObject("myFile", new MyFile());
 		modelAndView.addObject("roomIdHolder", new ReportError());
-		
+
 		List<Room> listRoom = this.roomService.getAllRoom();
 		if (listRoom != null && !listRoom.isEmpty()) {
 			for (Room room : listRoom) {
@@ -177,7 +176,7 @@ public class ClassRoomController {
 		} else {
 			LOGGER.info("List room is null ===========================");
 		}
-		
+
 		List<Course> listCourse = this.courseService.getAllCourse();
 		if (listCourse != null && !listCourse.isEmpty()) {
 			for (Course course : listCourse) {
@@ -187,10 +186,42 @@ public class ClassRoomController {
 		} else {
 			LOGGER.info("List course is null ===========================");
 		}
+
+		return modelAndView;
+	}
+
+	@RequestMapping(value = "/renderTimetableView", method = RequestMethod.GET)
+	public ModelAndView renderTimetableView(HttpSession session) {
+		if (session.getAttribute("id") == null) {
+			LOGGER.info("Redirect to login page ==============");
+			return new ModelAndView("redirect:/");
+		}
+		
+		Integer accountID = (Integer)session.getAttribute("id");
+		Integer role = (Integer)session.getAttribute("role");
+
+		LOGGER.info("Begin render Timetable ==========================");
+		ModelAndView modelAndView = new ModelAndView("timetable");
+		
+		List<ClassRoom> listClassRooms = this.classService.getTimetable(accountID.intValue(),
+				role.intValue(), 0);
+		
+		//classify classrooms to list for each weekday
+		List<ClassRoom> listClassRoomForWeekday = null;
+		for (int weekday = 2; weekday < 8; weekday++) {
+			listClassRoomForWeekday = new ArrayList<>();
+			for (ClassRoom tmpTarget: listClassRooms) {
+				if (tmpTarget.getWeekday() == weekday) {
+					listClassRoomForWeekday.add(tmpTarget);
+				}
+			}
+			
+			LOGGER.info("========================== Thu " + weekday + " has size " + listClassRoomForWeekday.size());
+			String attrName = "listClassRoom" + weekday;
+			LOGGER.info("========================== attr Name = " + attrName);
+			modelAndView.addObject(attrName, listClassRoomForWeekday);
+		}
 		
 		return modelAndView;
 	}
-	
-	
-	
 }

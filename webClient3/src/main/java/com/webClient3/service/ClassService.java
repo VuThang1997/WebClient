@@ -10,5 +10,7 @@ public interface ClassService {
 	ReportError createMultipleStudentClass(List<String> listStudentEmail, int classID);
 
 	ReportError creatMultipleClassRoom(List<ClassRoom> listClassRoom, int roomID);
+	
+	List<ClassRoom> getTimetable(int accountID, int accountRole, int semesterID);
 
 }

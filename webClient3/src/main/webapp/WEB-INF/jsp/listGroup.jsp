@@ -84,6 +84,8 @@
 					<a href="/renderTeacherRollCallView" class="list-group-item sub-item" data-parent="#sub_categories_1" style="padding-left: 78px;">Giảng viên điểm danh</a>
 					<a href="/renderRollcallStudentView" class="list-group-item sub-item" data-parent="#sub_categories_1" style="padding-left: 78px;">Điểm danh cho sinh viên</a>
 				</div>
+				
+				<a href="/renderTimetableView" class="list-group-item list-group-item-primary list-group-item-action active">Thời khóa biểu</a>
 			</c:if>
 			
 				<a class="list-group-item list-group-item-warning list-group-item-action" data-remote="true" href="#sub_categories_2" id="categories_2" data-toggle="collapse" data-parent="#sub_categories_2">
