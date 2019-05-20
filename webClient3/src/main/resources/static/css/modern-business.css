@@ -71,3 +71,8 @@ body {
   color: white;
   text-align: center;
 }
+
+.error {
+      color: red;
+      background-color: #acf;
+}

@@ -50,7 +50,15 @@ $(document).ready(function() {
 		}
 	});
 
-	$("#add_class").click(function(e){
+	$("#form_create_class").submit(function(e){
+		e.preventDefault();
+		$("#message").hide();
+		let isvalidate=$("#form_create_class").valid();
+		console.log(isvalidate);
+		if (!isvalidate) {
+			e.preventDefault();
+		}
+		else {
 		e.preventDefault();
 		$("#img_loader").show();
 		console.log("semester id = " + $('#semester_select :selected').val());
@@ -85,10 +93,12 @@ $(document).ready(function() {
 			},
 			error : function(data) {
 				$("#img_loader").hide();
-				$("#message").text("Thêm lớp học thất bại!");
+				$("#message").text(data.responseJSON.description);
 				$("#message").show();
 			}
 		});
+		}
+		
 	});
 		
 	//=========================FILE========================

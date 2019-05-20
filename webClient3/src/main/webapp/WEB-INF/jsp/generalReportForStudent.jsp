@@ -61,11 +61,12 @@
                                
                                 </div>
                                 <div class="col-md-12">
-                                    <h4>BÁO CÁO TỔNG HỢP CHO SINH VIÊN</h4>
+                                    <h4>BÁO CÁO ĐIỂM DANH THEO SINH VIÊN</h4>
                                     <hr>
                                 </div>
                             </div>
-                            <div class="row">
+						<div class="card-body">
+						<div class="row">
                                 <div class="col-md-12">
                                     <form>
                                         <div class="form-group row">
@@ -129,6 +130,8 @@
 									</div>
                                 </div>
                             </div>
+						</div>
+                            
                         </div>
 
                     </div>

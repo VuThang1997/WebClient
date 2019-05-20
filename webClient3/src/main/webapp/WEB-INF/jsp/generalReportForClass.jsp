@@ -63,10 +63,11 @@
                                 
                                 </div>
                                 <div class="col-md-12">
-                                    <h4>BÁO CÁO TỔNG HỢP CHO LỚP</h4>
+                                    <h4>BÁO CÁO TÌNH HÌNH ĐIỂM DANH THEO LỚP</h4>
                                     <hr>
                                 </div>
                             </div>
+                        <div>
                             <div class="row">
                                 <div class="col-md-12">
                                     <form>
@@ -135,6 +136,7 @@
 									</div>
                                 </div>
                             </div>
+                        </div>
                         </div>
 
                     </div>

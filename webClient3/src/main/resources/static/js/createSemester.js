@@ -41,8 +41,16 @@ $(document)
 	 
 	 
 
-     $("#add_semester").click(function(e){
+     $("#create_semester_form").submit(function(e){
+		  
 		  e.preventDefault();
+		  
+		  let isvalidate=$("#create_semester_form").valid();
+		  console.log(isvalidate);
+		  if (!isvalidate) {
+			e.preventDefault();
+		  }
+		  else {
 		  $("#img_loader").show();
 		  console.log(JSON.stringify({
 				   semesterName: $("#semester_name").val(),
@@ -75,5 +83,6 @@ $(document)
 				   $("#message").show();
 			   }
 			});
+		  }
 	  });
 });

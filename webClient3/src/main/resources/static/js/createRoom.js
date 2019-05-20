@@ -19,10 +19,24 @@ $(document)
         latitude : "Mời nhập vĩ độ!",
         
         longitude : "Mời nhập kinh độ!"
-      }
+      },
+		highlight : function(element) {
+			$(element).parent().addClass('error')
+		},
+		unhighlight : function(element) {
+			$(element).parent().removeClass('error')
+		}
      });
 
      $("#create_room_form").submit(function(e){
+		 e.preventDefault();
+		$("#message").hide();
+		let isvalidate=$("#create_room_form").valid();
+		console.log(isvalidate);
+		if (!isvalidate) {
+			e.preventDefault();
+		}
+		else {
 		  e.preventDefault();
 		  $("#img_loader").show();
 		  
@@ -36,8 +50,8 @@ $(document)
 			   data: JSON.stringify({
 				   address: $("#address").val(),
 				   roomName: $("#room_name").val(),
-				   gpsLa: $("#latitude").val(),
-				   gpsLong: $("#longitude").val(),
+				   gpsLatitude: $("#latitude").val(),
+				   gpsLongitude: $("#longitude").val(),
 				   macAddress: $("#mac_addr").val()
 			   }),
 			   success: function(data){
@@ -45,11 +59,12 @@ $(document)
 				   $("#message").text("Thêm phòng học thành công!");
 				   $("#message").show();
 			   },
-			   error: function() {
+			   error: function(data) {
 				   $("#img_loader").hide();
-				   $("#message").text("Thêm phòng học thất bại!");
+				   $("#message").text(data.responseJSON.description);
 				   $("#message").show();
 			   }
 			});
+		}
 	  });
 });

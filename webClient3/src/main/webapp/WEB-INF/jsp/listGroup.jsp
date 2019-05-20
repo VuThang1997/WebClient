@@ -15,20 +15,18 @@
 				<div class="collapse list-group-submenu" id="sub_categories_3">
 					<a href="/renderCreateAccount" class="list-group-item sub-item" data-parent="#sub_categories_3" style="padding-left: 78px;">Tạo tài khoản</a>
 					<a href="/renderDisableAccount" class="list-group-item sub-item" data-parent="#sub_categories_2" style="padding-left: 78px;">Vô hiệu hóa tài khoản</a>
-					<a href="#" class="list-group-item sub-item" data-parent="#sub_categories_2" style="padding-left: 78px;">SubSubPos3</a>
-					<a href="#" class="list-group-item sub-item" data-parent="#sub_categories_2" style="padding-left: 78px;">SubSubPos4</a>
 				</div>
 				
 				<!-- <a href="adminCheckRollcall.jsp" class="list-group-item list-group-item-success list-group-item-action">Điểm danh cuối ngày</a> -->
 				
-				<a class="list-group-item list-group-item-danger list-group-item-action" data-remote="true" href="#sub_categories_1" id="categories_1" data-toggle="collapse" data-parent="#sub_categories_1">
+				<a class="list-group-item list-group-item-warning list-group-item-action" data-remote="true" href="#sub_categories_1" id="categories_1" data-toggle="collapse" data-parent="#sub_categories_1">
 					<span>Quản lí lớp học</span>
 					<span class="menu-ico-collapse"><i class="fa fa-chevron-down"></i></span>
 				</a>
 			
 				<div class="collapse list-group-submenu" id="sub_categories_1">
 					<a href="/renderCreateClass" class="list-group-item sub-item" data-parent="#sub_categories_1" style="padding-left: 78px;">Thêm lớp học</a>
-					<a href="/renderGetClassInfo" class="list-group-item sub-item" data-parent="#sub_categories_1" style="padding-left: 78px;">Xem thông tin lớp học</a>
+					<a href="/renderGetClassInfo" class="list-group-item sub-item" data-parent="#sub_categories_1" style="padding-left: 78px;">Cập nhật thông tin lớp học</a>
 					<a href="/renderCreateStudentClass" class="list-group-item sub-item" data-parent="#sub_categories_1" style="padding-left: 78px;">Thêm sinh viên</a>
 					<a href="/renderCreateTeacherClass" class="list-group-item sub-item" data-parent="#sub_categories_1" style="padding-left: 78px;">Thêm giảng viên</a>
 				</div>
@@ -70,7 +68,7 @@
 				</a>
 				<div class="collapse list-group-submenu" id="sub_categories_7">
 					<a href="/renderCreateClassRoom" class="list-group-item sub-item" data-parent="#sub_categories_7" style="padding-left: 78px;">Thêm tiết học</a>
-					<a href="/renderUpdateClassRoom" class="list-group-item sub-item" data-parent="#sub_categories_7" style="padding-left: 78px;">Xem và cập nhật thông tin tiết học</a>
+					<a href="/renderUpdateClassRoom" class="list-group-item sub-item" data-parent="#sub_categories_7" style="padding-left: 78px;">Cập nhật thông tin tiết học</a>
 				</div>
 			</c:if>
 			

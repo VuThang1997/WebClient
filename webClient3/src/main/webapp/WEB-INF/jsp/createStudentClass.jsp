@@ -27,12 +27,11 @@
 <!-- Custom styles for this template -->
 <link href="css/modern-business.css" rel="stylesheet">
 
-<script src="js/createAccount.js" type="text/javascript"></script>
+<script src="js/createStudentClass.js" type="text/javascript"></script>
 <script type="text/javascript"
 	src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.13.1/jquery.validate.min.js"></script>
 
 <script src="js/config.js" type="text/javascript"></script>
-<script src="js/createTeacherClass.js" type="text/javascript"></script>
 </head>
 
 <body>

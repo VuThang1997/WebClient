@@ -50,28 +50,17 @@
 			<!--end of col-md-3 -->
 
 			<div class="row col-md-9">
+			<div class = "col-md-3"> </div>
 				<div class="card col-md-6">
 					<div class="card-body">
 						<div>
 							<div class="col-md-12 text-center">
-								<h4>XEM THÔNG TIN LỚP HỌC</h4>
+								<h4>CẬP NHẬT THÔNG TIN LỚP HỌC</h4>
 								<hr>
 							</div>
 						</div>
 						<div class="card-body col-md-12">
 							<form id="form_class_info" >
-							
-								<div class="form-group row">
-                                     <label for="semester_select" class="col-5 col-form-label">Chọn học kì: </label> 
-                                     <div class="col-7">
-                                         <select id="semester_select" class="browser-default custom-select">
-											<option value="0" selected>Chọn học kì</option>
-                                             <c:forEach items="${allSemesters}" var="semester">
-                                                 <option value="${semester.semesterID}">${semester.semesterName}</option>
-                                             </c:forEach>
-                                         </select>
-                                     </div>
-                                 </div>
                                      
                                  <div class="form-group row">
                                      <label for="course_select" class="col-5 col-form-label">Chọn học phần: </label> 
@@ -149,6 +138,7 @@
 						</div>
 					</div>
 				</div>
+				<div class = "col-md-3"> </div>
 				<%-- <div class="card col-md-6">
 					<div class="card-body">
 						<div>

@@ -28,7 +28,8 @@
 <link href="css/modern-business.css" rel="stylesheet">
 
 <script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.13.1/jquery.validate.min.js"></script>
-
+<script src="https://unpkg.com/gijgo@1.9.13/js/gijgo.min.js" type="text/javascript"></script>
+<link href="https://unpkg.com/gijgo@1.9.13/css/gijgo.min.css" rel="stylesheet" type="text/css" />
 <script src="js/config.js" type="text/javascript"></script>
 <script src="js/updateSemester.js" type="text/javascript"></script>
 </head>
@@ -48,6 +49,7 @@
 			<!--end of col-md-3 -->
 
 			<div class="row col-md-9">
+			    <div class = "col-md-3"></div>
 				<div class="card col-md-6">
 					<div class="card-body">
 						<div>
@@ -57,7 +59,7 @@
 							</div>
 						</div>
 						<div class="card-body col-md-12">
-							<form id="retrieve_room_form">
+							<form id="update_semester_info">
 								<div class="form-group row">
 									<label for="semester_select" class="col-md-4 col-form-label">
 										Chọn học kì: 
@@ -87,8 +89,13 @@
 										Thời gian bắt đầu:
 									</label>
 									<div class="col-8">
-										<input id="begin_date" name="begin_date" placeholder="Begin Date"
-											class="form-control here" type="text" />
+										<input id="begin_date" width="276" />
+										<script>
+											$('#begin_date').datepicker({
+												uiLibrary : 'bootstrap4',
+												format : 'yyyy-mm-dd',
+											});
+										</script>
 									</div>
 								</div>
 
@@ -97,8 +104,13 @@
 										Thời gian kết thúc:
 									</label>
 									<div class="col-8">
-										<input id="end_date" name="end_date" placeholder="End Date"
-											class="form-control here" type="text" />
+										<input id="end_date" width="276" />
+										<script>
+											$('#end_date').datepicker({
+												uiLibrary : 'bootstrap4',
+												format : 'yyyy-mm-dd',
+											});
+										</script>
 									</div>
 								</div>
 								
