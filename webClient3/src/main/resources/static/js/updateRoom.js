@@ -6,7 +6,7 @@ $(document)
      $(".show_info").hide();
      $("#update_room").hide();
     
-     $('#create_room_form').validate({
+     $('#update_room_form').validate({
       errorClass : 'errors',
       rules : {
     	  room_name : {
@@ -20,9 +20,6 @@ $(document)
 		  },
 		  longitude : {
 			required : true
-		  },
-		  mac_addr: {
-			  required : true
 		  }
       },
       messages : {
@@ -40,10 +37,6 @@ $(document)
         
         longitude : {
     		required : "Mời nhập kinh độ!"
-        },
-        
-        mac_addr : {
-    		required : "Mời nhập địa chỉ MAC của WAP!"
         }
       },
       highlight : function(element) {
@@ -93,10 +86,16 @@ $(document)
 			});
 	  });
      
-     $("#update_room").click(function(e){
+     $("#update_room_form").submit(function(e){
+		e.preventDefault();
+		$("#message").hide();
+		let isvalidate=$("#update_room_form").valid();
+		console.log(isvalidate);
+		if (!isvalidate) {
+			e.preventDefault();
+		}
+		else {
  		e.preventDefault();
- 		console.log("roomID= " + $('#room_select :selected').val());
- 		
  		$.ajax({
  			type : "PUT",
  			dataType : "json",
@@ -113,11 +112,14 @@ $(document)
  				macAddress: $("#mac_addr").val()
  			 }),
  			success : function(data) {
- 				$("#message").text("Cập nhật thành công!");
+ 				$("#message").text("Cập nhật phòng thành công!");
  				$("#message").show();
+				$("#img_loader").hide();
+				
+				$("#room_select").find("option:selected").text($("#room_name").val());
  			},
- 			error : function() {
- 				$("#message").text("Cập nhật không thành công!");
+ 			error : function(data) {
+ 				$("#message").text(data.responseJSON.description);
  				$("#message").show();
 				
 				$("#img_loader").hide();
@@ -126,5 +128,6 @@ $(document)
 				$("#room_select").val(0);
  			}
  		});
+		}
  	});
 });

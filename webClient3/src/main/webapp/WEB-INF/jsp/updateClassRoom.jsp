@@ -49,6 +49,7 @@
 			<!--end of col-md-3 -->
 
 			<div class="row col-md-9">
+			<div class = "col-md-3"></div>
 				<div class="card col-md-6">
 					<div class="card-body">
 						<div>
@@ -58,7 +59,7 @@
 							</div>
 						</div>
 						<div class="card-body col-md-12">
-							<form id="form_create_account">
+							<form id="form_update_class_room">
 								<div class="form-group row">
 									<label for="course_select" class="col-5 col-form-label">
 										Chọn học phần: </label>

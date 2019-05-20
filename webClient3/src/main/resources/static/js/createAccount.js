@@ -4,7 +4,7 @@ $(document)
                     var accountType = -1;
                     $("#img_loader").hide();
                     $("#img_file_loader").hide();
-					let linkDownload = protocol_client + "://" + host_client + ":" + port_client + '/download/Import_Template_File/StudentClass.xlsx';
+					let linkDownload = protocol_client + "://" + host_client + ":" + port_client + '/download/Import_Template_File/Account_tmpl.xlsx';
                     $("#link_report").attr("href",linkDownload);
                     $.validator
                             .addMethod(

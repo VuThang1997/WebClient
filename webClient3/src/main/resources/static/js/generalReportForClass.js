@@ -63,7 +63,7 @@ $(document).ready(
 								$(".alert").hide();
                                 $("#img_loader").hide();
                                 let linkDown = data["description"];
-                                let linkDownload = protocol_client + "://" + host_client + ":" + port_client + '/download/' + linkDown + "/" + linkDown
+                                let linkDownload = protocol_client + "://" + host_client + ":" + port_client + '/download/out/' + linkDown + "/" + linkDown
                                         + ".pdf";
                                 $("#link_report").attr(
                                         "href",
@@ -106,7 +106,7 @@ $(document).ready(
 								$(".alert").hide();
                                 $("#img_loader").hide();
                                 let linkDown = data["description"];
-                                let linkDownload = protocol_client + "://" + host_client + ":" + port_client + '/download/' + linkDown + "/" + linkDown
+                                let linkDownload = protocol_client + "://" + host_client + ":" + port_client + '/download/out/' + linkDown + "/" + linkDown
                                         + ".xls";
                                 $("#link_report").attr(
                                         "href",

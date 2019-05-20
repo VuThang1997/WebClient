@@ -148,25 +148,25 @@ public class ClassController {
 
 		List<String> listEmail = this.fileService.readFileExcelToGetListEmail(linkFile);
 		if (listEmail == null || listEmail.isEmpty()) {
-			modelAndView.addObject("error", "Tạo tài khoản không thành công!");
+			modelAndView.addObject("error", "Thêm sinh viên không thành công!");
 		} else {
 			int classID = report.getErrorCode();
 			LOGGER.info("class ID in controller = " + classID);
 			report = this.classService.createMultipleStudentClass(listEmail, classID);
 
 			if (report.getErrorCode() == 200) {
-				if (report.getDescription() == null) {
-					modelAndView.addObject("error", "Tạo tài khoản thành công!");
+				if (report.getDescription().equalsIgnoreCase("0-")) {
+					modelAndView.addObject("error","Thêm sinh viên thành công!");
 
 				} else if (report.getDescription().equalsIgnoreCase("All accounts are invalid!")) {
-					modelAndView.addObject("error", "Không có tài khoản nào hợp lệ!");
+					modelAndView.addObject("error", "Không có sinh viên nào hợp lệ!");
 
 				} else {
-					modelAndView.addObject("error",
-							"Tài khoản có dữ liệu không hợp lệ ở các dòng: " + report.getDescription());
-				}
+				String[] infoReport = report.getDescription().split("-");
+				modelAndView.addObject("error", infoReport[0] + " sinh viên không hợp lệ ở các dòng: " + infoReport[1]);
+			}
 			} else {
-				modelAndView.addObject("error", "Tạo tài khoản không thành công!");
+				modelAndView.addObject("error", "Thêm sinh viên không thành công!");
 			}
 		}
 

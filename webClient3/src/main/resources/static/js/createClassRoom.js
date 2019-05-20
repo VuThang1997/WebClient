@@ -4,8 +4,8 @@ $(document)
                     $("#img_file_loader").hide();
                     
                     //$("#img_loader").hide();
-					//let linkDownload = protocol_client + "://" + host_client + ":" + port_client + '/download/Import_Template_File/StudentClass.xlsx';
-                    //$("#link_report").attr("href",linkDownload);
+					var linkDownload = protocol_client + "://" + host_client + ":" + port_client + '/download/Import_Template_File/ClassRoom.xlsx';
+                    $("#link_report").attr("href",linkDownload);
                      
                     window.onload = function () {
                         if (sessionStorage.getItem('roomID') !== null) {

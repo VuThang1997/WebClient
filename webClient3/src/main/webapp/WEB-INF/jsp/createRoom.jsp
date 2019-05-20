@@ -48,6 +48,8 @@
 			<!--end of col-md-3 -->
 
 			<div class="row col-md-9">
+										<div class = "col-md-3"> </div>
+
 				<div class="card col-md-6">
 					<div class="card-body">
 						<div>
@@ -94,16 +96,6 @@
 									</label>
 									<div class="col-8">
 										<input id="longitude" name="longitude" placeholder="Longitude"
-											class="form-control here" type="text" />
-									</div>
-								</div>
-								
-								<div class="form-group row">
-									<label for="mac_addr" class="col-4 col-form-label">
-										Địa chỉ MAC *
-									</label>
-									<div class="col-8">
-										<input id="mac_addr" name="mac_addr" placeholder="MAC Address"
 											class="form-control here" type="text" />
 									</div>
 								</div>
