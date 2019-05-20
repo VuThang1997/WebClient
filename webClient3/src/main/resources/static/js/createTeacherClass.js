@@ -85,7 +85,7 @@ $(document).ready(function() {
 			dataType : "json",
 			url : protocol_server_core + "://"
 					+ host_server_core + ":" + port_server_core
-					+ "/teacherClass",
+					+ "/teacherClassByWeb",
 			contentType : 'application/json',
 			data: JSON.stringify({
 				   teacherEmail: $("#email").val(),
