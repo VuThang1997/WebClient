@@ -30,9 +30,6 @@
 <script type="text/javascript"
 	src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.13.1/jquery.validate.min.js"></script>
 
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.0-alpha14/js/tempusdominus-bootstrap-4.min.js"></script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.0-alpha14/css/tempusdominus-bootstrap-4.min.css" />
-
 <script src="js/config.js" type="text/javascript"></script>
 <script src="js/updateClassRoom.js" type="text/javascript"></script>
 </head>
@@ -100,35 +97,22 @@
 
 								<div class="form-group row">
 									<label for="weekday" class="col-5 col-form-label">
-										
+										Ngày học:
 									</label>
 									<div class="col-7">
-										<input id="weekday" name="weekday"
-											placeholder="Weekday" class="form-control here" type="text" />
+										<select id="weekday" class="browser-default custom-select">
+											<option value="2" selected>2</option>
+											<option value="3">3</option>
+											<option value="4">4</option>
+											<option value="5">5</option>
+											<option value="6">6</option>
+										</select>
 									</div>
 								</div>
 
-								<div class="form-group row">
-									<label for="begin_at" class="col-5 col-form-label">
-										Giờ bắt đầu (cũ)
-									</label>
-									<div class="col-7">
-										<input id="begin_at" width="276" readonly />
-									</div>
-								</div>
-
-								<div class="form-group row">
-									<label for="finish_at" class="col-5 col-form-label">
-										Giờ kết thúc (cũ)
-									</label>
-									<div class="col-7">
-										<input id="begin_at" width="276" readonly />
-									</div>
-								</div>
-								
 								<div class="form-group row">
 									<label for="new_begin_at" class="col-5 col-form-label">
-										Giờ bắt đầu (mới)
+										Giờ bắt đầu
 									</label>
 									<div class="col-7">
 										<select id="new_begin_at" class="browser-default custom-select">
@@ -142,13 +126,26 @@
 
 								<div class="form-group row">
 									<label for="new_finish_at" class="col-5 col-form-label">
-										Giờ kết thúc (mới)
+										Giờ kết thúc
 									</label>
 									<div class="col-7">
 										<select id="new_finish_at" class="browser-default custom-select">
 											<option value="00:00:00" selected>Chọn giờ bắt đầu</option>
 											<c:forEach items="${allFinishTime}" var="time">
 												<option value="${time}">${time}</option>
+											</c:forEach>
+										</select>
+									</div>
+								</div>
+								
+								<div class="form-group row">
+									<label for="room_select" class="col-5 col-form-label">
+										Chọn phòng học: </label>
+									<div class="col-7">
+										<select id="room_select" class="browser-default custom-select">
+											<option value="0" selected>Chọn phòng học</option>
+											<c:forEach items="${allRooms}" var="room">
+												<option value="${room.id}">${room.roomName}</option>
 											</c:forEach>
 										</select>
 									</div>

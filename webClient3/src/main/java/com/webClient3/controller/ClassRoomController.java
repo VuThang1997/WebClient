@@ -1,6 +1,7 @@
 package com.webClient3.controller;
 
 import java.io.File;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,6 +21,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.webClient3.enumData.AfternoonTimeFrame;
+import com.webClient3.enumData.MorningTimeFrame;
 import com.webClient3.model.ClassRoom;
 import com.webClient3.model.Course;
 import com.webClient3.model.MyFile;
@@ -148,6 +151,7 @@ public class ClassRoomController {
 		return modelAndView;
 	}
 
+
 	@RequestMapping(value = "/renderUpdateClassRoom", method = RequestMethod.GET)
 	public ModelAndView renderUpdateClassRoom(HttpSession session) {
 
@@ -159,7 +163,7 @@ public class ClassRoomController {
 		LOGGER.info("Begin update ClassRoom ==========================");
 
 		ModelAndView modelAndView = new ModelAndView("updateClassRoom");
-		modelAndView = this.prepareForCreateClassRoomView(modelAndView);
+		modelAndView = this.prepareForUpdateClassRoom(modelAndView);
 
 		return modelAndView;
 	}
@@ -190,6 +194,43 @@ public class ClassRoomController {
 
 		return modelAndView;
 	}
+	
+	public ModelAndView prepareForUpdateClassRoom(ModelAndView modelAndView) {
+		List<Course> listCourse = this.courseService.getAllCourse();
+		if (listCourse != null && !listCourse.isEmpty()) {
+			for (Course course : listCourse) {
+				LOGGER.info("course name = " + course.getCourseName());
+			}
+			modelAndView.addObject("allCourses", listCourse);
+		} else {
+			LOGGER.info("List course is null ===========================");
+		}
+		
+		List<Room> listRooms = this.roomService.getAllRoom();
+		if (listRooms != null && !listRooms.isEmpty()) {
+			for (Room room : listRooms) {
+				LOGGER.info("room name = " + room.getRoomName());
+			}
+			modelAndView.addObject("allRooms", listRooms);
+		}
+		
+		List<LocalTime> listBeginTime = new ArrayList<LocalTime>();
+		List<LocalTime> listEndTime = new ArrayList<LocalTime>();
+		for (MorningTimeFrame timeFrame: MorningTimeFrame.values()) {
+			listBeginTime.add(timeFrame.getValue());
+			listEndTime.add(timeFrame.getValue().plusMinutes(45));
+		}
+		
+		for (AfternoonTimeFrame timeFrame: AfternoonTimeFrame.values()) {
+			listBeginTime.add(timeFrame.getValue());
+			listEndTime.add(timeFrame.getValue().plusMinutes(45));
+		}
+
+		modelAndView.addObject("allBeginTime", listBeginTime);
+		modelAndView.addObject("allFinishTime", listEndTime);
+		return modelAndView;
+	}
+
 
 	@RequestMapping(value = "/renderTimetableView", method = RequestMethod.GET)
 	public ModelAndView renderTimetableView(HttpSession session) {
@@ -225,4 +266,7 @@ public class ClassRoomController {
 		
 		return modelAndView;
 	}
+	
+
+	
 }
