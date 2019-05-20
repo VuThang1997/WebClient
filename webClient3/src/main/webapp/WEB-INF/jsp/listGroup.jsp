@@ -15,6 +15,7 @@
 				<div class="collapse list-group-submenu" id="sub_categories_3">
 					<a href="/renderCreateAccount" class="list-group-item sub-item" data-parent="#sub_categories_3" style="padding-left: 78px;">Tạo tài khoản</a>
 					<a href="/renderDisableAccount" class="list-group-item sub-item" data-parent="#sub_categories_2" style="padding-left: 78px;">Vô hiệu hóa tài khoản</a>
+					<a href="/renderActivateAccount" class="list-group-item sub-item" data-parent="#sub_categories_2" style="padding-left: 78px;">Kích hoạt tài khoản</a>
 				</div>
 				
 				<!-- <a href="adminCheckRollcall.jsp" class="list-group-item list-group-item-success list-group-item-action">Điểm danh cuối ngày</a> -->

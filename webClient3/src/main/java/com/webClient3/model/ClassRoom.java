@@ -3,7 +3,7 @@ package com.webClient3.model;
 import java.io.Serializable;
 import java.time.LocalTime;
 
-public class ClassRoom implements Serializable{
+public class ClassRoom implements Serializable, Comparable<ClassRoom>{
 
 	private static final long serialVersionUID = 1L;
 
@@ -79,6 +79,19 @@ public class ClassRoom implements Serializable{
 
 	public void setRoom(Room room) {
 		this.room = room;
+	}
+
+	@Override
+	public int compareTo(ClassRoom o) {
+		if (weekday == o.weekday) {
+			return 0;
+		}
+		else if (weekday > o.weekday) {
+			return 1;
+		}
+		else {
+			return -1;
+		}
 	}
 	
 }

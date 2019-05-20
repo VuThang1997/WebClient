@@ -233,6 +233,17 @@ public class AccountController {
 		ModelAndView modelAndView = new ModelAndView("disableAccount");
 		return modelAndView;
 	}
+	
+	@RequestMapping(value = "/renderActivateAccount", method = RequestMethod.GET)
+	public ModelAndView renderActivateAccount(HttpSession session) {
+		if (session.getAttribute("id") == null) {
+			logger.info("Redirect to login page ==============");
+			return new ModelAndView("redirect:/");
+		}
+		
+		ModelAndView modelAndView = new ModelAndView("activateAccount");
+		return modelAndView;
+	}
 
 	@RequestMapping(value = "/renderCreateAccount", method = RequestMethod.GET)
 	public String renderCreateAccount(Model model, HttpSession session) {
